@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UmdImageCreator", "UmdImageCreator\UmdImageCreator.vcxproj", "{13281662-9B01-4E66-BA92-6E9BC830EA4B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release_lib|x64 = Release_lib|x64
+		Release_lib|x86 = Release_lib|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Debug|x64.ActiveCfg = Debug|x64
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Debug|x64.Build.0 = Debug|x64
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Debug|x86.ActiveCfg = Debug|Win32
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Debug|x86.Build.0 = Debug|Win32
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Release_lib|x64.ActiveCfg = Release_lib|x64
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Release_lib|x64.Build.0 = Release_lib|x64
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Release_lib|x86.ActiveCfg = Release_lib|Win32
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Release_lib|x86.Build.0 = Release_lib|Win32
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Release|x64.ActiveCfg = Release|x64
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Release|x64.Build.0 = Release|x64
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Release|x86.ActiveCfg = Release|Win32
+		{13281662-9B01-4E66-BA92-6E9BC830EA4B}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C96236ED-7226-4994-B9D4-684B4E44425B}
+	EndGlobalSection
+EndGlobal

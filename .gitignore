@@ -1,0 +1,10 @@
+Debug/
+Release/
+Release_lib/
+.vs/
+UmdImageCreator/*.elf
+UmdImageCreator/*.o
+UmdImageCreator/*.PBP
+UmdImageCreator/*.Prx
+UmdImageCreator/*.SFO
+UmdImageCreator.vcxproj.user
