@@ -18,6 +18,8 @@ ASFLAGS = $(CFLAGS)
 LIBDIR =
 LDFLAGS =
 
+PSP_FW_VERSION = 661
+
 .PHONY : pbp
    pbp : all
 
