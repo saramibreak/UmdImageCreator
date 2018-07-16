@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "get.h"
 #include "output.h"
 
 #include <pspkernel.h>
-#include <pspumd.h>
 
 extern int nWriteToX;
 extern int nWriteToY;
@@ -44,10 +44,9 @@ DWORD  GetSizeOrDwordForVolDesc(
 	return val;
 }
 
-int GetDiscInfoToConsole()
+int GetDiscInfoToConsole(pspUmdInfo* pDiscInfo)
 {
-	pspUmdInfo discInfo = { 0, 0 };
-	int ret = sceIoDevctl("umd0:", 0x01F20001, NULL, 0, &discInfo, sizeof(discInfo));
+	int ret = sceIoDevctl("umd0:", 0x01F20001, NULL, 0, pDiscInfo, sizeof(pspUmdInfo));
 	if (ret < 0) {
 		pspPrintf("Cannot run sceIoDevctl: 0x01F20001\n");
 		return FALSE;
@@ -58,8 +57,8 @@ int GetDiscInfoToConsole()
 	pspDebugScreenSetXY(0, nWriteToY);
 	nWriteToX = 19;
 #endif
-	pspPrintf("pspUmdTypes: 0x%02x (", discInfo.type);
-	if ((discInfo.type & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
+	pspPrintf("pspUmdTypes: 0x%02x (", pDiscInfo->type);
+	if ((pDiscInfo->type & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
 #ifdef PRX
 		pspDebugScreenSetXY(nWriteToX, nWriteToY);
 		nWriteToX += 4;
@@ -67,7 +66,7 @@ int GetDiscInfoToConsole()
 		pspPrintf("GAME");
 		bMulti = TRUE;
 	}
-	if ((discInfo.type & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
+	if ((pDiscInfo->type & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
 		if (bMulti) {
 #ifdef PRX
 			pspDebugScreenSetXY(nWriteToX, nWriteToY);
@@ -82,7 +81,7 @@ int GetDiscInfoToConsole()
 #endif
 		pspPrintf("VIDEO");
 	}
-	if ((discInfo.type & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
+	if ((pDiscInfo->type & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
 		if (bMulti) {
 #ifdef PRX
 			pspDebugScreenSetXY(nWriteToX, nWriteToY);
@@ -213,37 +212,31 @@ int GetDiscID(char* id)
 	return TRUE;
 }
 
-int GetDiscInfoToLog(char* id)
+int GetDiscInfoToLog(char* id, unsigned int disctype)
 {
 	int ret = GetDiscID(id);
 	if (!ret) {
 		return FALSE;
 	}
 
-	if (!CreateFile(id, "_disc.txt", &g_LogFile.fpDisc, "w")) {
+	if (!CreateFile(id, disctype, "_disc.txt", &g_LogFile.fpDisc, "w")) {
 		return FALSE;
 	}
 
-	pspUmdInfo discInfo = { 0, 0 };
-	ret = sceIoDevctl("umd0:", 0x01F20001, NULL, 0, &discInfo, sizeof(discInfo));
-	if (ret < 0) {
-		pspPrintf("Cannot run sceIoDevctl: 0x01F20001\n");
-		return FALSE;
-	}
 	BOOL bMulti = FALSE;
-	OutputDiscLogA("\npspUmdTypes: 0x%02x (", discInfo.type);
-	if ((discInfo.type & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
+	OutputDiscLogA("\npspUmdTypes: 0x%02x (", disctype);
+	if ((disctype & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
 		OutputDiscLogA("GAME");
 		bMulti = TRUE;
 	}
-	if ((discInfo.type & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
+	if ((disctype & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
 		if (bMulti) {
 			OutputDiscLogA(" ");
 		}
 		bMulti = TRUE;
 		OutputDiscLogA("VIDEO");
 	}
-	if ((discInfo.type & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
+	if ((disctype & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
 		if (bMulti) {
 			OutputDiscLogA(" ");
 		}

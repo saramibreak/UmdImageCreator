@@ -177,6 +177,6 @@ VOID OutputLastErrorNumAndString(
 	LONG lLineNum
 );
 
-int CreateFile(char* id, const char* filename, FILE** fp, const char* type);
+int CreateFile(char* id, unsigned int disctype, const char* filename, FILE** fp, const char* type);
 
-void DumpIso(char* id, int nDump);
+void DumpIso(char* id, unsigned int disctype, int nDump);

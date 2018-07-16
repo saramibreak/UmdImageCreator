@@ -16,6 +16,7 @@
 #include "output.h"
 #include "execScsiCmdforFileSystem.h"
 
+#include <pspumd.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -32,9 +33,13 @@ VOID OutputLastErrorNumAndString(
 		, pszFuncName, lLineNum, errnum, strerror(errnum));
 }
 
-int CreateFile(char* id, const char* filename, FILE** fp, const char* type)
+int CreateFile(char* id, unsigned int disctype, const char* filename, FILE** fp, const char* type)
 {
-	char dir[] = "ms0:/PSP/GAME/UmdImageCreator/";
+	char dir[16] = "ms0:/iso/";
+	if ((disctype & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO &&
+		(disctype & PSP_UMD_TYPE_GAME) != PSP_UMD_TYPE_GAME) {
+		strncat(dir, "video/", 6);
+	}
 	if (sizeof(dir) + strlen(id) + strlen(filename) > 80) {
 		pspPrintf("path is too long\n");
 		return 0;
@@ -52,20 +57,20 @@ int CreateFile(char* id, const char* filename, FILE** fp, const char* type)
 	return  1;
 }
 
-void DumpIso(char* id, int nDump)
+void DumpIso(char* id, unsigned int disctype, int nDump)
 {
 	SceUID uid = sceIoOpen("umd0:", PSP_O_RDONLY, 0);
 	if (uid < 0) {
 		pspPrintf("Cannot open UMD: result=0x%08X\n", uid);
 		return;
 	}
-	if (!CreateFile(id, "_mainInfo.txt", &g_LogFile.fpMainInfo, "w")) {
+	if (!CreateFile(id, disctype, "_mainInfo.txt", &g_LogFile.fpMainInfo, "w")) {
 		return;
 	}
-	if (!CreateFile(id, "_mainError.txt", &g_LogFile.fpMainError, "w")) {
+	if (!CreateFile(id, disctype, "_mainError.txt", &g_LogFile.fpMainError, "w")) {
 		return;
 	}
-	if (!CreateFile(id, "_volDesc.txt", &g_LogFile.fpVolDesc, "w")) {
+	if (!CreateFile(id, disctype, "_volDesc.txt", &g_LogFile.fpVolDesc, "w")) {
 		return;
 	}
 
@@ -76,7 +81,7 @@ void DumpIso(char* id, int nDump)
 
 	if (nDump) {
 		FILE* fpIso = NULL;
-		if (!CreateFile(id, ".iso", &fpIso, "wb")) {
+		if (!CreateFile(id, disctype, ".iso", &fpIso, "wb")) {
 			return;
 		}
 #ifdef PRX

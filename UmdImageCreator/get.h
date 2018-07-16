@@ -15,6 +15,7 @@
  */
 #pragma once
 #include "windef.h"
+#include <pspumd.h>
 
 WORD GetSizeOrWordForVolDesc(
 	LPBYTE lpBuf
@@ -25,8 +26,8 @@ DWORD GetSizeOrDwordForVolDesc(
 	DWORD dwMax
 );
 
-int GetDiscInfoToConsole();
+int GetDiscInfoToConsole(pspUmdInfo* pDiscInfo);
 
-int GetDiscInfoToLog(char* id);
+int GetDiscInfoToLog(char* id, unsigned int disctype);
 
 int GetDiscID(char* id);

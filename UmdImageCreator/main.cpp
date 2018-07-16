@@ -18,6 +18,7 @@
 #include <pspctrl.h>
 #include <pspgu.h>
 #include <psploadexec_kernel.h>
+#include <pspumd.h>
 
 #include "define.h"
 #include "struct.h"
@@ -279,22 +280,23 @@ void run() {
 #endif
 	pspPrintf("Press Triangle to exit\n");
 
+	pspUmdInfo discInfo = { 0, 0 };
 	while (!done) {
 		sceCtrlReadBufferPositive(&pad, 1);
 		if (pad.Buttons & PSP_CTRL_CIRCLE) {
-			if (GetDiscInfoToConsole()) {
+			if (GetDiscInfoToConsole(&discInfo)) {
 				char id[11] = { 0 };
-				if (GetDiscInfoToLog(id)) {
-					DumpIso(id, TRUE);
+				if (GetDiscInfoToLog(id, discInfo.type)) {
+					DumpIso(id, discInfo.type, TRUE);
 				}
 			}
 		}
 
 		if (pad.Buttons & PSP_CTRL_CROSS) {
-			if (GetDiscInfoToConsole()) {
+			if (GetDiscInfoToConsole(&discInfo)) {
 				char id[11] = { 0 };
-				if (GetDiscInfoToLog(id)) {
-					DumpIso(id, FALSE);
+				if (GetDiscInfoToLog(id, discInfo.type)) {
+					DumpIso(id, discInfo.type, FALSE);
 				}
 			}
 		}
