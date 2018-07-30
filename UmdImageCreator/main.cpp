@@ -33,7 +33,7 @@ PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | PSP_THREAD_ATTR_VFPU);
 #endif
 
 #ifdef PRX
-PSP_MODULE_INFO("kernel_plugin", 0x1000, 1, 1);
+PSP_MODULE_INFO("UmdImageCreator", 0x1000, 1, 1);
 PSP_MAIN_THREAD_ATTR(0);
 #endif
 

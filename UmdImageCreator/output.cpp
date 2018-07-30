@@ -17,6 +17,7 @@
 #include "execScsiCmdforFileSystem.h"
 
 #include <pspumd.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -31,6 +32,102 @@ VOID OutputLastErrorNumAndString(
 		, pszFuncName, lLineNum, errnum, strerror(errnum));
 	pspPrintf("[F:%s][L:%lu] GetLastError: %d, %s\n"
 		, pszFuncName, lLineNum, errnum, strerror(errnum));
+}
+
+int OutputParamSfo(const char* paramsfo)
+{
+	SceUID uidData = sceIoOpen(paramsfo, PSP_O_RDONLY, 0777);
+	if (uidData < 0) {
+		pspPrintf("Cannot open %s: result=0x%08X\n", paramsfo, uidData);
+		return FALSE;
+	}
+	SceIoStat stat;
+	memset(&stat, 0, sizeof(SceIoStat));
+	int ret = sceIoGetstat(paramsfo, &stat);
+	if (ret < 0) {
+		OutputLastErrorNumAndString(errno, __FUNCTION__, __LINE__);
+		return FALSE;
+	}
+
+	char* data = (char*)malloc(stat.st_size);
+	if (data == 0) {
+		OutputLastErrorNumAndString(errno, __FUNCTION__, __LINE__);
+		return FALSE;
+	}
+	sceIoRead(uidData, data, stat.st_size);
+
+	ret = sceIoClose(uidData);
+	if (ret < 0) {
+		pspPrintf("Cannot close %s: result=0x%08X\n", paramsfo, ret);
+		return FALSE;
+	}
+
+	// http://www.psdevwiki.com/ps3/PARAM.SFO
+	typedef struct _sfo_header
+	{
+		uint32_t magic; /************ Always PSF */
+		uint32_t version; /********** Usually 1.1 */
+		uint32_t key_table_start; /** Start offset of key_table */
+		uint32_t data_table_start; /* Start offset of data_table */
+		uint32_t tables_entries; /*** Number of entries in all tables */
+	} sfo_header, *psfo_header;
+
+	typedef struct _sfo_index_table_entry
+	{
+		uint16_t key_offset; /*** param_key offset (relative to start offset of key_table) */
+		uint16_t data_fmt; /***** param_data data type */
+		uint32_t data_len; /***** param_data used bytes */
+		uint32_t data_max_len; /* param_data total bytes */
+		uint32_t data_offset; /** param_data offset (relative to start offset of data_table) */
+	} sfo_index_table_entry, *psfo_index_table_entry;
+
+	psfo_header header = (psfo_header)data;
+	OutputDiscLogA(
+		"%s\n"
+		"\tmagic: %c%c%c\n"
+		"\tversion: %d.%02d\n"
+#if 0
+		"\tkey_table_start: %d\n"
+		"\tdata_table_start: %d\n"
+		"\ttables_entries: %d\n\n"
+#endif
+		, paramsfo, ((header->magic >> 8) & 0x000000ff)
+		, ((header->magic >> 16) & 0x000000ff), ((header->magic >> 24) & 0x000000ff)
+		, (header->version & 0x000000ff), ((header->version >> 8) & 0x000000ff)
+#if 0
+		, header->key_table_start, header->data_table_start, header->tables_entries
+#endif
+	);
+
+	char* keytable = data + header->key_table_start;
+	char* datatable = data + header->data_table_start;
+	for (uint32_t i = 0; i < header->tables_entries; i++) {
+		psfo_index_table_entry entry =
+			(psfo_index_table_entry)(data + sizeof(sfo_header) + sizeof(sfo_index_table_entry) * i);
+#if 0
+		OutputDiscLogA(
+			"\tkey_offset[%d]: %d\n"
+			"\tdata_fmt[%d]: %d\n"
+			"\tdata_len[%d]: %d\n"
+			"\tdata_max_len[%d]: %d\n"
+			"\tdata_offset[%d]: %d\n"
+			, i, entry[i]->key_offset, i, entry[i]->data_fmt, i
+			, entry[i]->data_len, i, entry[i]->data_max_len, i, entry[i]->data_offset
+		);
+#endif
+		if (entry->data_fmt == 516) {
+			OutputDiscLogA(
+				"\t%s: %s\n", keytable + entry->key_offset, datatable + entry->data_offset);
+		}
+		else if (entry->data_fmt == 1028) {
+			char* ofs = datatable + entry->data_offset;
+			long data = MAKELONG(MAKEWORD(ofs[0], ofs[1]), MAKEWORD(ofs[2], ofs[3]));
+			OutputDiscLogA(
+				"\t%s: %ld\n", keytable + entry->key_offset, data);
+		}
+	}
+	FreeAndNull(data);
+	return TRUE;
 }
 
 int CreateFile(char* id, unsigned int disctype, const char* filename, FILE** fp, const char* type)

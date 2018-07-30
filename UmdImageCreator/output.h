@@ -18,6 +18,7 @@
 #include "struct.h"
 #include "forwardDeclaration.h"
 #include "define.h"
+
 #include <stdio.h>
 
 #define BOOLEAN_TO_STRING_TRUE_FALSE_W(_b_)		((_b_) ? _T("True") : _T("False"))
@@ -176,6 +177,8 @@ VOID OutputLastErrorNumAndString(
 	LPCTSTR pszFuncName,
 	LONG lLineNum
 );
+
+int OutputParamSfo(const char* paramsfo);
 
 int CreateFile(char* id, unsigned int disctype, const char* filename, FILE** fp, const char* type);
 

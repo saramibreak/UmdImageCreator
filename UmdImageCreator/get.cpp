@@ -133,7 +133,7 @@ int GetDiscInfoToConsole(pspUmdInfo* pDiscInfo)
 #ifdef PRX
 		pspDebugScreenSetXY(0, ++nWriteToY);
 #endif
-		pspPrintf("-----------------\n");
+		pspPrintf("---------------------------\n");
 #ifdef PRX
 		pspDebugScreenSetXY(0, ++nWriteToY);
 #endif
@@ -164,7 +164,7 @@ int GetDiscInfoToConsole(pspUmdInfo* pDiscInfo)
 	return TRUE;
 }
 
-int GetDiscID(char* id)
+int PrepareOpeningDisc()
 {
 	int ret = 0;
 	int stat = 0;
@@ -191,20 +191,12 @@ int GetDiscID(char* id)
 		return FALSE;
 	}
 	pspPrintf(" => OK\n");
+	return TRUE;
+}
 
-	SceUID uidData = sceIoOpen("disc0:/UMD_DATA.BIN", PSP_O_RDONLY, 0777);
-	if (uidData < 0) {
-		pspPrintf("Cannot open UMD_DATA.BIN: result=0x%08X\n", uidData);
-		return FALSE;
-	}
-	sceIoRead(uidData, id, 10);
-
-	ret = sceIoClose(uidData);
-	if (ret < 0) {
-		pspPrintf("Cannot close UMD_DATA.BIN: result=0x%08X\n", ret);
-		return FALSE;
-	}
-	ret = sceUmdDeactivate(1, "disc0:");
+int CloseOpeningDisc()
+{
+	int ret = sceUmdDeactivate(1, "disc0:");
 	if (ret < 0) {
 		pspPrintf("Cannot deactivate UMD: result=0x%08X\n", ret);
 		return FALSE;
@@ -212,16 +204,58 @@ int GetDiscID(char* id)
 	return TRUE;
 }
 
+int GetDiscID(char* id)
+{
+	SceUID uidData = sceIoOpen("disc0:/UMD_DATA.BIN", PSP_O_RDONLY, 0777);
+	if (uidData < 0) {
+		pspPrintf("Cannot open UMD_DATA.BIN: result=0x%08X\n", uidData);
+		return FALSE;
+	}
+	sceIoRead(uidData, id, 10);
+
+	int ret = sceIoClose(uidData);
+	if (ret < 0) {
+		pspPrintf("Cannot close UMD_DATA.BIN: result=0x%08X\n", ret);
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+int GetParamSfo(unsigned int disctype)
+{
+	int ret = 0;
+	if ((disctype & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
+		ret = OutputParamSfo("disc0:/PSP_GAME/PARAM.SFO");
+	}
+
+	if ((disctype & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
+		ret = OutputParamSfo("disc0:/UMD_VIDEO/PARAM.SFO");
+	}
+
+	if ((disctype & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
+		ret = OutputParamSfo("disc0:/UMD_AUDIO/PARAM.SFO");
+	}
+	ret = OutputParamSfo("disc0:/PSP_GAME/SYSDIR/UPDATE/PARAM.SFO");
+	return ret;
+}
+
 int GetDiscInfoToLog(char* id, unsigned int disctype)
 {
+	PrepareOpeningDisc();
 	int ret = GetDiscID(id);
 	if (!ret) {
 		return FALSE;
 	}
-
 	if (!CreateFile(id, disctype, "_disc.txt", &g_LogFile.fpDisc, "w")) {
 		return FALSE;
 	}
+
+	ret = GetParamSfo(disctype);
+	if (!ret) {
+		return FALSE;
+	}
+	CloseOpeningDisc();
 
 	BOOL bMulti = FALSE;
 	OutputDiscLogA("\npspUmdTypes: 0x%02x (", disctype);
@@ -265,7 +299,7 @@ int GetDiscInfoToLog(char* id, unsigned int disctype)
 	else {
 		OutputDiscLogA("L0 length: %6d (0x%05x)\n", nL0LBA, nL0LBA);
 		OutputDiscLogA("L1 length: %6d (0x%05x)\n", nL0L1LBA - nL0LBA, nL0L1LBA - nL0LBA);
-		OutputDiscLogA("-----------------\n");
+		OutputDiscLogA("---------------------------\n");
 		OutputDiscLogA("    Total: %6d (0x%05x)\n\n", nL0L1LBA, nL0L1LBA);
 	}
 
