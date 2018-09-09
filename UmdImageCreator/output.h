@@ -180,6 +180,6 @@ VOID OutputLastErrorNumAndString(
 
 int OutputParamSfo(const char* paramsfo);
 
-int CreateFile(char* id, unsigned int disctype, const char* filename, FILE** fp, const char* type);
+int CreateFile(char* id, unsigned int discType, const char* filename, FILE** fp, const char* type);
 
-void DumpIso(char* id, unsigned int disctype, int nDump);
+void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump);

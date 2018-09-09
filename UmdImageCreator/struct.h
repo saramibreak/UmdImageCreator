@@ -47,3 +47,14 @@ typedef struct _DIRECTORY_RECORD {
 	CHAR szDirName[MAX_FNAME_FOR_VOLUME];
 	UINT uiDirSize;
 } DIRECTORY_RECORD, *PDIRECTORY_RECORD;
+
+typedef struct _MS_INFO {
+	unsigned long cluster_max;	//総クラスタ数
+	unsigned long cluster_free;	//空きクラスタ数
+	int sector_max;				//きりのいい空きクラスタ数
+	int sector_size;			//セクタあたりのバイト数
+	int sector_count;			//クラスタあたりのセクタ数
+	unsigned long long smax;					//総容量
+	unsigned long long sfree;					//空き容量
+	unsigned long long sused;					//使用容量
+} MS_INFO, *PMS_INFO;

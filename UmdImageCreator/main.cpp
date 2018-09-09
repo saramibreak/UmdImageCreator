@@ -281,13 +281,15 @@ void run() {
 	pspPrintf("Press Triangle to exit\n");
 
 	pspUmdInfo discInfo = { 0, 0 };
+	unsigned int nDiscSize = 0;
+
 	while (!done) {
 		sceCtrlReadBufferPositive(&pad, 1);
 		if (pad.Buttons & PSP_CTRL_CIRCLE) {
 			if (GetDiscInfoToConsole(&discInfo)) {
 				char id[11] = { 0 };
-				if (GetDiscInfoToLog(id, discInfo.type)) {
-					DumpIso(id, discInfo.type, TRUE);
+				if (GetDiscInfoToLog(id, discInfo.type, &nDiscSize)) {
+					DumpIso(id, discInfo.type, nDiscSize, TRUE);
 				}
 			}
 		}
@@ -295,8 +297,8 @@ void run() {
 		if (pad.Buttons & PSP_CTRL_CROSS) {
 			if (GetDiscInfoToConsole(&discInfo)) {
 				char id[11] = { 0 };
-				if (GetDiscInfoToLog(id, discInfo.type)) {
-					DumpIso(id, discInfo.type, FALSE);
+				if (GetDiscInfoToLog(id, discInfo.type, &nDiscSize)) {
+					DumpIso(id, discInfo.type, nDiscSize, FALSE);
 				}
 			}
 		}

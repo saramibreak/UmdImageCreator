@@ -15,6 +15,7 @@
  */
 #pragma once
 #include "windef.h"
+#include "struct.h"
 #include <pspumd.h>
 
 WORD GetSizeOrWordForVolDesc(
@@ -28,6 +29,8 @@ DWORD GetSizeOrDwordForVolDesc(
 
 int GetDiscInfoToConsole(pspUmdInfo* pDiscInfo);
 
-int GetDiscInfoToLog(char* id, unsigned int disctype);
+int GetDiscInfoToLog(char* id, unsigned int discType, unsigned int* pDiscSize);
 
 int GetDiscID(char* id);
+
+int GetMSInfo(MS_INFO *info);

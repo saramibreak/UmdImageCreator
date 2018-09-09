@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "output.h"
+#include "get.h"
 #include "execScsiCmdforFileSystem.h"
 
 #include <pspumd.h>
@@ -130,11 +131,11 @@ int OutputParamSfo(const char* paramsfo)
 	return TRUE;
 }
 
-int CreateFile(char* id, unsigned int disctype, const char* filename, FILE** fp, const char* type)
+int CreateFile(char* id, unsigned int discType, const char* filename, FILE** fp, const char* type)
 {
 	char dir[16] = "ms0:/iso/";
-	if ((disctype & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO &&
-		(disctype & PSP_UMD_TYPE_GAME) != PSP_UMD_TYPE_GAME) {
+	if ((discType & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO &&
+		(discType & PSP_UMD_TYPE_GAME) != PSP_UMD_TYPE_GAME) {
 		strncat(dir, "video/", 6);
 	}
 	if (sizeof(dir) + strlen(id) + strlen(filename) > 80) {
@@ -154,20 +155,20 @@ int CreateFile(char* id, unsigned int disctype, const char* filename, FILE** fp,
 	return  1;
 }
 
-void DumpIso(char* id, unsigned int disctype, int nDump)
+void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 {
 	SceUID uid = sceIoOpen("umd0:", PSP_O_RDONLY, 0);
 	if (uid < 0) {
 		pspPrintf("Cannot open UMD: result=0x%08X\n", uid);
 		return;
 	}
-	if (!CreateFile(id, disctype, "_mainInfo.txt", &g_LogFile.fpMainInfo, "w")) {
+	if (!CreateFile(id, discType, "_mainInfo.txt", &g_LogFile.fpMainInfo, "w")) {
 		return;
 	}
-	if (!CreateFile(id, disctype, "_mainError.txt", &g_LogFile.fpMainError, "w")) {
+	if (!CreateFile(id, discType, "_mainError.txt", &g_LogFile.fpMainError, "w")) {
 		return;
 	}
-	if (!CreateFile(id, disctype, "_volDesc.txt", &g_LogFile.fpVolDesc, "w")) {
+	if (!CreateFile(id, discType, "_volDesc.txt", &g_LogFile.fpVolDesc, "w")) {
 		return;
 	}
 
@@ -176,9 +177,19 @@ void DumpIso(char* id, unsigned int disctype, int nDump)
 		return;
 	}
 
+	MS_INFO info = { 0, 0, 0, 0, 0, 0, 0, 0 };
+	if (!GetMSInfo(&info)) {
+		return;
+	}
+
+	if (info.sfree < discSize) {
+		pspPrintf("Free space of MemoryStick is short:%lld (0x%08llx)\n\n", info.sfree, info.sfree);
+		nDump = 0;
+	}
+
 	if (nDump) {
 		FILE* fpIso = NULL;
-		if (!CreateFile(id, disctype, ".iso", &fpIso, "wb")) {
+		if (!CreateFile(id, discType, ".iso", &fpIso, "wb")) {
 			return;
 		}
 #ifdef PRX

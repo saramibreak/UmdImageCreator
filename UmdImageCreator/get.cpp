@@ -119,7 +119,7 @@ int GetDiscInfoToConsole(pspUmdInfo* pDiscInfo)
 #ifdef PRX
 		pspDebugScreenSetXY(0, ++nWriteToY);
 #endif
-		pspPrintf("L0 length: %6d (0x%05x)\n", nL0LBA, nL0LBA);
+		pspPrintf("L0 length: %6d (0x%05x)\n\n", nL0LBA, nL0LBA);
 	}
 	else {
 #ifdef PRX
@@ -139,6 +139,12 @@ int GetDiscInfoToConsole(pspUmdInfo* pDiscInfo)
 #endif
 		pspPrintf("    Total: %6d (0x%05x)\n\n", nL0L1LBA, nL0L1LBA);
 	}
+
+	unsigned int uFileSize = nL0L1LBA * DISC_RAW_READ_SIZE;
+#ifdef PRX
+	pspDebugScreenSetXY(0, ++nWriteToY);
+#endif
+	pspPrintf(" FileSize: %d (0x%08x)\n\n", uFileSize, uFileSize);
 
 	unsigned char unknown[4] = { 0 };
 	ret = sceIoDevctl("umd0:", 0x01F20014, NULL, 0, unknown, sizeof(unknown));
@@ -222,55 +228,55 @@ int GetDiscID(char* id)
 	return TRUE;
 }
 
-int GetParamSfo(unsigned int disctype)
+int GetParamSfo(unsigned int discType)
 {
 	int ret = 0;
-	if ((disctype & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
+	if ((discType & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
 		ret = OutputParamSfo("disc0:/PSP_GAME/PARAM.SFO");
 	}
 
-	if ((disctype & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
+	if ((discType & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
 		ret = OutputParamSfo("disc0:/UMD_VIDEO/PARAM.SFO");
 	}
 
-	if ((disctype & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
+	if ((discType & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
 		ret = OutputParamSfo("disc0:/UMD_AUDIO/PARAM.SFO");
 	}
 	ret = OutputParamSfo("disc0:/PSP_GAME/SYSDIR/UPDATE/PARAM.SFO");
 	return ret;
 }
 
-int GetDiscInfoToLog(char* id, unsigned int disctype)
+int GetDiscInfoToLog(char* id, unsigned int discType, unsigned int* pDiscSize)
 {
 	PrepareOpeningDisc();
 	int ret = GetDiscID(id);
 	if (!ret) {
 		return FALSE;
 	}
-	if (!CreateFile(id, disctype, "_disc.txt", &g_LogFile.fpDisc, "w")) {
+	if (!CreateFile(id, discType, "_disc.txt", &g_LogFile.fpDisc, "w")) {
 		return FALSE;
 	}
 
-	ret = GetParamSfo(disctype);
+	ret = GetParamSfo(discType);
 	if (!ret) {
 		return FALSE;
 	}
 	CloseOpeningDisc();
 
 	BOOL bMulti = FALSE;
-	OutputDiscLogA("\npspUmdTypes: 0x%02x (", disctype);
-	if ((disctype & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
+	OutputDiscLogA("\npspUmdTypes: 0x%02x (", discType);
+	if ((discType & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
 		OutputDiscLogA("GAME");
 		bMulti = TRUE;
 	}
-	if ((disctype & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
+	if ((discType & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
 		if (bMulti) {
 			OutputDiscLogA(" ");
 		}
 		bMulti = TRUE;
 		OutputDiscLogA("VIDEO");
 	}
-	if ((disctype & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
+	if ((discType & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
 		if (bMulti) {
 			OutputDiscLogA(" ");
 		}
@@ -285,6 +291,7 @@ int GetDiscInfoToLog(char* id, unsigned int disctype)
 		return FALSE;
 	}
 	nL0L1LBA += 1;
+
 	int nL0LBA = 0;
 	ret = sceIoDevctl("umd0:", 0x01F20003, NULL, 0, &nL0LBA, sizeof(int));
 	if (ret < 0) {
@@ -294,7 +301,7 @@ int GetDiscInfoToLog(char* id, unsigned int disctype)
 	nL0LBA += 1;
 
 	if (nL0LBA == nL0L1LBA) {
-		OutputDiscLogA("L0 length: %6d (0x%05x)\n", nL0LBA, nL0LBA);
+		OutputDiscLogA("L0 length: %6d (0x%05x)\n\n", nL0LBA, nL0LBA);
 	}
 	else {
 		OutputDiscLogA("L0 length: %6d (0x%05x)\n", nL0LBA, nL0LBA);
@@ -302,6 +309,9 @@ int GetDiscInfoToLog(char* id, unsigned int disctype)
 		OutputDiscLogA("---------------------------\n");
 		OutputDiscLogA("    Total: %6d (0x%05x)\n\n", nL0L1LBA, nL0L1LBA);
 	}
+
+	*pDiscSize = nL0L1LBA * DISC_RAW_READ_SIZE;
+	OutputDiscLogA(" FileSize: %d (0x%08x)\n\n", *pDiscSize, *pDiscSize);
 
 	unsigned char unknown[4] = { 0 };
 	ret = sceIoDevctl("umd0:", 0x01F20014, NULL, 0, unknown, sizeof(unknown));
@@ -320,4 +330,16 @@ int GetDiscInfoToLog(char* id, unsigned int disctype)
 	OutputDiscLogA("0x01F200A0 is unknown: %02x\n", unknown2);
 	FcloseAndNull(g_LogFile.fpDisc);
 	return TRUE;
+}
+
+int GetMSInfo(MS_INFO* info)
+{
+	if (sceIoDevctl("ms0:", 0x02425818, &info, 4, NULL, 0) >= 0) {
+		info->smax = (info->cluster_max  * info->sector_count) * info->sector_size;
+		info->sfree = (info->cluster_free * info->sector_count) * info->sector_size;
+		info->sused = info->smax - info->sfree;
+		return TRUE;
+	}
+	pspPrintf("Cannot run sceIoDevctl: 0x02425818\n");
+	return FALSE;
 }
