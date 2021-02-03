@@ -26,23 +26,23 @@ VOID OutputFsBootRecord(
 	CHAR str[2][32] = { "0" };
 	strncpy(str[0], (LPCH)&lpBuf[7], sizeof(str[0]));
 	strncpy(str[1], (LPCH)&lpBuf[39], sizeof(str[1]));
-	OutputVolDescLogA(
+	OutputVolDescLog(
 		"\t                       Boot System Identifier: %s\n"
 		"\t                              Boot Identifier: %s\n"
 		"\t                              Boot System Use: "
 		, str[0], str[1]);
 	for (INT i = 71; i < 2048; i++) {
-		OutputVolDescLogA("%x", lpBuf[i]);
+		OutputVolDescLog("%x", lpBuf[i]);
 	}
-	OutputVolDescLogA("\n");
+	OutputVolDescLog("\n");
 }
 
 VOID OutputFsVolumeDescriptorFirst(
 	LPBYTE lpBuf,
 	CHAR str32[][32]
 ) {
-	DWORD vss = GetSizeOrDwordForVolDesc(lpBuf + 80, DWORD(0xa0000 * DISC_RAW_READ_SIZE));
-	OutputVolDescLogA(
+	DWORD vss = GetSizeOrUintForVolDesc(lpBuf + 80, DWORD(0xa0000 * DISC_MAIN_DATA_SIZE));
+	OutputVolDescLog(
 		"\t                            System Identifier: %.32s\n"
 		"\t                            Volume Identifier: %.32s\n"
 		"\t                            Volume Space Size: %lu\n"
@@ -51,10 +51,15 @@ VOID OutputFsVolumeDescriptorFirst(
 
 VOID OutputFsDirectoryRecord(
 	LPBYTE lpBuf,
-	DWORD dwExtentPos,
-	DWORD dwDataLen,
-	LPSTR fname
+	UINT uiExtentPos,
+	UINT uiDataLen,
+	LPSTR fname,
+	PPATH_TABLE_RECORD pPathTblRec,
+	UINT uiPathTblIdx
 ) {
+	if (!fname) {
+		return;
+	}
 	CHAR str[128] = { 0 };
 	INT nFileFlag = lpBuf[25];
 	if (nFileFlag & 0x01) {
@@ -73,47 +78,83 @@ VOID OutputFsDirectoryRecord(
 		strncat(str, "Associated, ", 12);
 	}
 	else {
-		strncat(str, "Disassociated, ", 15);
+		strncat(str, "No Associated, ", 15);
 	}
 	if (nFileFlag & 0x08) {
-		strncat(str, "File has record format, ", 24);
+		strncat(str, "Record Format, ", 15);
 	}
 	else {
-		strncat(str, "File has't record format, ", 26);
+		strncat(str, "No Record Format, ", 18);
 	}
 	if (nFileFlag & 0x10) {
-		strncat(str, "Owner/Group ID has, ", 20);
+		strncat(str, "Owner/Group ID, ", 16);
 	}
 	else {
-		strncat(str, "Owner/Group ID has't, ", 22);
+		strncat(str, "No Owner/Group ID, ", 19);
 	}
 	if (nFileFlag & 0x80) {
-		strncat(str, "Next Directory Record has", 25);
+		strncat(str, "No Final Directory Record", 25);
 	}
 	else {
 		strncat(str, "Final Directory Record", 22);
 	}
 	WORD vsn = GetSizeOrWordForVolDesc(lpBuf + 28);
-	OutputVolDescLogA(
+	OutputVolDescLog(
 		"\t\t      Length of Directory Record: %u\n"
 		"\t\tExtended Attribute Record Length: %u\n"
-		"\t\t              Location of Extent: %lu\n"
-		"\t\t                     Data Length: %lu\n"
-		"\t\t         Recording Date and Time: %u-%02u-%02u %02u:%02u:%02u %+03d:%02u\n"
+		"\t\t              Location of Extent: %u\n"
+		"\t\t                     Data Length: %u\n"
+		"\t\t         Recording Date and Time: %d-%02u-%02uT%02u:%02u:%02u%+03d:%02d\n"
 		"\t\t                      File Flags: %u (%s)\n"
 		"\t\t                  File Unit Size: %u\n"
 		"\t\t             Interleave Gap Size: %u\n"
 		"\t\t          Volume Sequence Number: %u\n"
 		"\t\t       Length of File Identifier: %u\n"
 		"\t\t                 File Identifier: "
-		, lpBuf[0], lpBuf[1], dwExtentPos, dwDataLen, lpBuf[18] + 1900, lpBuf[19], lpBuf[20]
+		, lpBuf[0], lpBuf[1], uiExtentPos, uiDataLen, lpBuf[18] + 1900, lpBuf[19], lpBuf[20]
 		, lpBuf[21], lpBuf[22], lpBuf[23], (CHAR)lpBuf[24] / 4, (CHAR)lpBuf[24] % 4 * 15
-		, lpBuf[25], str, lpBuf[26], lpBuf[27], vsn, lpBuf[32]);
+		, lpBuf[25], str, lpBuf[26], lpBuf[27], vsn, lpBuf[32]
+	);
+
+	BOOL bSkip = FALSE;
 	for (INT n = 0; n < lpBuf[32]; n++) {
-		OutputVolDescLogA("%c", lpBuf[33 + n]);
-		fname[n] = (CHAR)lpBuf[33 + n];
+		OutputVolDescLog("%c", lpBuf[33 + n]);
+		if (lpBuf[33 + n] == ';' && n == lpBuf[32] - 2) {
+			// skip "file revision number"
+			bSkip = TRUE;
+		}
+		if (!bSkip) {
+			fname[n] = (CHAR)lpBuf[33 + n];
+		}
 	}
-	OutputVolDescLogA("\n");
+	OutputVolDescLog("\n");
+
+	CHAR strTmpFull[FILENAME_MAX] = {};
+	// not upper and current directory
+	if (pPathTblRec &&
+		!(lpBuf[32] == 1 && fname[0] == 0) &&
+		!(lpBuf[32] == 1 && fname[0] == 1)) {
+		LPCH pName[FILENAME_MAX] = {};
+		INT fullIdx = 0;
+		pName[fullIdx++] = fname;
+
+		for (UINT idx = uiPathTblIdx; idx != 0;) {
+			pName[fullIdx++] = &pPathTblRec[idx].szDirName[0];
+			idx = pPathTblRec[idx].uiNumOfUpperDir - 1;
+		}
+		OutputVolDescLog("FullPath: ");
+		CHAR strTmp[FILENAME_MAX] = {};
+		for (INT i = fullIdx; 0 < i; i--) {
+			if (pName[i - 1] != 0) {
+				snprintf(strTmp, sizeof(strTmp), "/%s", pName[i - 1]);
+				OutputVolDescLog("%s", strTmp);
+				if (strlen(strTmpFull) + strlen(strTmp) + 1 <= sizeof(strTmpFull)) {
+					strcat(strTmpFull, strTmp);
+				}
+			}
+		}
+		OutputVolDescLog("\n\n");
+	}
 }
 
 VOID OutputFsVolumeDescriptorSecond(
@@ -125,37 +166,37 @@ VOID OutputFsVolumeDescriptorSecond(
 	WORD vss = GetSizeOrWordForVolDesc(lpBuf + 120);
 	WORD vsn = GetSizeOrWordForVolDesc(lpBuf + 124);
 	WORD lbs = GetSizeOrWordForVolDesc(lpBuf + 128);
-	DWORD pts = GetSizeOrDwordForVolDesc(lpBuf + 132, DWORD(0xa0000 * DISC_RAW_READ_SIZE));
-	DWORD lopt = MAKEDWORD(MAKEWORD(lpBuf[140], lpBuf[141]),
+	UINT pts = GetSizeOrUintForVolDesc(lpBuf + 132, UINT(0xa0000 * DISC_MAIN_DATA_SIZE));
+	UINT lopt = MAKEUINT(MAKEWORD(lpBuf[140], lpBuf[141]),
 		MAKEWORD(lpBuf[142], lpBuf[143]));
 //	pDisc->MAIN.bPathType = lType;
 	if (lopt == 0) {
-		lopt = MAKEDWORD(MAKEWORD(lpBuf[151], lpBuf[150]),
+		lopt = MAKEUINT(MAKEWORD(lpBuf[151], lpBuf[150]),
 			MAKEWORD(lpBuf[149], lpBuf[148]));
 //		pDisc->MAIN.bPathType = mType;
 	}
 
-	DWORD loopt = MAKEDWORD(MAKEWORD(lpBuf[144], lpBuf[145]),
+	UINT loopt = MAKEUINT(MAKEWORD(lpBuf[144], lpBuf[145]),
 		MAKEWORD(lpBuf[146], lpBuf[147]));
 	if (loopt == 0) {
-		loopt = MAKEDWORD(MAKEWORD(lpBuf[155], lpBuf[154]),
+		loopt = MAKEUINT(MAKEWORD(lpBuf[155], lpBuf[154]),
 			MAKEWORD(lpBuf[153], lpBuf[152]));
 	}
-	OutputVolDescLogA(
+	OutputVolDescLog(
 		"\t                              Volume Set Size: %u\n"
 		"\t                       Volume Sequence Number: %u\n"
 		"\t                           Logical Block Size: %u\n"
-		"\t                              Path Table Size: %lu\n"
-		"\t         Location of Occurrence of Path Table: %lu\n"
-		"\tLocation of Optional Occurrence of Path Table: %lu\n"
+		"\t                              Path Table Size: %u\n"
+		"\t         Location of Occurrence of Path Table: %u\n"
+		"\tLocation of Optional Occurrence of Path Table: %u\n"
 		, vss, vsn, lbs, pts, lopt, loopt);
 
-	DWORD dwExtentPos = GetSizeOrDwordForVolDesc(lpBuf + 158, DWORD(0xa0000 * DISC_RAW_READ_SIZE));
-	DWORD dwDataLen = GetSizeOrDwordForVolDesc(lpBuf + 166, DWORD(0xa0000 * DISC_RAW_READ_SIZE));
-	CHAR fname[64] = { 0 };
-	OutputFsDirectoryRecord(lpBuf + 156, dwExtentPos, dwDataLen, fname);
+	UINT uiExtentPos = GetSizeOrUintForVolDesc(lpBuf + 158, UINT(0xa0000 * DISC_MAIN_DATA_SIZE));
+	UINT uiDataLen = GetSizeOrUintForVolDesc(lpBuf + 166, UINT(0xa0000 * DISC_MAIN_DATA_SIZE));
+	CHAR fname[64] = {};
+	OutputFsDirectoryRecord(lpBuf + 156, uiExtentPos, uiDataLen, fname, NULL, 0);
 	if (bTCHAR) {
-		OutputVolDescLogA(
+		OutputVolDescLog(
 			"\t                        Volume Set Identifier: %.64s\n"
 			"\t                         Publisher Identifier: %.64s\n"
 			"\t                     Data Preparer Identifier: %.64s\n"
@@ -166,7 +207,7 @@ VOID OutputFsVolumeDescriptorSecond(
 			, str128[0], str128[1], str128[2], str128[3], str37[0], str37[1], str37[2]);
 	}
 	else {
-		OutputVolDescLogA(
+		OutputVolDescLog(
 			"\t                        Volume Set Identifier: %.128s\n"
 			"\t                         Publisher Identifier: %.128s\n"
 			"\t                     Data Preparer Identifier: %.128s\n"
@@ -176,16 +217,11 @@ VOID OutputFsVolumeDescriptorSecond(
 			"\t                Bibliographic File Identifier: %.37s\n"
 			, str128[0], str128[1], str128[2], str128[3], str37[0], str37[1], str37[2]);
 	}
-}
-
-VOID OutputFsVolumeDescriptorForTime(
-	LPBYTE lpBuf
-) {
-	OutputVolDescLogA(
-		"\t                Volume Creation Date and Time: %.4s-%.2s-%.2s %.2s:%.2s:%.2s.%.2s %+03d:%02d\n"
-		"\t            Volume Modification Date and Time: %.4s-%.2s-%.2s %.2s:%.2s:%.2s.%.2s %+03d:%02d\n"
-		"\t              Volume Expiration Date and Time: %.4s-%.2s-%.2s %.2s:%.2s:%.2s.%.2s %+03d:%02d\n"
-		"\t               Volume Effective Date and Time: %.4s-%.2s-%.2s %.2s:%.2s:%.2s.%.2s %+03d:%02d\n"
+	OutputVolDescLog(
+		"\t                Volume Creation Date and Time: %.4s-%.2s-%.2sT%.2s:%.2s:%.2s.%.2s%+03d:%02d\n"
+		"\t            Volume Modification Date and Time: %.4s-%.2s-%.2sT%.2s:%.2s:%.2s.%.2s%+03d:%02d\n"
+		"\t              Volume Expiration Date and Time: %.4s-%.2s-%.2sT%.2s:%.2s:%.2s.%.2s%+03d:%02d\n"
+		"\t               Volume Effective Date and Time: %.4s-%.2s-%.2sT%.2s:%.2s:%.2s.%.2s%+03d:%02d\n"
 		"\t                       File Structure Version: %u\n"
 		"\t                              Application Use: ",
 		&lpBuf[813], &lpBuf[817], &lpBuf[819], &lpBuf[821], &lpBuf[823]
@@ -198,9 +234,9 @@ VOID OutputFsVolumeDescriptorForTime(
 		, &lpBuf[876], &lpBuf[878], (CHAR)lpBuf[880] / 4, abs((CHAR)lpBuf[880] % 4 * 15),
 		lpBuf[881]);
 	for (INT i = 883; i <= 1394; i++) {
-		OutputVolDescLogA("%x", lpBuf[i]);
+		OutputVolDescLog("%x", lpBuf[i]);
 	}
-	OutputVolDescLogA("\n");
+	OutputVolDescLog("\n");
 }
 
 VOID OutputFsVolumeDescriptorForISO9660(
@@ -221,11 +257,10 @@ VOID OutputFsVolumeDescriptorForISO9660(
 	OutputFsVolumeDescriptorFirst(lpBuf, str32);
 	if (lpBuf[0] == 2) {
 		strncpy(str32[2], (LPCH)&lpBuf[88], sizeof(str32[2]));
-		OutputVolDescLogA(
+		OutputVolDescLog(
 			"\t                             Escape Sequences: %.32s\n", str32[2]);
 	}
 	OutputFsVolumeDescriptorSecond(lpBuf, str128, str37, FALSE);
-	OutputFsVolumeDescriptorForTime(lpBuf);
 }
 #if 0
 VOID OutputFsVolumeDescriptorForJoliet(
@@ -349,10 +384,9 @@ VOID OutputFsVolumeDescriptorForJoliet(
 	OutputFsVolumeDescriptorFirst(pDisc, lpBuf, str32);
 
 	strncpy(str32[2], (LPCH)&lpBuf[88], sizeof(str32[2]));
-	OutputVolDescLogA(
+	OutputVolDescLog(
 		"\t                             Escape Sequences: %.32s\n", str32[2]);
 	OutputFsVolumeDescriptorSecond(pExtArg, pDisc, lpBuf, str128, str37, TRUE);
-	OutputFsVolumeDescriptorForTime(lpBuf);
 }
 #endif
 VOID OutputFsVolumePartitionDescriptor(
@@ -361,20 +395,20 @@ VOID OutputFsVolumePartitionDescriptor(
 	CHAR str[2][32] = { { 0 } };
 	strncpy(str[0], (LPCH)&lpBuf[8], sizeof(str[0]));
 	strncpy(str[1], (LPCH)&lpBuf[40], sizeof(str[1]));
-	OutputVolDescLogA(
+	OutputVolDescLog(
 		"\t          System Identifier: %.32s\n"
 		"\tVolume Partition Identifier: %.32s\n"
-		"\t  Volume Partition Location: %lu\n"
-		"\t      Volume Partition Size: %lu\n"
+		"\t  Volume Partition Location: %u\n"
+		"\t      Volume Partition Size: %u\n"
 		"\t                 System Use: ",
 		str[0],
 		str[1],
-		MAKELONG(MAKEWORD(lpBuf[76], lpBuf[77]), MAKEWORD(lpBuf[78], lpBuf[79])),
-		MAKELONG(MAKEWORD(lpBuf[84], lpBuf[85]), MAKEWORD(lpBuf[86], lpBuf[87])));
+		MAKEUINT(MAKEWORD(lpBuf[76], lpBuf[77]), MAKEWORD(lpBuf[78], lpBuf[79])),
+		MAKEUINT(MAKEWORD(lpBuf[84], lpBuf[85]), MAKEWORD(lpBuf[86], lpBuf[87])));
 	for (INT i = 88; i < 2048; i++) {
-		OutputVolDescLogA("%x", lpBuf[i]);
+		OutputVolDescLog("%x", lpBuf[i]);
 	}
-	OutputVolDescLogA("\n");
+	OutputVolDescLog("\n");
 }
 
 VOID OutputFsVolumeDescriptor(
@@ -387,7 +421,7 @@ VOID OutputFsVolumeDescriptor(
 	// 3 is Volume Partition Descriptor.
 	// 4-254 is reserved.
 	// 255 is Volume Descriptor Set Terminator.
-	OutputVolDescWithLBALogA(Volume Descriptor,
+	OutputVolDescWithLBALog2("Volume Descriptor",
 		"\t                       Volume Descriptor Type: %u\n"
 		"\t                          Standard Identifier: %.5s\n"
 		"\t                    Volume Descriptor Version: %u\n"
@@ -409,58 +443,60 @@ VOID OutputFsVolumeDescriptor(
 
 BOOL OutputFsPathTableRecord(
 	LPBYTE lpBuf,
-	DWORD dwLogicalBlkCoef,
-	DWORD dwPathTblPos,
-	DWORD dwPathTblSize,
-	PDIRECTORY_RECORD pDirRec,
-	LPINT nDirPosNum
+	UINT uiLogicalBlkCoef,
+	UINT uiPathTblPos,
+	UINT uiPathTblSize,
+	PPATH_TABLE_RECORD pPathTblRec,
+	LPUINT uiDirPosNum
 ) {
-	OutputVolDescLogA(
-		OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F(Path Table Record), (INT)dwPathTblPos, (INT)dwPathTblPos);
-	for (DWORD i = 0; i < dwPathTblSize;) {
-		if (*nDirPosNum > DIRECTORY_RECORD_SIZE) {
-			OutputErrorString(_T("Directory Record is over %d\n"), DIRECTORY_RECORD_SIZE);
+	OutputVolDescLog(
+		OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F("Path Table Record"), (INT)uiPathTblPos, (INT)uiPathTblPos);
+	for (UINT i = 0; i < uiPathTblSize;) {
+		if (*uiDirPosNum > PATH_TABLE_RECORD_SIZE) {
+			OutputErrorString("Directory Record is over %d\n", PATH_TABLE_RECORD_SIZE);
 			FlushLog();
 			return FALSE;
 		}
-		pDirRec[*nDirPosNum].uiDirNameLen = lpBuf[i];
+		pPathTblRec[*uiDirPosNum].uiDirNameLen = lpBuf[i];
 		if (0 == lType) {
-			pDirRec[*nDirPosNum].uiPosOfDir = MAKEDWORD(MAKEWORD(lpBuf[2 + i], lpBuf[3 + i]),
-				MAKEWORD(lpBuf[4 + i], lpBuf[5 + i])) / dwLogicalBlkCoef;
+			pPathTblRec[*uiDirPosNum].uiPosOfDir = MAKEUINT(MAKEWORD(lpBuf[2 + i], lpBuf[3 + i]),
+				MAKEWORD(lpBuf[4 + i], lpBuf[5 + i])) / uiLogicalBlkCoef;
 		}
 		else {
-			pDirRec[*nDirPosNum].uiPosOfDir = MAKEDWORD(MAKEWORD(lpBuf[5 + i], lpBuf[4 + i]),
-				MAKEWORD(lpBuf[3 + i], lpBuf[2 + i])) / dwLogicalBlkCoef;
+			pPathTblRec[*uiDirPosNum].uiPosOfDir = MAKEUINT(MAKEWORD(lpBuf[5 + i], lpBuf[4 + i]),
+				MAKEWORD(lpBuf[3 + i], lpBuf[2 + i])) / uiLogicalBlkCoef;
 		}
-		if (pDirRec[*nDirPosNum].uiDirNameLen > 0) {
+		if (pPathTblRec[*uiDirPosNum].uiDirNameLen > 0) {
 			if (0 == lType) {
-				pDirRec[*nDirPosNum].uiNumOfUpperDir = MAKEWORD(lpBuf[6 + i], lpBuf[7 + i]);
+				pPathTblRec[*uiDirPosNum].uiNumOfUpperDir = MAKEWORD(lpBuf[6 + i], lpBuf[7 + i]);
 			}
 			else {
-				pDirRec[*nDirPosNum].uiNumOfUpperDir = MAKEWORD(lpBuf[7 + i], lpBuf[6 + i]);
+				pPathTblRec[*uiDirPosNum].uiNumOfUpperDir = MAKEWORD(lpBuf[7 + i], lpBuf[6 + i]);
 			}
-			OutputVolDescLogA(
+			OutputVolDescLog(
 				"\t     Length of Directory Identifier: %u\n"
 				"\tLength of Extended Attribute Record: %u\n"
 				"\t                 Position of Extent: %u\n"
 				"\t          Number of Upper Directory: %u\n"
 				"\t               Directory Identifier: "
-				, pDirRec[*nDirPosNum].uiDirNameLen, lpBuf[1 + i]
-				, pDirRec[*nDirPosNum].uiPosOfDir, pDirRec[*nDirPosNum].uiNumOfUpperDir);
-			for (size_t n = 0; n < pDirRec[*nDirPosNum].uiDirNameLen; n++) {
-				OutputVolDescLogA("%c", lpBuf[8 + i + n]);
-				pDirRec[*nDirPosNum].szDirName[n] = (CHAR)lpBuf[8 + i + n];
+				, pPathTblRec[*uiDirPosNum].uiDirNameLen, lpBuf[1 + i]
+				, pPathTblRec[*uiDirPosNum].uiPosOfDir, pPathTblRec[*uiDirPosNum].uiNumOfUpperDir);
+			for (size_t n = 0; n < pPathTblRec[*uiDirPosNum].uiDirNameLen; n++) {
+				if (lpBuf[8 + i + n] == 0) continue;
+				OutputVolDescLog("%c", lpBuf[8 + i + n]);
+				pPathTblRec[*uiDirPosNum].szDirName[n] = (CHAR)lpBuf[8 + i + n];
 			}
-			OutputVolDescLogA("%c\n\n", ' ');
-			i += 8 + pDirRec[*nDirPosNum].uiDirNameLen;
+			OutputVolDescLog("\n\n");
+
+			i += 8 + pPathTblRec[*uiDirPosNum].uiDirNameLen;
 			if ((i % 2) != 0) {
 				i++;
 			}
-			*nDirPosNum = *nDirPosNum + 1;
+			*uiDirPosNum = *uiDirPosNum + 1;
 		}
 		else {
-			OutputVolDescLogA(
-				"\t     Length of Directory Identifier: %u\n", pDirRec[*nDirPosNum].uiDirNameLen);
+			OutputVolDescLog(
+				"\t     Length of Directory Identifier: %u\n", pPathTblRec[*uiDirPosNum].uiDirNameLen);
 			break;
 		}
 	}
@@ -476,19 +512,19 @@ VOID OutputCDMain(
 #ifdef _DEBUG
 	UNREFERENCED_PARAMETER(type);
 #endif
-	OutputLogA(type, OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F(Main Channel)
+	OutputLog(type, OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F("Main Channel")
 		"       +0 +1 +2 +3 +4 +5 +6 +7  +8 +9 +A +B +C +D +E +F\n", nLBA, nLBA);
 
 	for (INT i = 0; i < nSize; i += 16) {
-		OutputLogA(type,
+		OutputLog(type,
 			"%04X : %02X %02X %02X %02X %02X %02X %02X %02X  %02X %02X %02X %02X %02X %02X %02X %02X   "
 			, i, lpBuf[i], lpBuf[i + 1], lpBuf[i + 2], lpBuf[i + 3], lpBuf[i + 4], lpBuf[i + 5]
 			, lpBuf[i + 6], lpBuf[i + 7], lpBuf[i + 8], lpBuf[i + 9], lpBuf[i + 10], lpBuf[i + 11]
 			, lpBuf[i + 12], lpBuf[i + 13], lpBuf[i + 14], lpBuf[i + 15]);
 		for (INT j = 0; j < 16; j++) {
 			INT ch = isprint(lpBuf[i + j]) ? lpBuf[i + j] : '.';
-			OutputLogA(type, "%c", ch);
+			OutputLog(type, "%c", ch);
 		}
-		OutputLogA(type, "\n");
+		OutputLog(type, "\n");
 	}
 }

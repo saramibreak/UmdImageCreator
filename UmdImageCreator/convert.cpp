@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 sarami
+ * Copyright 2018-2021 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 DWORD PadSizeForVolDesc(
 	DWORD dwSize
 ) {
-	INT nPadding = DISC_RAW_READ_SIZE - (INT)dwSize;
+	INT nPadding = DISC_MAIN_DATA_SIZE - (INT)dwSize;
 	// dwSize isn't 2048 byte
 	if (nPadding != 0) {
 		// dwSize is smaller than 2048 byte
@@ -33,10 +33,10 @@ DWORD PadSizeForVolDesc(
 		}
 		// dwSize is larger than 2048 byte
 		else {
-			nPadding = (INT)dwSize % DISC_RAW_READ_SIZE;
+			nPadding = (INT)dwSize % DISC_MAIN_DATA_SIZE;
 			// dwSize isn't 4096, 6144, 8192 etc byte
 			if (nPadding != 0) {
-				nPadding = DISC_RAW_READ_SIZE - nPadding;
+				nPadding = DISC_MAIN_DATA_SIZE - nPadding;
 				dwSize += nPadding;
 			}
 		}

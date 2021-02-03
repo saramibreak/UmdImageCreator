@@ -11,7 +11,7 @@ SRCS = main.cpp \
 OBJS := $(SRCS:%.cpp=%.o)
 
 INCDIR =
-CFLAGS = -O3 -G0 -Wall -Wextra 
+CFLAGS = -O2 -G0 -Wall -Wextra 
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -e _module_start
 ASFLAGS = $(CFLAGS)
 
@@ -43,6 +43,6 @@ else
    BUILD_PRX = 1
 #  USE_KERNEL_LIBC = 1
 #  USE_KERNEL_LIBS = 1
-  LIBS = -lpspgu -lpspumd
+  LIBS = -lpspgu -lpsppower -lpspumd
   include $(PSPSDK)/lib/build_prx.mak
 endif

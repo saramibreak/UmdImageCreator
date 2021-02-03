@@ -33,18 +33,20 @@ VOID OutputFsVolumeDescriptorForJoliet(
 #endif
 VOID OutputFsDirectoryRecord(
 	LPBYTE lpBuf,
-	DWORD dwExtentPos,
-	DWORD dwDataLen,
-	LPSTR fname
+	UINT uiExtentPos,
+	UINT uiDataLen,
+	LPSTR fname,
+	PPATH_TABLE_RECORD pPathTblRec,
+	UINT uiPathTblIdx
 );
 
 BOOL OutputFsPathTableRecord(
 	LPBYTE lpBuf,
-	DWORD dwLogicalBlkCoef,
-	DWORD dwPathTblPos,
-	DWORD dwPathTblSize,
-	PDIRECTORY_RECORD pDirRec,
-	LPINT nDirPosNum
+	UINT uiLogicalBlkCoef,
+	UINT uiPathTblPos,
+	UINT uiPathTblSize,
+	PPATH_TABLE_RECORD pPathTblRec,
+	LPUINT uiDirPosNum
 );
 
 VOID OutputCDMain(

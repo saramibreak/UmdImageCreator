@@ -18,6 +18,7 @@
 #include <pspctrl.h>
 #include <pspgu.h>
 #include <psploadexec_kernel.h>
+#include <psppower.h>
 #include <pspumd.h>
 
 #include "define.h"
@@ -30,11 +31,13 @@
 #ifdef PBP
 PSP_MODULE_INFO("UmdImageCreator", 0, 1, 0);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | PSP_THREAD_ATTR_VFPU);
+PSP_HEAP_SIZE_KB(-1);
 #endif
 
 #ifdef PRX
 PSP_MODULE_INFO("UmdImageCreator", 0x1000, 1, 1);
 PSP_MAIN_THREAD_ATTR(0);
+PSP_HEAP_SIZE_KB(-1);
 #endif
 
 int nWriteToX = 0;
@@ -198,7 +201,7 @@ void testDevctl()
 		0x01F20001, 0x01F20002, 0x01F20003, 0x01F20014, 0x01F200A0
 	};
 	for (size_t i = 0; i < sizeof(cmd2) / sizeof(int); i++) {
-		int result = sceIoDevctl("umd0:", cmd2[i], NULL, 0, buffer, sizeof(buffer));
+		sceIoDevctl("umd0:", cmd2[i], NULL, 0, buffer, sizeof(buffer));
 		OutputCDMain(fileMainInfo, buffer, cmd2[i], 2048);
 		memset(buffer, 0, sizeof(buffer));
 	}
@@ -222,7 +225,7 @@ void testDevctl()
 	};
 	int tmp = 1;
 	for (size_t i = 0; i < sizeof(cmd3) / sizeof(int); i++) {
-		int result = sceIoDevctl("umd0:", cmd3[i], &tmp, sizeof(int), buffer, tmp);
+		sceIoDevctl("umd0:", cmd3[i], &tmp, sizeof(int), buffer, tmp);
 		OutputCDMain(fileMainInfo, buffer, cmd3[i], 2048);
 		memset(buffer, 0, sizeof(buffer));
 	}
@@ -262,6 +265,16 @@ void threadschanger(int stat, SceUID threadlist[], int threadnumber)
 	}
 }
 
+void printInitMessage() {
+	pspDebugScreenClear();
+	pspPrintf("Press Circle to start the dumping iso\n");
+	pspPrintf("Press Cross to start the dumping log\n");
+#if 0
+	pspPrintf("Press Square to search all umd commands and run some umd commands\n");
+#endif
+	pspPrintf("Press Triangle to exit\n");
+}
+
 #define RGB(r, g, b) ((r)|((g)<<8)|((b)<<16))
 SceCtrlData pad;
 int done = 0;
@@ -273,32 +286,41 @@ void run() {
 	sceKernelGetThreadmanIdList(SCE_KERNEL_TMID_Thread, threadlist, 66, &threadnumber);
 	threadschanger(0, threadlist, threadnumber);
 #endif
-	pspPrintf("Press Circle to start the dumping iso\n");
-	pspPrintf("Press Cross to start the dumping log\n");
-#if 0
-	pspPrintf("Press Square to search all umd commands and run some umd commands\n");
-#endif
-	pspPrintf("Press Triangle to exit\n");
-
+	printInitMessage();
 	pspUmdInfo discInfo = { 0, 0 };
 	unsigned int nDiscSize = 0;
 
+	scePowerSetClockFrequency(333, 333, 166);
 	while (!done) {
 		sceCtrlReadBufferPositive(&pad, 1);
 		if (pad.Buttons & PSP_CTRL_CIRCLE) {
+			printInitMessage();
 			if (GetDiscInfoToConsole(&discInfo)) {
 				char id[11] = { 0 };
 				if (GetDiscInfoToLog(id, discInfo.type, &nDiscSize)) {
 					DumpIso(id, discInfo.type, nDiscSize, TRUE);
+#ifdef PRX
+					pspPrintf("Automatically exit\n");
+					sceKernelDelayThread(5 * 1000000);
+					threadschanger(1, threadlist, threadnumber);
+					done = 1;
+#endif
 				}
 			}
 		}
 
 		if (pad.Buttons & PSP_CTRL_CROSS) {
+			printInitMessage();
 			if (GetDiscInfoToConsole(&discInfo)) {
 				char id[11] = { 0 };
 				if (GetDiscInfoToLog(id, discInfo.type, &nDiscSize)) {
 					DumpIso(id, discInfo.type, nDiscSize, FALSE);
+#ifdef PRX
+					pspPrintf("Automatically exit\n");
+					sceKernelDelayThread(5 * 1000000);
+					threadschanger(1, threadlist, threadnumber);
+					done = 1;
+#endif
 				}
 			}
 		}
@@ -316,6 +338,7 @@ void run() {
 		}
 		sceKernelDelayThreadCB(5000);
 	}
+	scePowerSetClockFrequency(222, 222, 111);
 
 	sceGuTerm();
 #ifdef PBP

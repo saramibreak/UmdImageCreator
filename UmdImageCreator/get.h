@@ -22,9 +22,9 @@ WORD GetSizeOrWordForVolDesc(
 	LPBYTE lpBuf
 );
 
-DWORD GetSizeOrDwordForVolDesc(
+UINT GetSizeOrUintForVolDesc(
 	LPBYTE lpBuf,
-	DWORD dwMax
+	UINT uiMax
 );
 
 int GetDiscInfoToConsole(pspUmdInfo* pDiscInfo);

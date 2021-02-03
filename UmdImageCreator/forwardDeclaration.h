@@ -16,9 +16,9 @@
 #pragma once
 #include "enum.h"
 
-#define DISC_RAW_READ_SIZE		(2048)
+#define DISC_MAIN_DATA_SIZE		(2048)
 
-#define DIRECTORY_RECORD_SIZE	(400)
+#define PATH_TABLE_RECORD_SIZE	(400)
 
 // èÓïÒåä∑ÇÃêÖèÄ
 // êÖèÄ	1	2	3
@@ -31,5 +31,5 @@
 #define MAX_FNAME_FOR_VOLUME (64)
 #define MIN_LEN_DR (34)
 
+#define MAKEUINT(a, b)      ((UINT)(((WORD)(((UINT_PTR)(a)) & 0xffff)) | ((UINT)((WORD)(((UINT_PTR)(b)) & 0xffff))) << 16))
 #define MAKEDWORD(a, b)      ((DWORD)(((WORD)(((DWORD_PTR)(a)) & 0xffff)) | ((DWORD)((WORD)(((DWORD_PTR)(b)) & 0xffff))) << 16))
-

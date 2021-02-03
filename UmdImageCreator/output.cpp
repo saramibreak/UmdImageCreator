@@ -29,7 +29,7 @@ VOID OutputLastErrorNumAndString(
 	LPCTSTR pszFuncName,
 	LONG lLineNum
 ) {
-	OutputMainErrorLogA("[F:%s][L:%lu] GetLastError: %d, %s\n"
+	OutputMainErrorLog("[F:%s][L:%lu] GetLastError: %d, %s\n"
 		, pszFuncName, lLineNum, errnum, strerror(errnum));
 	pspPrintf("[F:%s][L:%lu] GetLastError: %d, %s\n"
 		, pszFuncName, lLineNum, errnum, strerror(errnum));
@@ -83,7 +83,7 @@ int OutputParamSfo(const char* paramsfo)
 	} sfo_index_table_entry, *psfo_index_table_entry;
 
 	psfo_header header = (psfo_header)data;
-	OutputDiscLogA(
+	OutputDiscLog(
 		"%s\n"
 		"\tmagic: %c%c%c\n"
 		"\tversion: %d.%02d\n"
@@ -106,7 +106,7 @@ int OutputParamSfo(const char* paramsfo)
 		psfo_index_table_entry entry =
 			(psfo_index_table_entry)(data + sizeof(sfo_header) + sizeof(sfo_index_table_entry) * i);
 #if 0
-		OutputDiscLogA(
+		OutputDiscLog(
 			"\tkey_offset[%d]: %d\n"
 			"\tdata_fmt[%d]: %d\n"
 			"\tdata_len[%d]: %d\n"
@@ -117,13 +117,13 @@ int OutputParamSfo(const char* paramsfo)
 		);
 #endif
 		if (entry->data_fmt == 516) {
-			OutputDiscLogA(
+			OutputDiscLog(
 				"\t%s: %s\n", keytable + entry->key_offset, datatable + entry->data_offset);
 		}
 		else if (entry->data_fmt == 1028) {
 			char* ofs = datatable + entry->data_offset;
 			long data = MAKELONG(MAKEWORD(ofs[0], ofs[1]), MAKEWORD(ofs[2], ofs[3]));
-			OutputDiscLogA(
+			OutputDiscLog(
 				"\t%s: %ld\n", keytable + entry->key_offset, data);
 		}
 	}
@@ -182,10 +182,36 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 		return;
 	}
 
+#ifndef PRX
+	pspPrintf(
+		"MemoryStick size\n"
+		"    Max: %11llu (0x%09llx)\n"
+		" - Free: %11llu (0x%09llx)\n"
+		" ---------------------------------\n"
+		"   Used: %11llu (0x%09llx)\n\n"
+		, info.smax, info.smax, info.sfree, info.sfree
+		, info.smax - info.sfree, info.smax - info.sfree
+	);
+#ifdef PRX
+	nWriteToY += 5;
+	pspDebugScreenSetXY(0, nWriteToY);
+#endif
 	if (info.sfree < discSize) {
-		pspPrintf("Free space of MemoryStick is short:%lld (0x%08llx)\n\n", info.sfree, info.sfree);
+		pspPrintf(
+			"   Disc size: %11u (0x%09x)\n"
+			" - Free size: %11llu (0x%09llx)\n"
+			" ---------------------------------\n"
+			"    Shortage: %11llu (0x%09llx)\n\n"
+			, discSize, discSize, info.sfree, info.sfree
+			, discSize - info.sfree, discSize - info.sfree
+		);
 		nDump = 0;
+#ifdef PRX
+		nWriteToY += 4;
+		pspDebugScreenSetXY(0, nWriteToY);
+#endif
 	}
+#endif
 
 	if (nDump) {
 		FILE* fpIso = NULL;
@@ -193,7 +219,7 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 			return;
 		}
 #ifdef PRX
-		size_t allocSize = DISC_RAW_READ_SIZE * 240;
+		size_t allocSize = DISC_MAIN_DATA_SIZE * 240;
 		LPBYTE lpBuf = (LPBYTE)calloc(allocSize, sizeof(BYTE));
 		if (!lpBuf) {
 			pspPrintf("Failed to calloc\n");
@@ -201,7 +227,7 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 		}
 		nWriteToY++;
 #else
-		size_t allocSize = DISC_RAW_READ_SIZE * 128;
+		size_t allocSize = DISC_MAIN_DATA_SIZE * 128;
 		SceUID mem = sceKernelAllocPartitionMemory(2, "Memory1", 0, allocSize, NULL);
 		if (mem < 0) {
 			pspPrintf("Failed to run sceKernelAllocPartitionMemory\n");
@@ -209,12 +235,12 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 		}
 		LPBYTE lpBuf = (LPBYTE)sceKernelGetBlockHeadAddr(mem);
 #endif
-		int nTransferLen = allocSize / DISC_RAW_READ_SIZE;
+		int nTransferLen = allocSize / DISC_MAIN_DATA_SIZE;
 
 		for (int nLBA = 0; nLBA < nVolumeSpaceSize; nLBA += nTransferLen) {
 			if (nTransferLen > nVolumeSpaceSize - nLBA) {
 				nTransferLen = nVolumeSpaceSize - nLBA;
-				allocSize = DISC_RAW_READ_SIZE * nTransferLen;
+				allocSize = DISC_MAIN_DATA_SIZE * nTransferLen;
 			}
 			if (!ExecReadDisc(uid, nLBA, lpBuf, nTransferLen)) {
 				break;

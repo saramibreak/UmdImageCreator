@@ -21,30 +21,22 @@
 
 #include <stdio.h>
 
-#define BOOLEAN_TO_STRING_TRUE_FALSE_W(_b_)		((_b_) ? _T("True") : _T("False"))
-#define BOOLEAN_TO_STRING_TRUE_FALSE_A(_b_)		((_b_) ? "True" : "False")
-#define BOOLEAN_TO_STRING_YES_NO_W(_b_)			((_b_) ? _T("Yes") : _T("No"))
-#define BOOLEAN_TO_STRING_YES_NO_A(_b_)			((_b_) ? "Yes" : "No")
+#define BOOLEAN_TO_STRING_TRUE_FALSE(_b_)		((_b_) ? _T("True") : _T("False"))
+#define BOOLEAN_TO_STRING_YES_NO(_b_)			((_b_) ? _T("Yes") : _T("No"))
 
-#define STR_DOUBLE_HYPHEN_B		"========== "
-#define STR_DOUBLE_HYPHEN_E		" ==========\n"
-#define STR_LBA					"LBA[%06d, %#07x]: "
-#define STR_OPCODE				"OpCode[%#02x]: "
-#define STR_C2FLAG				"C2flag[%x]: "
-#define STR_SUBCODE				"SubCode[%x]: "
-#define STR_TRACK				"Track[%02u]: "
-#define STR_SUB					"Sub"
-#define STR_NO_SUPPORT			" doesn't support on this drive\n"
+#define STR_DOUBLE_HYPHEN_B	"========== "
+#define STR_DOUBLE_HYPHEN_E	" ==========\n"
+#define STR_LBA				"LBA[%06d, %#07x]: "
+#define STR_OPCODE			"OpCode[%#02x]: "
+#define STR_C2FLAG			"C2flag[%d]: "
+#define STR_SUBCODE			"SubCode[%x]: "
+#define STR_TRACK			"Track[%02d]: "
+#define STR_SUB				"Sub"
+#define STR_NO_SUPPORT		" doesn't support on this drive\n"
 
-#define OUTPUT_DHYPHEN_PLUS_STR(str)				STR_DOUBLE_HYPHEN_B #str STR_DOUBLE_HYPHEN_E
-#define OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F(str)		STR_DOUBLE_HYPHEN_B STR_LBA #str STR_DOUBLE_HYPHEN_E
-#define OUTPUT_DHYPHEN_PLUS_STR_WITH_SUBCH_F(str)	STR_DOUBLE_HYPHEN_B STR_OPCODE STR_SUBCODE #str STR_DOUBLE_HYPHEN_E
-#define OUTPUT_DHYPHEN_PLUS_STR_WITH_C2_SUBCH_F(str)	STR_DOUBLE_HYPHEN_B STR_OPCODE STR_C2FLAG STR_SUBCODE #str STR_DOUBLE_HYPHEN_E
-#define OUTPUT_DHYPHEN_PLUS_STR_WITH_TRACK_F(str)	STR_DOUBLE_HYPHEN_B STR_OPCODE STR_SUBCODE STR_TRACK #str STR_DOUBLE_HYPHEN_E
-#define OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA			STR_DOUBLE_HYPHEN_B STR_LBA "%s" STR_DOUBLE_HYPHEN_E
-#define OUTPUT_DHYPHEN_PLUS_STR_WITH_SUBCH			STR_DOUBLE_HYPHEN_B STR_SUBCODE "%s" STR_DOUBLE_HYPHEN_E
-#define OUTPUT_DHYPHEN_PLUS_STR_WITH_TRACK			STR_DOUBLE_HYPHEN_B STR_TRACK "%s" STR_DOUBLE_HYPHEN_E
-#define OUTPUT_STR_NO_SUPPORT(str)					#str STR_NO_SUPPORT
+#define OUTPUT_DHYPHEN_PLUS_STR(str)					STR_DOUBLE_HYPHEN_B str STR_DOUBLE_HYPHEN_E
+#define OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F(str)			STR_DOUBLE_HYPHEN_B STR_LBA str STR_DOUBLE_HYPHEN_E
+#define OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA				STR_DOUBLE_HYPHEN_B STR_LBA "%" CHARWIDTH "s" STR_DOUBLE_HYPHEN_E
 
 #ifdef RUN_FROM_GAME
 #define pspPrintf pspDebugScreenPrintf
@@ -53,8 +45,7 @@
 #endif
 
 // http://www.katsuster.net/index.php?arg_act=cmd_show_diary&arg_date=20160108
-#define OutputStringW(str, ...)		_tprintf(str, ##__VA_ARGS__);
-#define OutputStringA(str, ...)		pspPrintf(str, ##__VA_ARGS__);
+#define OutputString(str, ...)		pspPrintf(str, ##__VA_ARGS__);
 
  // If it uses g_LogFile, call InitLogFile()
 extern _LOG_FILE g_LogFile;
@@ -65,95 +56,54 @@ extern _LOG_FILE g_LogFile;
 	fflush(g_LogFile.fpMainError); \
 }
 
-#define OutputErrorStringW(str, ...)	fwprintf(stderr, str, ##__VA_ARGS__);
-#define OutputErrorStringA(str, ...)	pspPrintf(str, ##__VA_ARGS__);
+#define OutputErrorString(str, ...)	pspPrintf(str, ##__VA_ARGS__);
 
-#define OutputDiscLogW(str, ...)		fwprintf(g_LogFile.fpDisc, str, ##__VA_ARGS__);
-#define OutputDiscLogA(str, ...)		fprintf(g_LogFile.fpDisc, str, ##__VA_ARGS__);
-#define OutputDiscWithLBALogA(str, nLBA, ...) \
+#define OutputDiscLog(str, ...)		fprintf(g_LogFile.fpDisc, str, ##__VA_ARGS__);
+#define OutputDiscWithLBALog(str, nLBA, ...) \
 	fprintf(g_LogFile.fpDisc, STR_LBA str, nLBA, nLBA, ##__VA_ARGS__);
 
-#define OutputVolDescLogW(str, ...)		fwprintf(g_LogFile.fpVolDesc, str, ##__VA_ARGS__);
-#define OutputVolDescLogA(str, ...)		fprintf(g_LogFile.fpVolDesc, str, ##__VA_ARGS__);
-#define OutputVolDescWithLBALogA(str1, str2, nLBA, ...) \
-	fprintf(g_LogFile.fpVolDesc, OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F(str1) str2, nLBA, nLBA, ##__VA_ARGS__);
+#define OutputVolDescLog(str, ...)		fprintf(g_LogFile.fpVolDesc, str, ##__VA_ARGS__);
+#define OutputVolDescWithLBALog1(str1, nLBA, ...) \
+	fprintf(g_LogFile.fpVolDesc, OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F(str1), nLBA, (UINT)nLBA, ##__VA_ARGS__);
+#define OutputVolDescWithLBALog2(str1, str2, nLBA, ...) \
+	fprintf(g_LogFile.fpVolDesc, OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F(str1) str2, nLBA, (UINT)nLBA, ##__VA_ARGS__);
 
-#define OutputMainInfoLogW(str, ...)	fwprintf(g_LogFile.fpMainInfo, str, ##__VA_ARGS__);
-#define OutputMainInfoLogA(str, ...)	fprintf(g_LogFile.fpMainInfo, str, ##__VA_ARGS__);
-#define OutputMainInfoWithLBALogA(str, nLBA, track, ...) \
+#define OutputMainInfoLog(str, ...)	fprintf(g_LogFile.fpMainInfo, str, ##__VA_ARGS__);
+#define OutputMainInfoWithLBALog(str, nLBA, track, ...) \
 	fprintf(g_LogFile.fpMainInfo, STR_LBA STR_TRACK str, nLBA, nLBA, track, ##__VA_ARGS__);
 
-#define OutputMainErrorLogW(str, ...)	if (g_LogFile.fpMainError) fwprintf(g_LogFile.fpMainError, str, ##__VA_ARGS__);
-#define OutputMainErrorLogA(str, ...)	if (g_LogFile.fpMainError) fprintf(g_LogFile.fpMainError, str, ##__VA_ARGS__);
-#define OutputMainErrorWithLBALogA(str, nLBA, track, ...) \
+#define OutputMainErrorLog(str, ...)	if (g_LogFile.fpMainError) fprintf(g_LogFile.fpMainError, str, ##__VA_ARGS__);
+#define OutputMainErrorWithLBALog(str, nLBA, track, ...) \
 	if (g_LogFile.fpMainError) fprintf(g_LogFile.fpMainError, STR_LBA STR_TRACK str, nLBA, nLBA, track, ##__VA_ARGS__);
 
-#define OutputLogW(type, str, ...) \
+#define OutputLog(type, str, ...) \
 { \
 	INT t = type; \
 	if ((t & standardOut) == standardOut) { \
-		OutputStringW(str, ##__VA_ARGS__); \
+		OutputString(str, ##__VA_ARGS__); \
 	} \
 	if ((t & standardError) == standardError) { \
-		OutputErrorStringW(str, ##__VA_ARGS__); \
+		OutputErrorString(str, ##__VA_ARGS__); \
 	} \
 	if ((t & fileDisc) == fileDisc) { \
-		OutputDiscLogW(str, ##__VA_ARGS__); \
+		OutputDiscLog(str, ##__VA_ARGS__); \
 	} \
 	if ((t & fileVolDesc) == fileVolDesc) { \
-		OutputVolDescLogW(str, ##__VA_ARGS__); \
+		OutputVolDescLog(str, ##__VA_ARGS__); \
 	} \
 	if ((t & fileMainInfo) == fileMainInfo) { \
-		OutputMainInfoLogW(str, ##__VA_ARGS__); \
+		OutputMainInfoLog(str, ##__VA_ARGS__); \
 	} \
 	if ((t & fileMainError) == fileMainError) { \
-		OutputMainErrorLogW(str, ##__VA_ARGS__); \
-	} \
-}
-#define OutputLogA(type, str, ...) \
-{ \
-	INT t = type; \
-	if ((t & standardOut) == standardOut) { \
-		OutputStringA(str, ##__VA_ARGS__); \
-	} \
-	if ((t & standardError) == standardError) { \
-		OutputErrorStringA(str, ##__VA_ARGS__); \
-	} \
-	if ((t & fileDisc) == fileDisc) { \
-		OutputDiscLogA(str, ##__VA_ARGS__); \
-	} \
-	if ((t & fileVolDesc) == fileVolDesc) { \
-		OutputVolDescLogA(str, ##__VA_ARGS__); \
-	} \
-	if ((t & fileMainInfo) == fileMainInfo) { \
-		OutputMainInfoLogA(str, ##__VA_ARGS__); \
-	} \
-	if ((t & fileMainError) == fileMainError) { \
-		OutputMainErrorLogA(str, ##__VA_ARGS__); \
+		OutputMainErrorLog(str, ##__VA_ARGS__); \
 	} \
 }
 #ifdef UNICODE
 #define WFLAG "w, ccs=UTF-8"
 #define AFLAG "a, ccs=UTF-8"
-#define BOOLEAN_TO_STRING_TRUE_FALSE	BOOLEAN_TO_STRING_TRUE_FALSE_W
-#define BOOLEAN_TO_STRING_YES_NO		BOOLEAN_TO_STRING_YES_NO_W
-#define OutputString			OutputStringW
-#define OutputErrorString		OutputErrorStringW
-#define OutputVolDescLog		OutputVolDescLogW
-#define OutputMainInfoLog		OutputMainInfoLogW
-#define OutputMainErrorLog		OutputMainErrorLogW
-#define OutputLog				OutputLogW
 #else
 #define WFLAG "w"
 #define AFLAG "a"
-#define BOOLEAN_TO_STRING_TRUE_FALSE	BOOLEAN_TO_STRING_TRUE_FALSE_A
-#define BOOLEAN_TO_STRING_YES_NO		BOOLEAN_TO_STRING_YES_NO_A
-#define OutputString			OutputStringA
-#define OutputErrorString		OutputErrorStringA
-#define OutputVolDescLog		OutputVolDescLogA
-#define OutputMainInfoLog		OutputMainInfoLogA
-#define OutputMainErrorLog		OutputMainErrorLogA
-#define OutputLog				OutputLogA
 #endif
 
 #define FcloseAndNull(fp) \

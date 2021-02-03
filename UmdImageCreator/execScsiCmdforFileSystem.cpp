@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 sarami
+ * Copyright 2018-2021 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,24 +50,12 @@ BOOL ExecReadDisc(
 VOID ManageEndOfDirectoryRecord(
 	LPINT nSectorNum,
 	BYTE byTransferLen,
-	UINT uiZeroPaddingNum,
-	LPBYTE lpDirRec,
+	UINT uiPaddingLen,
 	LPUINT nOfs
 ) {
 	if (*nSectorNum < byTransferLen) {
-		UINT j = 0;
-		for (; j < uiZeroPaddingNum; j++) {
-			if (lpDirRec[j] != 0) {
-				break;
-			}
-		}
-		if (j == uiZeroPaddingNum) {
-			*nOfs += uiZeroPaddingNum;
-			(*nSectorNum)++;
-			return;
-		}
-	}
-	else {
+		*nOfs += uiPaddingLen;
+		(*nSectorNum)++;
 		return;
 	}
 }
@@ -77,16 +65,17 @@ BOOL ReadDirectoryRecordDetail(
 	INT nLBA,
 	LPBYTE lpBuf,
 	BYTE byTransferLen,
-	INT nDirPosNum,
+	UINT uiDirPosNum,
 	DWORD dwLogicalBlkCoef,
-	PDIRECTORY_RECORD pDirRec
+	PPATH_TABLE_RECORD pPathTblRec,
+	UINT uiPathTblIdx
 ) {
 	if (!ExecReadDisc(uid, nLBA, lpBuf, byTransferLen)) {
 		return FALSE;
 	}
 	BYTE byRoop = byTransferLen;
 	for (BYTE i = 0; i < byRoop; i++) {
-		OutputCDMain(fileMainInfo, lpBuf + DISC_RAW_READ_SIZE * i, nLBA + i, DISC_RAW_READ_SIZE);
+		OutputCDMain(fileMainInfo, lpBuf + DISC_MAIN_DATA_SIZE * i, nLBA + i, DISC_MAIN_DATA_SIZE);
 	}
 
 	UINT uiOfs = 0;
@@ -94,47 +83,44 @@ BOOL ReadDirectoryRecordDetail(
 		if (*(lpBuf + uiOfs) == 0) {
 			break;
 		}
-		OutputVolDescLogA(
-			OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F(Directory Record), nLBA + nSectorNum, nLBA + nSectorNum);
+		OutputVolDescWithLBALog1("Directory Record", nLBA + nSectorNum);
 		for (;;) {
 			CHAR szCurDirName[MAX_FNAME_FOR_VOLUME] = { 0 };
-			LPBYTE lpDirRec = lpBuf + uiOfs;
-			if (lpDirRec[0] >= MIN_LEN_DR) {
-				if (lpDirRec[0] == MIN_LEN_DR && uiOfs > 0 && uiOfs % DISC_RAW_READ_SIZE == 0) {
-					// SimCity 3000 (USA)
-					OutputVolDescLogA(
-						"Direcory record size of the %d sector maybe incorrect. Skip the reading of this sector\n", nLBA);
-					nSectorNum++;
-					break;
-				}
-				DWORD dwExtentPos = GetSizeOrDwordForVolDesc(lpDirRec + 2, 0x10000000) / dwLogicalBlkCoef;
-				DWORD dwDataLen = GetSizeOrDwordForVolDesc(lpDirRec + 10, 0x10000000);
+			LPBYTE lpPathTblRec = lpBuf + uiOfs;
+			if (lpPathTblRec[0] >= MIN_LEN_DR) {
+				UINT uiExtentPos = GetSizeOrUintForVolDesc(lpPathTblRec + 2, 0x10000000) / dwLogicalBlkCoef;
+				UINT uiDataLen = GetSizeOrUintForVolDesc(lpPathTblRec + 10, 0x10000000);
 				OutputFsDirectoryRecord(
-					lpDirRec, dwExtentPos, dwDataLen, szCurDirName);
-				OutputVolDescLogA("\n");
-				uiOfs += lpDirRec[0];
+					lpPathTblRec, uiExtentPos, uiDataLen, szCurDirName, pPathTblRec, uiPathTblIdx);
+				OutputVolDescLog("\n");
+				uiOfs += lpPathTblRec[0];
 
-				if ((lpDirRec[25] & 0x02)
-					&& !(lpDirRec[32] == 1 && szCurDirName[0] == 0)
-					&& !(lpDirRec[32] == 1 && szCurDirName[0] == 1)) {
-					// not upper and current directory 
-					for (INT i = 1; i < nDirPosNum; i++) {
-						if (dwExtentPos == pDirRec[i].uiPosOfDir &&
-							!_strnicmp(szCurDirName, pDirRec[i].szDirName, MAX_FNAME_FOR_VOLUME)) {
-							pDirRec[i].uiDirSize = PadSizeForVolDesc(dwDataLen);
-							break;
+				// not upper and current directory
+				if (!(lpPathTblRec[32] == 1 && szCurDirName[0] == 0) &&
+					!(lpPathTblRec[32] == 1 && szCurDirName[0] == 1)) {
+					if (lpPathTblRec[25] & 0x02) {
+						for (UINT i = 1; i < uiDirPosNum; i++) {
+							if (uiExtentPos == pPathTblRec[i].uiPosOfDir &&
+								!_strnicmp(szCurDirName, pPathTblRec[i].szDirName, MAX_FNAME_FOR_VOLUME)) {
+								pPathTblRec[i].uiDirSize = PadSizeForVolDesc(uiDataLen);
+								break;
+							}
 						}
 					}
 				}
-				if (uiOfs == (UINT)(DISC_RAW_READ_SIZE * (nSectorNum + 1))) {
+				else {
+					OutputVolDescLog("\n");
+				}
+
+				if (uiOfs == (UINT)(DISC_MAIN_DATA_SIZE * (nSectorNum + 1))) {
 					nSectorNum++;
 					break;
 				}
 			}
 			else {
-				UINT uiZeroPaddingNum = DISC_RAW_READ_SIZE * (nSectorNum + 1) - uiOfs;
-				if (uiZeroPaddingNum > MIN_LEN_DR) {
-					BYTE byNextLenDR = lpDirRec[MIN_LEN_DR];
+				UINT uiPaddingLen = DISC_MAIN_DATA_SIZE * (nSectorNum + 1) - uiOfs;
+				if (uiPaddingLen > MIN_LEN_DR) {
+					BYTE byNextLenDR = lpPathTblRec[MIN_LEN_DR];
 					if (byNextLenDR >= MIN_LEN_DR) {
 						// Amiga Tools 4 : The second of Direcory Record (0x22 - 0x43) is corrupt...
 						// ========== LBA[040915, 0x09fd3]: Main Channel ==========
@@ -144,19 +130,19 @@ BOOL ReadDirectoryRecordDetail(
 						// 0020 : 01 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................
 						// 0030 : 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................
 						// 0040 : 00 00 01 01 2E 00 09 A0  00 00 00 00 A0 09 D8 01   ................
-						OutputMainErrorWithLBALogA(
-							"Direcory Record is corrupt. Skip reading from %d to %d byte. See _mainInfo.txt\n"
-							, nLBA, 0, uiOfs, uiOfs + MIN_LEN_DR - 1);
+						OutputVolDescLog(
+							"LBA %d: Direcory Record is corrupt. Skip reading from %u to %u byte\n"
+							, nLBA, uiOfs, uiOfs + MIN_LEN_DR - 1);
 						uiOfs += MIN_LEN_DR;
 						break;
 					}
 					else {
-						ManageEndOfDirectoryRecord(&nSectorNum, byRoop, uiZeroPaddingNum, lpDirRec, &uiOfs);
+						ManageEndOfDirectoryRecord(&nSectorNum, byRoop, uiPaddingLen, &uiOfs);
 						break;
 					}
 				}
 				else {
-					ManageEndOfDirectoryRecord(&nSectorNum, byRoop, uiZeroPaddingNum, lpDirRec, &uiOfs);
+					ManageEndOfDirectoryRecord(&nSectorNum, byRoop, uiPaddingLen, &uiOfs);
 					break;
 				}
 			}
@@ -170,50 +156,50 @@ BOOL ReadDirectoryRecord(
 	LPBYTE lpBuf,
 	DWORD dwLogicalBlkCoef,
 	DWORD dwRootDataLen,
-	PDIRECTORY_RECORD pDirRec,
-	INT nDirPosNum
+	PPATH_TABLE_RECORD pPathTblRec,
+	UINT uiDirPosNum
 ) {
 	BYTE byTransferLen = 1;
-	pDirRec[0].uiDirSize = dwRootDataLen;
+	pPathTblRec[0].uiDirSize = dwRootDataLen;
 
 #ifdef PRX
 	nWriteToY += 4;
 #endif
-	for (INT nDirRecIdx = 0; nDirRecIdx < nDirPosNum; nDirRecIdx++) {
-		INT nLBA = (INT)pDirRec[nDirRecIdx].uiPosOfDir;
-		if (pDirRec[nDirRecIdx].uiDirSize > DISC_RAW_READ_SIZE) {
-			DWORD dwAdditionalTransferLen = pDirRec[nDirRecIdx].uiDirSize / DISC_RAW_READ_SIZE;
+	for (UINT uiPathTblIdx = 0; uiPathTblIdx < uiDirPosNum; uiPathTblIdx++) {
+		INT nLBA = (INT)pPathTblRec[uiPathTblIdx].uiPosOfDir;
+		if (pPathTblRec[uiPathTblIdx].uiDirSize > DISC_MAIN_DATA_SIZE) {
+			DWORD dwAdditionalTransferLen = pPathTblRec[uiPathTblIdx].uiDirSize / DISC_MAIN_DATA_SIZE;
 			byTransferLen = 1;
-			OutputMainInfoLogA("nLBA %d, uiDirSize: %u, byTransferLen: %lu [L:%d]\n"
-				, nLBA, pDirRec[nDirRecIdx].uiDirSize, dwAdditionalTransferLen, (INT)__LINE__);
+			OutputMainInfoLog("nLBA %d, uiDirSize: %u, byTransferLen: %lu [L:%d]\n"
+				, nLBA, pPathTblRec[uiPathTblIdx].uiDirSize, dwAdditionalTransferLen, (INT)__LINE__);
 
 			for (DWORD n = 0; n < dwAdditionalTransferLen; n++) {
 				if (!ReadDirectoryRecordDetail(uid, nLBA
-					, lpBuf, byTransferLen, nDirPosNum, dwLogicalBlkCoef, pDirRec)) {
+					, lpBuf, byTransferLen, uiDirPosNum, dwLogicalBlkCoef, pPathTblRec, uiPathTblIdx)) {
 					continue;
 				}
 				nLBA += byTransferLen;
 			}
 		}
 		else {
-			if (pDirRec[nDirRecIdx].uiDirSize == 0 || byTransferLen == 0) {
-				OutputMainErrorLogA("Directory Record is invalid\n");
+			if (pPathTblRec[uiPathTblIdx].uiDirSize == 0 || byTransferLen == 0) {
+				OutputMainErrorLog("Directory Record is invalid\n");
 				return FALSE;
 			}
-			byTransferLen = pDirRec[nDirRecIdx].uiDirSize / DISC_RAW_READ_SIZE;
-			OutputMainInfoLogA("nLBA %d, uiDirSize: %u, byTransferLen: %d [L:%d]\n"
-				, nLBA, pDirRec[nDirRecIdx].uiDirSize, byTransferLen, (INT)__LINE__);
+			byTransferLen = pPathTblRec[uiPathTblIdx].uiDirSize / DISC_MAIN_DATA_SIZE;
+			OutputMainInfoLog("nLBA %d, uiDirSize: %u, byTransferLen: %d [L:%d]\n"
+				, nLBA, pPathTblRec[uiPathTblIdx].uiDirSize, byTransferLen, (INT)__LINE__);
 
 			if (!ReadDirectoryRecordDetail(uid, nLBA
-				, lpBuf, byTransferLen, nDirPosNum, dwLogicalBlkCoef, pDirRec)) {
+				, lpBuf, byTransferLen, uiDirPosNum, dwLogicalBlkCoef, pPathTblRec, uiPathTblIdx)) {
 				continue;
 			}
 		}
 #ifdef PBP
-		OutputString(_T("\rReading DirectoryRecord %4d/%4d"), nDirRecIdx + 1, nDirPosNum);
+		OutputString(_T("\rReading DirectoryRecord %4d/%4d"), uiPathTblIdx + 1, uiDirPosNum);
 #else
 		pspDebugScreenSetXY(0, nWriteToY);
-		OutputString(_T("Reading DirectoryRecord %4d/%4d"), nDirRecIdx + 1, nDirPosNum);
+		OutputString(_T("Reading DirectoryRecord %4d/%4d"), uiPathTblIdx + 1, uiDirPosNum);
 #endif
 	}
 	OutputString(_T("\n"));
@@ -222,65 +208,66 @@ BOOL ReadDirectoryRecord(
 
 BOOL ReadPathTableRecord(
 	SceUID uid,
-	DWORD dwLogicalBlkCoef,
-	DWORD dwPathTblSize,
-	DWORD dwPathTblPos,
-	PDIRECTORY_RECORD pDirRec,
-	LPINT nDirPosNum
+	UINT uiLogicalBlkCoef,
+	UINT uiPathTblSize,
+	UINT uiPathTblPos,
+	PPATH_TABLE_RECORD pPathTblRec,
+	LPUINT uiDirPosNum
 ) {
-	DWORD dwBufSize = DISC_RAW_READ_SIZE - (dwPathTblSize % DISC_RAW_READ_SIZE) + dwPathTblSize;
-	BYTE byTransferLen = dwBufSize / DISC_RAW_READ_SIZE;
+	DWORD dwBufSize = DISC_MAIN_DATA_SIZE - (uiPathTblSize % DISC_MAIN_DATA_SIZE) + uiPathTblSize;
+	BYTE byTransferLen = dwBufSize / DISC_MAIN_DATA_SIZE;
 
 	LPBYTE lpBuf = (LPBYTE)calloc(dwBufSize, sizeof(BYTE));
 	if (!lpBuf) {
 		OutputLastErrorNumAndString(errno, _T(__FUNCTION__), __LINE__);
 		return FALSE;
 	}
-	CONST DWORD dwMaxPTSize = 32768;
+	CONST UINT uiMaxPTSize = 32768;
 	BOOL bRet = TRUE;
-	if (dwPathTblSize > dwMaxPTSize) {
-		DWORD dwAdditionalTransferLen = dwPathTblSize / dwMaxPTSize;
-		OutputMainInfoLogA("dwPathTblSize: %lu, byTransferLen: %d [L:%d]\n", dwMaxPTSize, byTransferLen, (INT)__LINE__);
+	if (uiPathTblSize > uiMaxPTSize) {
+		DWORD dwAdditionalTransferLen = uiPathTblSize / uiMaxPTSize;
+		OutputMainInfoLog("PathTblSize: %u, byTransferLen: %d [L:%d]\n", uiMaxPTSize, byTransferLen, (INT)__LINE__);
 
 		for (DWORD n = 0; n < dwAdditionalTransferLen; n++) {
-			if (!ExecReadDisc(uid, (INT)dwPathTblPos, lpBuf + 65535 * n, byTransferLen)) {
+			if (!ExecReadDisc(uid, (INT)uiPathTblPos, lpBuf + 65535 * n, byTransferLen)) {
 				return FALSE;
 			}
 			for (BYTE i = 0; i < byTransferLen; i++) {
-				OutputCDMain(fileMainInfo, lpBuf + DISC_RAW_READ_SIZE * i, (INT)dwPathTblPos + i, DISC_RAW_READ_SIZE);
+				OutputCDMain(fileMainInfo, lpBuf + DISC_MAIN_DATA_SIZE * i, (INT)uiPathTblPos + i, DISC_MAIN_DATA_SIZE);
 			}
-			dwPathTblPos += byTransferLen;
+			uiPathTblPos += byTransferLen;
 		}
-		DWORD dwLastPathTblSize = dwPathTblSize % dwMaxPTSize;
-		byTransferLen = dwLastPathTblSize / DISC_RAW_READ_SIZE;
-		DWORD dwBufOfs = dwMaxPTSize * dwAdditionalTransferLen;
+		UINT uiLastPathTblSize = uiPathTblSize % uiMaxPTSize;
+		byTransferLen = uiLastPathTblSize / DISC_MAIN_DATA_SIZE;
+		DWORD dwBufOfs = uiMaxPTSize * dwAdditionalTransferLen;
 
-		OutputMainInfoLogA(
-			"dwPathTblSize: %lu, byTransferLen: %d [L:%d]\n", dwLastPathTblSize, byTransferLen, (INT)__LINE__);
-		if (!ExecReadDisc(uid, (INT)dwPathTblPos, lpBuf + dwBufOfs, byTransferLen)) {
+		OutputMainInfoLog(
+			"PathTblSize: %u, byTransferLen: %d [L:%d]\n", uiLastPathTblSize, byTransferLen, (INT)__LINE__);
+		if (!ExecReadDisc(uid, (INT)uiPathTblPos, lpBuf + dwBufOfs, byTransferLen)) {
 			return FALSE;
 		}
 		for (BYTE i = 0; i < byTransferLen; i++) {
-			OutputCDMain(fileMainInfo, lpBuf + dwBufOfs + DISC_RAW_READ_SIZE * i, (INT)dwPathTblPos + i, DISC_RAW_READ_SIZE);
+			OutputCDMain(fileMainInfo, lpBuf + dwBufOfs + DISC_MAIN_DATA_SIZE * i, (INT)uiPathTblPos + i, DISC_MAIN_DATA_SIZE);
 		}
-		if (!OutputFsPathTableRecord(lpBuf, dwLogicalBlkCoef, dwPathTblPos, dwPathTblSize, pDirRec, nDirPosNum)) {
+		if (!OutputFsPathTableRecord(lpBuf, uiLogicalBlkCoef, uiPathTblPos, uiPathTblSize, pPathTblRec, uiDirPosNum)) {
 			return FALSE;
 		}
 	}
 	else {
-		OutputMainInfoLogA(
-			"dwPathTblSize: %lu, byTransferLen: %d [L:%d]\n", dwPathTblSize, byTransferLen, (INT)__LINE__);
-		if (!ExecReadDisc(uid, (INT)dwPathTblPos, lpBuf, byTransferLen)) {
+		
+		OutputMainInfoLog(
+			"PathTblSize: %u, byTransferLen: %d [L:%d]\n", uiPathTblSize, byTransferLen, (INT)__LINE__);
+		if (!ExecReadDisc(uid, (INT)uiPathTblPos, lpBuf, byTransferLen)) {
 			return FALSE;
 		}
 		for (BYTE i = 0; i < byTransferLen; i++) {
-			OutputCDMain(fileMainInfo, lpBuf + DISC_RAW_READ_SIZE * i, (INT)dwPathTblPos + i, DISC_RAW_READ_SIZE);
+			OutputCDMain(fileMainInfo, lpBuf + DISC_MAIN_DATA_SIZE * i, (INT)uiPathTblPos + i, DISC_MAIN_DATA_SIZE);
 		}
-		if (!OutputFsPathTableRecord(lpBuf, dwLogicalBlkCoef, dwPathTblPos, dwPathTblSize, pDirRec, nDirPosNum)) {
+		if (!OutputFsPathTableRecord(lpBuf, uiLogicalBlkCoef, uiPathTblPos, uiPathTblSize, pPathTblRec, uiDirPosNum)) {
 			return FALSE;
 		}
 	}
-	OutputVolDescLogA("Directory Num: %u\n", *nDirPosNum);
+	OutputVolDescLog("Directory Num: %u\n", *uiDirPosNum);
 	FreeAndNull(lpBuf);
 	return bRet;
 }
@@ -300,43 +287,43 @@ BOOL ReadVolumeDescriptor(
 		}
 		if (!strncmp((LPCH)&lpBuf[1], "CD001", 5)) {
 			if (nTmpLBA == nPVD) {
-				*nVolumeSpaceSize = GetSizeOrDwordForVolDesc(lpBuf + 80, DWORD(0xa0000 * DISC_RAW_READ_SIZE));
-				DWORD dwLogicalBlkSize = GetSizeOrWordForVolDesc(lpBuf + 128);
-				pVolDesc->ISO_9660.dwLogicalBlkCoef = (BYTE)(DISC_RAW_READ_SIZE / dwLogicalBlkSize);
-				pVolDesc->ISO_9660.dwPathTblSize =
-					GetSizeOrDwordForVolDesc(lpBuf + 132, (DWORD)(0xa0000 * DISC_RAW_READ_SIZE));
-				pVolDesc->ISO_9660.dwPathTblPos = MAKEDWORD(MAKEWORD(lpBuf[140], lpBuf[141]),
-					MAKEWORD(lpBuf[142], lpBuf[143])) / pVolDesc->ISO_9660.dwLogicalBlkCoef;
-				if (pVolDesc->ISO_9660.dwPathTblPos == 0) {
-					pVolDesc->ISO_9660.dwPathTblPos = MAKEDWORD(MAKEWORD(lpBuf[151], lpBuf[150]),
+				*nVolumeSpaceSize = GetSizeOrUintForVolDesc(lpBuf + 80, DWORD(0xa0000 * DISC_MAIN_DATA_SIZE));
+				WORD wLogicalBlkSize = GetSizeOrWordForVolDesc(lpBuf + 128);
+				pVolDesc->ISO_9660.uiLogicalBlkCoef = (BYTE)(DISC_MAIN_DATA_SIZE / wLogicalBlkSize);
+				pVolDesc->ISO_9660.uiPathTblSize =
+					GetSizeOrUintForVolDesc(lpBuf + 132, (DWORD)(0xa0000 * DISC_MAIN_DATA_SIZE));
+				pVolDesc->ISO_9660.uiPathTblPos = MAKEUINT(MAKEWORD(lpBuf[140], lpBuf[141]),
+					MAKEWORD(lpBuf[142], lpBuf[143])) / pVolDesc->ISO_9660.uiLogicalBlkCoef;
+				if (pVolDesc->ISO_9660.uiPathTblPos == 0) {
+					pVolDesc->ISO_9660.uiPathTblPos = MAKEUINT(MAKEWORD(lpBuf[151], lpBuf[150]),
 						MAKEWORD(lpBuf[149], lpBuf[148]));
 				}
-				pVolDesc->ISO_9660.dwRootDataLen =
-					GetSizeOrDwordForVolDesc(lpBuf + 166, (DWORD)(0xa0000 * DISC_RAW_READ_SIZE));
-				if (pVolDesc->ISO_9660.dwRootDataLen > 0) {
-					pVolDesc->ISO_9660.dwRootDataLen = PadSizeForVolDesc(pVolDesc->ISO_9660.dwRootDataLen);
+				pVolDesc->ISO_9660.uiRootDataLen =
+					GetSizeOrUintForVolDesc(lpBuf + 166, (DWORD)(0xa0000 * DISC_MAIN_DATA_SIZE));
+				if (pVolDesc->ISO_9660.uiRootDataLen > 0) {
+					pVolDesc->ISO_9660.uiRootDataLen = PadSizeForVolDesc(pVolDesc->ISO_9660.uiRootDataLen);
 				}
 				*lpReadVD = TRUE;
 			}
 			else if (lpBuf[0] == 2) {
-				DWORD dwLogicalBlkSize = GetSizeOrWordForVolDesc(lpBuf + 128);
-				pVolDesc->JOLIET.dwLogicalBlkCoef = (BYTE)(DISC_RAW_READ_SIZE / dwLogicalBlkSize);
-				pVolDesc->JOLIET.dwPathTblSize =
-					GetSizeOrDwordForVolDesc(lpBuf + 132, (DWORD)(0xa0000 * DISC_RAW_READ_SIZE));
-				pVolDesc->JOLIET.dwPathTblPos = MAKEDWORD(MAKEWORD(lpBuf[140], lpBuf[141]),
-					MAKEWORD(lpBuf[142], lpBuf[143])) / pVolDesc->JOLIET.dwLogicalBlkCoef;
-				if (pVolDesc->JOLIET.dwPathTblPos == 0) {
-					pVolDesc->JOLIET.dwPathTblPos = MAKEDWORD(MAKEWORD(lpBuf[151], lpBuf[150]),
+				WORD wLogicalBlkSize = GetSizeOrWordForVolDesc(lpBuf + 128);
+				pVolDesc->JOLIET.uiLogicalBlkCoef = (BYTE)(DISC_MAIN_DATA_SIZE / wLogicalBlkSize);
+				pVolDesc->JOLIET.uiPathTblSize =
+					GetSizeOrUintForVolDesc(lpBuf + 132, (DWORD)(0xa0000 * DISC_MAIN_DATA_SIZE));
+				pVolDesc->JOLIET.uiPathTblPos = MAKEUINT(MAKEWORD(lpBuf[140], lpBuf[141]),
+					MAKEWORD(lpBuf[142], lpBuf[143])) / pVolDesc->JOLIET.uiLogicalBlkCoef;
+				if (pVolDesc->JOLIET.uiPathTblPos == 0) {
+					pVolDesc->JOLIET.uiPathTblPos = MAKEUINT(MAKEWORD(lpBuf[151], lpBuf[150]),
 						MAKEWORD(lpBuf[149], lpBuf[148]));
 				}
-				pVolDesc->JOLIET.dwRootDataLen =
-					GetSizeOrDwordForVolDesc(lpBuf + 166, (DWORD)(0xa0000 * DISC_RAW_READ_SIZE));
-				if (pVolDesc->JOLIET.dwRootDataLen > 0) {
-					pVolDesc->JOLIET.dwRootDataLen = PadSizeForVolDesc(pVolDesc->JOLIET.dwRootDataLen);
+				pVolDesc->JOLIET.uiRootDataLen =
+					GetSizeOrUintForVolDesc(lpBuf + 166, (DWORD)(0xa0000 * DISC_MAIN_DATA_SIZE));
+				if (pVolDesc->JOLIET.uiRootDataLen > 0) {
+					pVolDesc->JOLIET.uiRootDataLen = PadSizeForVolDesc(pVolDesc->JOLIET.uiRootDataLen);
 				}
 				*lpReadVD = TRUE;
 			}
-			OutputCDMain(fileMainInfo, lpBuf, nTmpLBA, DISC_RAW_READ_SIZE);
+			OutputCDMain(fileMainInfo, lpBuf, nTmpLBA, DISC_MAIN_DATA_SIZE);
 			OutputFsVolumeDescriptor(lpBuf, nTmpLBA++);
 		}
 		else {
@@ -352,32 +339,32 @@ BOOL ReadDVDForFileSystem(
 ) {
 	BOOL bPVD = FALSE;
 	VOLUME_DESCRIPTOR volDesc;
-	BYTE buf[DISC_RAW_READ_SIZE] = { 0 };
+	BYTE buf[DISC_MAIN_DATA_SIZE] = { 0 };
 
 	pspPrintf("Reading VolumeDescriptor\n");
 	if (!ReadVolumeDescriptor(uid, buf, 16, &bPVD, &volDesc, nVolumeSpaceSize)) {
 		return FALSE;
 	}
 	if (bPVD) {
-		PDIRECTORY_RECORD pDirRec = (PDIRECTORY_RECORD)calloc(DIRECTORY_RECORD_SIZE, sizeof(DIRECTORY_RECORD));
-		if (!pDirRec) {
+		PPATH_TABLE_RECORD pPathTblRec = (PPATH_TABLE_RECORD)calloc(PATH_TABLE_RECORD_SIZE, sizeof(PATH_TABLE_RECORD));
+		if (!pPathTblRec) {
 			OutputLastErrorNumAndString(errno, _T(__FUNCTION__), __LINE__);
 			return FALSE;
 		}
-		INT nDirPosNum = 0;
+		UINT uiDirPosNum = 0;
 		pspPrintf("Reading PathTableRecord\n");
 		if (!ReadPathTableRecord(uid
-			, volDesc.ISO_9660.dwLogicalBlkCoef, volDesc.ISO_9660.dwPathTblSize
-			, volDesc.ISO_9660.dwPathTblPos, pDirRec, &nDirPosNum)) {
-			FreeAndNull(pDirRec);
+			, volDesc.ISO_9660.uiLogicalBlkCoef, volDesc.ISO_9660.uiPathTblSize
+			, volDesc.ISO_9660.uiPathTblPos, pPathTblRec, &uiDirPosNum)) {
+			FreeAndNull(pPathTblRec);
 			return FALSE;
 		}
 		if (!ReadDirectoryRecord(uid, buf
-			, volDesc.ISO_9660.dwLogicalBlkCoef, volDesc.ISO_9660.dwRootDataLen, pDirRec, nDirPosNum)) {
-			FreeAndNull(pDirRec);
+			, volDesc.ISO_9660.uiLogicalBlkCoef, volDesc.ISO_9660.uiRootDataLen, pPathTblRec, uiDirPosNum)) {
+			FreeAndNull(pPathTblRec);
 			return FALSE;
 		}
-		FreeAndNull(pDirRec);
+		FreeAndNull(pPathTblRec);
 	}
 
 	return TRUE;

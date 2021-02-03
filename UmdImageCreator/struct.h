@@ -27,26 +27,27 @@ typedef struct _LOG_FILE {
 
 typedef struct _VOLUME_DESCRIPTOR {
 	struct _ISO_9660 {
-		DWORD dwLogicalBlkCoef;
-		DWORD dwPathTblSize;
-		DWORD dwPathTblPos;
-		DWORD dwRootDataLen;
+		UINT uiLogicalBlkCoef;
+		UINT uiPathTblSize;
+		UINT uiPathTblPos;
+		UINT uiRootDataLen;
 	} ISO_9660;
 	struct _JOLIET {
-		DWORD dwLogicalBlkCoef;
-		DWORD dwPathTblSize;
-		DWORD dwPathTblPos;
-		DWORD dwRootDataLen;
+		UINT uiLogicalBlkCoef;
+		UINT uiPathTblSize;
+		UINT uiPathTblPos;
+		UINT uiRootDataLen;
 	} JOLIET;
 } VOLUME_DESCRIPTOR, *PVOLUME_DESCRIPTOR;
 
-typedef struct _DIRECTORY_RECORD {
+typedef struct _PATH_TABLE_RECORD {
 	UINT uiDirNameLen;
 	UINT uiPosOfDir;
 	UINT uiNumOfUpperDir;
 	CHAR szDirName[MAX_FNAME_FOR_VOLUME];
-	UINT uiDirSize;
-} DIRECTORY_RECORD, *PDIRECTORY_RECORD;
+	CHAR padding[3];
+	UINT uiDirSize; // This is actually DIRECTORY RECORD info
+} PATH_TABLE_RECORD, * PPATH_TABLE_RECORD;
 
 typedef struct _MS_INFO {
 	unsigned long cluster_max;	//総クラスタ数
@@ -54,7 +55,7 @@ typedef struct _MS_INFO {
 	int sector_max;				//きりのいい空きクラスタ数
 	int sector_size;			//セクタあたりのバイト数
 	int sector_count;			//クラスタあたりのセクタ数
-	unsigned long long smax;					//総容量
-	unsigned long long sfree;					//空き容量
-	unsigned long long sused;					//使用容量
+	unsigned long long smax;	//総容量
+	unsigned long long sfree;	//空き容量
+	unsigned long long sused;	//使用容量
 } MS_INFO, *PMS_INFO;
