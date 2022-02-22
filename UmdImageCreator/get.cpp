@@ -16,6 +16,7 @@
 #include "get.h"
 #include "output.h"
 
+#include <string.h>
 #include <pspkernel.h>
 
 extern int nWriteToX;
@@ -253,6 +254,10 @@ int GetDiscInfoToLog(char* id, unsigned int discType, unsigned int* pDiscSize)
 	int ret = GetDiscID(id);
 	if (!ret) {
 		return FALSE;
+	}
+	char* p = strchr(id, ':');
+	if (p != NULL) {
+		*p = '_';
 	}
 	if (!CreateFile(id, discType, "_disc.txt", &g_LogFile.fpDisc, "w")) {
 		return FALSE;
