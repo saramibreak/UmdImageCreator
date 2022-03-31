@@ -1,0 +1,66 @@
+List up only UMD related commands
+
+ Function    | Device | Command    | Firmware               | Faculty
+-------------+--------+------------+------------------------+--------------------------------------------------
+    sceIoctl | disc0: | 0x0100000d | 6.61,                  | Unknown
+    sceIoctl | disc0: | 0x0100000e | 6.61,                  | Unknown
+    sceIoctl | disc0: | 0x01000011 |                   1.50 | Unknown
+    sceIoctl | disc0: | 0x01010005 | 6.61, 3.71, 3.52,      | UMD file seek set
+    sceIoctl | disc0: | 0x01010009 | 6.61, 3.71,            | Unknown
+    sceIoctl | disc0: | 0x0101000a | 6.61,                  | UMD file ahead
+    sceIoctl | disc0: | 0x0101000b | 6.61,                  | Unknown
+    sceIoctl | disc0: | 0x01020001 | 6.61, 3.71, 3.52, 1.50 | Get UMD Primary Volume Descriptor
+    sceIoctl | disc0: | 0x01020002 | 6.61, 3.71, 3.52, 1.50 | Get UMD Path Table
+    sceIoctl | disc0: | 0x01020003 | 6.61, 3.71, 3.52, 1.50 | Get UMD Sector size
+    sceIoctl | disc0: | 0x01020004 | 6.61, 3.71, 3.52, 1.50 | Get UMD file pointer
+    sceIoctl | disc0: | 0x01020006 | 6.61, 3.71, 3.52,      | Get UMD file start sector
+    sceIoctl | disc0: | 0x01020007 | 6.61, 3.71, 3.52,      | Get UMD file length in bytes
+    sceIoctl | disc0: | 0x01030008 | 6.61, 3.71, 3.52,      | Read UMD file
+    sceIoctl | disc0: | 0x0103000c | 6.61,                  | Unknown
+    sceIoctl | umd0:  | 0x01d20001 | 6.61, 3.71, 3.52, 1.50 | Get current sector seek pos from UMD device file
+    sceIoctl | umd0:  | 0x01f010db | 6.61,                  | Unknown
+    sceIoctl | umd0:  | 0x01f100a6 | 6.61, 3.71, 3.52       | Seek by sector in UMD device file
+    sceIoctl | umd0:  | 0x01f30003 | 6.61, 3.71, 3.52       | Read raw sectors from UMD device file
+ sceIoDevctl | umd0:  | 0x01e000d5 | 6.61, 3.71, 3.52, 1.50 | Unknown
+ sceIoDevctl | umd0:  | 0x01f00003 | 6.61, 3.71, 3.52, 1.50 | Activate drive
+ sceIoDevctl | umd0:  | 0x01f000a6 | 6.61, 3.71, 3.52, 1.50 | Unknown
+ sceIoDevctl | umd0:  | 0x01f100a3 | 6.61, 3.71, 3.52       | Seek UMD disc (raw)
+ sceIoDevctl | umd0:  | 0x01f100a4 | 6.61, 3.71,            | Prepare UMD data into cache
+ sceIoDevctl | umd0:  | 0x01f100a6 | 6.61,                  | Unknown
+ sceIoDevctl | umd0:  | 0x01f100a8 | 6.61,                  | Unknown
+ sceIoDevctl | umd0:  | 0x01f100a9 | 6.61,                  | Unknown
+ sceIoDevctl | umd0:  | 0x01f20001 | 6.61, 3.71, 3.52, 1.50 | Get UMD media type (GAME or VIDEO or AUDIO)
+ sceIoDevctl | umd0:  | 0x01f20002 | 6.61, 3.71, 3.52, 1.50 | Get last LBA
+ sceIoDevctl | umd0:  | 0x01f20003 | 6.61, 3.71, 3.52       | Get last LBA of L0
+ sceIoDevctl | umd0:  | 0x01f20014 | 6.61, 3.71, 3.52, 1.50 | Get inquiry
+ sceIoDevctl | umd0:  | 0x01f200a0 | 6.61, 3.71, 3.52, 1.50 | Unknown
+ sceIoDevctl | umd0:  | 0x01f200a1 | 6.61, 3.71, 3.52, 1.50 | Unknown
+ sceIoDevctl | umd0:  | 0x01f200a2 | 6.61, 3.71, 3.52, 1.50 | Unknown
+ sceIoDevctl | umd0:  | 0x01f200a4 |             3.52, 1.50 | Unknown
+ sceIoDevctl | umd0:  | 0x01f200a5 |             3.52, 1.50 | Unknown
+ sceIoDevctl | umd0:  | 0x01f21011 |             3.52, 1.50 | Unknown
+ sceIoDevctl | umd0:  | 0x01f300a5 | 6.61,                  | Prepare UMD data into cache and get status
+ sceIoDevctl | umd0:  | 0x01f300a7 | 6.61,                  | Wait for the UMD data cache thread
+-------------+--------+------------+------------------------+--------------------------------------------------
+
+All other commands return below.
+ 1. 0x8001b000 (NOT SUPPORT)
+ 2. 0x800200d1 (ILLEGAL PERMISSION)
+ 3. 0x80020321 (NO DEVICE)
+ 4. 0x80020325 (UNSUPPORTED OPERATION)
+
+Note
+ 1. FW 5.50, 5.00, 4.01, 3.90 and 3.80 are the same result as 6.61
+
+ 2. From pspsdk (https://github.com/pspdev/pspsdk/blob/master/src/user/pspiofilemgr.h)
+     int sceIoIoctl(SceUID fd, unsigned int cmd, void *indata, int inlen, void *outdata, int outlen);
+     int sceIoDevctl(const char *dev, unsigned int cmd, void *indata, int inlen, void *outdata, int outlen);
+      => 0x01x1xxxx and 0x01x3xxxx need indata and inlen
+      => 0x01x2xxxx and 0x01x3xxxx need outdata and outlen
+
+    For this test, indate is set 2048 bytes of array and all 0, inlen is set 2048. Outdata and outlen is the same as indata.
+    If correct indata and inlen is set, some command will work. (e.g. 0x01f300a8, 0x01f300a9)
+
+See also
+ jpcsp: https://github.com/jpcsp/jpcsp/blob/master/src/jpcsp/HLE/modules/IoFileMgrForUser.java
+ ppsspp: https://github.com/hrydgard/ppsspp/blob/master/Core/HLE/sceIo.cpp

@@ -2,7 +2,7 @@
 
 set MAKEFILE=%~dp0makefile_define.mak
 echo BUILD_PBP = ^1> "%MAKEFILE%"
-echo PSP_FW_VERSION = 661>> "%MAKEFILE%"
+echo PSP_FW_VERSION = 150>> "%MAKEFILE%"
 
 set HEADERFILE=%~dp0define.h
 echo #define RUN_FROM_GAME> "%HEADERFILE%"

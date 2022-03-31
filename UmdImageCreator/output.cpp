@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 sarami
+ * Copyright 2018-2022 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "output.h"
-#include "get.h"
-#include "execScsiCmdforFileSystem.h"
-
 #include <pspumd.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
-extern int nWriteToY;
+#include "output.h"
+#include "get.h"
+#include "execScsiCmdforFileSystem.h"
 
 VOID OutputLastErrorNumAndString(
 	INT errnum,
@@ -35,11 +34,89 @@ VOID OutputLastErrorNumAndString(
 		, pszFuncName, lLineNum, errnum, strerror(errnum));
 }
 
+void OutputPspError(const char* string, int value, int errorCode)
+{
+	int code = errorCode & 0xffff;
+	if ((errorCode >> 31) & 0x1) {
+		if (value == 0) {
+			pspPrintf("%s returns 0x%08x error\n -> ", string, errorCode);
+		}
+		else {
+			pspPrintf("%s (0x%08x) returns 0x%08x error\n -> ", string, value, errorCode);
+		}
+		if ((errorCode >> 30) & 0x1) {
+			pspPrintf("Critical, ");
+		}
+		else {
+			pspPrintf("Normal, ");
+		}
+	}
+	switch((errorCode >> 16) & 0xfff) {
+	case 0x001:
+		pspPrintf("File, ");
+		switch(code) {
+		case 0x0016:
+			pspPrintf("Invalid argument\n");
+			break;
+		case 0x006e:
+			pspPrintf("Timeout\n");
+			break;
+		case 0xb000:
+			pspPrintf("Not support\n");
+			break;
+		default:
+			pspPrintf("Other\n");
+			break;
+		}
+		break;
+	case 0x002:
+		pspPrintf("Kernel, ");
+		switch (code) {
+		case 0x00d1:
+			pspPrintf("Illegal permission\n");
+			break;
+		case 0x0149:
+			pspPrintf("Illegal permission API Call\n");
+			break;
+		case 0x01a8:
+			pspPrintf("Timeout\n");
+			break;
+		case 0x0321:
+			pspPrintf("No device\n");
+			break;
+		case 0x0325:
+			pspPrintf("Not support\n");
+			break;
+		default:
+			pspPrintf("Other\n");
+			break;
+		}
+		break;
+	case 0x021:
+		pspPrintf("UMD, ");
+		switch(code) {
+		case 0x0001:
+			pspPrintf("Device not ready\n");
+			break;
+		case 0x0003:
+			pspPrintf("No media\n");
+			break;
+		default:
+			pspPrintf("Other\n");
+			break;
+		}
+		break;
+	default:
+		pspPrintf("Other\n");
+		break;
+	}
+}
+
 int OutputParamSfo(const char* paramsfo)
 {
 	SceUID uidData = sceIoOpen(paramsfo, PSP_O_RDONLY, 0777);
 	if (uidData < 0) {
-		pspPrintf("Cannot open %s: result=0x%08X\n", paramsfo, uidData);
+		OutputPspError("sceIoOpen paramsfo", 0, uidData);
 		return FALSE;
 	}
 	SceIoStat stat;
@@ -59,7 +136,7 @@ int OutputParamSfo(const char* paramsfo)
 
 	ret = sceIoClose(uidData);
 	if (ret < 0) {
-		pspPrintf("Cannot close %s: result=0x%08X\n", paramsfo, ret);
+		OutputPspError("sceIoClose", 0, ret);
 		return FALSE;
 	}
 
@@ -157,9 +234,9 @@ int CreateFile(char* id, unsigned int discType, const char* filename, FILE** fp,
 
 void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 {
-	SceUID uid = sceIoOpen("umd0:", PSP_O_RDONLY, 0);
+	SceUID uid = sceIoOpen(DEVICE_UMD, PSP_O_RDONLY, 0);
 	if (uid < 0) {
-		pspPrintf("Cannot open UMD: result=0x%08X\n", uid);
+		OutputPspError("sceIoOpen umd0:", 0, uid);
 		return;
 	}
 	if (!CreateFile(id, discType, "_mainInfo.txt", &g_LogFile.fpMainInfo, "w")) {
@@ -184,7 +261,7 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 
 #ifndef PRX
 	pspPrintf(
-		"MemoryStick size\n"
+		"\nMemoryStick size\n"
 		"    Max: %11llu (0x%09llx)\n"
 		" - Free: %11llu (0x%09llx)\n"
 		" ---------------------------------\n"
@@ -193,8 +270,7 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 		, info.smax - info.sfree, info.smax - info.sfree
 	);
 #ifdef PRX
-	nWriteToY += 5;
-	pspDebugScreenSetXY(0, nWriteToY);
+	pspDebugScreenSetXY(0, pspDebugScreenGetY() + 5);
 #endif
 	if (info.sfree < discSize) {
 		pspPrintf(
@@ -207,8 +283,7 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 		);
 		nDump = 0;
 #ifdef PRX
-		nWriteToY += 4;
-		pspDebugScreenSetXY(0, nWriteToY);
+		pspDebugScreenSetXY(0, pspDebugScreenGetY() + 4);
 #endif
 	}
 #endif
@@ -225,7 +300,6 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 			pspPrintf("Failed to calloc\n");
 			return;
 		}
-		nWriteToY++;
 #else
 		size_t allocSize = DISC_MAIN_DATA_SIZE * 128;
 		SceUID mem = sceKernelAllocPartitionMemory(2, "Memory1", 0, allocSize, NULL);
@@ -249,7 +323,7 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 #ifdef PBP
 			pspPrintf("\rCreating %s.iso (LBA) %6d/%6d", id, nLBA + nTransferLen, nVolumeSpaceSize);
 #else
-			pspDebugScreenSetXY(0, nWriteToY);
+			pspDebugScreenSetXY(0, pspDebugScreenGetY());
 			pspPrintf("Creating %s.iso (LBA) %6d/%6d", id, nLBA + nTransferLen, nVolumeSpaceSize);
 #endif
 		}

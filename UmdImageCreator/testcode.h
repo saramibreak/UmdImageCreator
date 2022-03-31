@@ -14,27 +14,8 @@
  * limitations under the License.
  */
 #pragma once
-#include "windef.h"
-#include "struct.h"
-#include <pspumd.h>
+void searchCommand();
 
-WORD GetSizeOrWordForVolDesc(
-	LPBYTE lpBuf
-);
+void testCommand();
 
-UINT GetSizeOrUintForVolDesc(
-	LPBYTE lpBuf,
-	UINT uiMax
-);
-
-int PrepareOpeningDisc();
-
-int CloseOpeningDisc();
-
-int GetDriveInfo(char* id, unsigned int discType);
-
-int GetDiscInfo(char* id, pspUmdInfo* pUmdInfo, unsigned int* pDiscSize);
-
-int GetDiscID(char* id);
-
-int GetMSInfo(MS_INFO *info);
+void testNewCommand();

@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 sarami
+ * Copyright 2018-2022 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "get.h"
-#include "output.h"
-
 #include <string.h>
 #include <pspkernel.h>
 
-extern int nWriteToX;
-extern int nWriteToY;
+#include "_external/pspUmdman_driver.h"
+#include "get.h"
+#include "output.h"
+#include "outputScsiCmdLogforCD.h"
 
 WORD  GetSizeOrWordForVolDesc(
 	LPBYTE lpBuf
@@ -36,138 +35,29 @@ UINT GetSizeOrUintForVolDesc(
 	LPBYTE lpBuf,
 	UINT uiMax
 ) {
-	UINT val = MAKEUINT(MAKEWORD(lpBuf[0], lpBuf[1]),
-		MAKEWORD(lpBuf[2], lpBuf[3]));
+	UINT val = MAKEUINT(MAKEWORD(lpBuf[0], lpBuf[1]), MAKEWORD(lpBuf[2], lpBuf[3]));
 	if (val == 0 || val >= uiMax) {
-		val = MAKEUINT(MAKEWORD(lpBuf[7], lpBuf[6]),
-			MAKEWORD(lpBuf[5], lpBuf[4]));
+		val = MAKEUINT(MAKEWORD(lpBuf[7], lpBuf[6]), MAKEWORD(lpBuf[5], lpBuf[4]));
 	}
 	return val;
 }
 
-int GetDiscInfoToConsole(pspUmdInfo* pDiscInfo)
+int GetDriveInfo(char* id, unsigned int discType)
 {
-	int ret = sceIoDevctl("umd0:", 0x01F20001, NULL, 0, pDiscInfo, sizeof(pspUmdInfo));
+	pspPrintf("\nOutput drive information\n");
+	INQUIRYDATA inquiry;
+	// 0x01F20014
+	int ret = sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_INQUIRY_DATA, NULL, 0, &inquiry, sizeof(inquiry));
 	if (ret < 0) {
-		pspPrintf("Cannot run sceIoDevctl: 0x01F20001\n");
+		OutputPspError("sceIoDevctl", IOCTL_UMD_GET_INQUIRY_DATA, ret);
 		return FALSE;
 	}
-	BOOL bMulti = FALSE;
-#ifdef PRX
-	nWriteToY = 5;
-	pspDebugScreenSetXY(0, nWriteToY);
-	nWriteToX = 19;
-#endif
-	pspPrintf("pspUmdTypes: 0x%02x (", pDiscInfo->type);
-	if ((pDiscInfo->type & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
-#ifdef PRX
-		pspDebugScreenSetXY(nWriteToX, nWriteToY);
-		nWriteToX += 4;
-#endif
-		pspPrintf("GAME");
-		bMulti = TRUE;
-	}
-	if ((pDiscInfo->type & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
-		if (bMulti) {
-#ifdef PRX
-			pspDebugScreenSetXY(nWriteToX, nWriteToY);
-			nWriteToX += 1;
-#endif
-			pspPrintf(" ");
-		}
-		bMulti = TRUE;
-#ifdef PRX
-		pspDebugScreenSetXY(nWriteToX, nWriteToY);
-		nWriteToX += 5;
-#endif
-		pspPrintf("VIDEO");
-	}
-	if ((pDiscInfo->type & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
-		if (bMulti) {
-#ifdef PRX
-			pspDebugScreenSetXY(nWriteToX, nWriteToY);
-			nWriteToX += 1;
-#endif
-			pspPrintf(" ");
-		}
-#ifdef PRX
-		pspDebugScreenSetXY(nWriteToX, nWriteToY);
-		nWriteToX += 5;
-#endif
-		pspPrintf("AUDIO");
-	}
-#ifdef PRX
-	pspDebugScreenSetXY(nWriteToX, nWriteToY);
-	nWriteToX += 1;
-#endif
-	pspPrintf(")\n\n");
 
-	int nL0L1LBA = 0;
-	ret = sceIoDevctl("umd0:", 0x01F20002, NULL, 0, &nL0L1LBA, sizeof(int));
-	if (ret < 0) {
-		pspPrintf("Cannot run sceIoDevctl: 0x01F20002\n");
+	if (!CreateFile(id, discType, "_drive.txt", &g_LogFile.fpDrive, "w")) {
 		return FALSE;
 	}
-	nL0L1LBA += 1;
-	int nL0LBA = 0;
-	ret = sceIoDevctl("umd0:", 0x01F20003, NULL, 0, &nL0LBA, sizeof(int));
-	if (ret < 0) {
-		pspPrintf("Cannot run sceIoDevctl: 0x01F20003\n");
-		return FALSE;
-	}
-	nL0LBA += 1;
-	if (nL0LBA == nL0L1LBA) {
-#ifdef PRX
-		pspDebugScreenSetXY(0, ++nWriteToY);
-#endif
-		pspPrintf("L0 length: %6d (0x%05x)\n\n", nL0LBA, nL0LBA);
-	}
-	else {
-#ifdef PRX
-		pspDebugScreenSetXY(0, ++nWriteToY);
-#endif
-		pspPrintf("L0 length: %6d (0x%05x)\n", nL0LBA, nL0LBA);
-#ifdef PRX
-		pspDebugScreenSetXY(0, ++nWriteToY);
-#endif
-		pspPrintf("L1 length: %6d (0x%05x)\n", nL0L1LBA - nL0LBA, nL0L1LBA - nL0LBA);
-#ifdef PRX
-		pspDebugScreenSetXY(0, ++nWriteToY);
-#endif
-		pspPrintf("---------------------------\n");
-#ifdef PRX
-		pspDebugScreenSetXY(0, ++nWriteToY);
-#endif
-		pspPrintf("    Total: %6d (0x%05x)\n\n", nL0L1LBA, nL0L1LBA);
-	}
-
-	unsigned int uFileSize = nL0L1LBA * DISC_MAIN_DATA_SIZE;
-#ifdef PRX
-	pspDebugScreenSetXY(0, ++nWriteToY);
-#endif
-	pspPrintf(" FileSize: %d (0x%08x)\n\n", uFileSize, uFileSize);
-
-	unsigned char unknown[4] = { 0 };
-	ret = sceIoDevctl("umd0:", 0x01F20014, NULL, 0, unknown, sizeof(unknown));
-	if (ret < 0) {
-		pspPrintf("Cannot run sceIoDevctl: 0x01F20014\n");
-//		return FALSE;
-	}
-#ifdef PRX
-	pspDebugScreenSetXY(0, ++nWriteToY);
-#endif
-	pspPrintf("0x01F20014 is unknown: %02x %02x %02x %02x\n", unknown[0], unknown[1], unknown[2], unknown[3]);
-
-	int unknown2 = 0;
-	ret = sceIoDevctl("umd0:", 0x01F200A0, NULL, 0, &unknown2, sizeof(unknown2));
-	if (ret < 0) {
-		pspPrintf("Cannot run sceIoDevctl: 0x01F200A0\n");
-//		return FALSE;
-	}
-#ifdef PRX
-	pspDebugScreenSetXY(0, ++nWriteToY);
-#endif
-	pspPrintf("0x01F200A0 is unknown: %02x\n", unknown2);
+	OutputInquiry(&inquiry);
+	FcloseAndNull(g_LogFile.fpDrive);
 	return TRUE;
 }
 
@@ -185,27 +75,27 @@ int PrepareOpeningDisc()
 			break;
 		}
 	}
-	ret = sceUmdActivate(1, "disc0:");
+	ret = sceUmdActivate(1, DEVICE_DISC);
 	if (ret < 0) {
-		pspPrintf("Cannot activate UMD: result=0x%08X\n", ret);
+		OutputPspError("sceUmdActivate", NULL, ret);
 		return FALSE;
 	}
 
-	pspPrintf("Wait until UMD is ready ");
+	pspPrintf("Wait until UMD is ready => ");
 	ret = sceUmdWaitDriveStatWithTimer(PSP_UMD_READY, 20000000);
 	if (ret < 0) {
-		pspPrintf(" => NG: result=0x%08X\n", ret);
+		OutputPspError("sceUmdWaitDriveStatWithTimer", NULL, ret);
 		return FALSE;
 	}
-	pspPrintf(" => OK\n");
+	pspPrintf("OK\n");
 	return TRUE;
 }
 
 int CloseOpeningDisc()
 {
-	int ret = sceUmdDeactivate(1, "disc0:");
+	int ret = sceUmdDeactivate(1, DEVICE_DISC);
 	if (ret < 0) {
-		pspPrintf("Cannot deactivate UMD: result=0x%08X\n", ret);
+		OutputPspError("sceUmdDeactivate", NULL, ret);
 		return FALSE;
 	}
 	return TRUE;
@@ -215,14 +105,14 @@ int GetDiscID(char* id)
 {
 	SceUID uidData = sceIoOpen("disc0:/UMD_DATA.BIN", PSP_O_RDONLY, 0777);
 	if (uidData < 0) {
-		pspPrintf("Cannot open UMD_DATA.BIN: result=0x%08X\n", uidData);
+		OutputPspError("sceIoOpen(disc0:/UMD_DATA.BIN)", NULL, uidData);
 		return FALSE;
 	}
 	sceIoRead(uidData, id, 10);
 
 	int ret = sceIoClose(uidData);
 	if (ret < 0) {
-		pspPrintf("Cannot close UMD_DATA.BIN: result=0x%08X\n", ret);
+		OutputPspError("sceIoClose", NULL, ret);
 		return FALSE;
 	}
 
@@ -248,104 +138,102 @@ int GetParamSfo(unsigned int discType)
 	return ret;
 }
 
-int GetDiscInfoToLog(char* id, unsigned int discType, unsigned int* pDiscSize)
+int GetDiscInfo(char* id, pspUmdInfo* pUmdInfo, unsigned int* pDiscSize)
 {
-	PrepareOpeningDisc();
-	int ret = GetDiscID(id);
-	if (!ret) {
+	int ret = sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_MEDIA_INFO, NULL, 0, pUmdInfo, sizeof(pspUmdInfo));
+	if (ret < 0) {
+		OutputPspError("sceIoDevctl", IOCTL_UMD_GET_MEDIA_INFO, ret);
+		return FALSE;
+	}
+	if (pUmdInfo->type == 0) {
+		pspDebugScreenSetXY(0, pspDebugScreenGetY());
+		pspPrintf("Please insert a disc before push the button");
+		return FALSE;
+	}
+	pspPrintf("\n");
+
+	if (!PrepareOpeningDisc()) {
+		return FALSE;
+	}
+	if (!GetDiscID(id)) {
 		return FALSE;
 	}
 	char* p = strchr(id, ':');
 	if (p != NULL) {
 		*p = '_';
 	}
-	if (!CreateFile(id, discType, "_disc.txt", &g_LogFile.fpDisc, "w")) {
+	if (!CreateFile(id, pUmdInfo->type, "_disc.txt", &g_LogFile.fpDisc, "w")) {
 		return FALSE;
 	}
-
-	ret = GetParamSfo(discType);
-	if (!ret) {
+	if (!GetParamSfo(pUmdInfo->type)) {
 		return FALSE;
 	}
 	CloseOpeningDisc();
 
 	BOOL bMulti = FALSE;
-	OutputDiscLog("\npspUmdTypes: 0x%02x (", discType);
-	if ((discType & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
-		OutputDiscLog("GAME");
+	OutputLog(standardOut | fileDisc, "\npspUmdTypes: 0x%02x (", pUmdInfo->type);
+	if ((pUmdInfo->type & PSP_UMD_TYPE_GAME) == PSP_UMD_TYPE_GAME) {
+		OutputLog(standardOut | fileDisc, "GAME");
 		bMulti = TRUE;
 	}
-	if ((discType & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
+	if ((pUmdInfo->type & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO) {
 		if (bMulti) {
-			OutputDiscLog(" ");
+			OutputLog(standardOut | fileDisc, " ");
 		}
 		bMulti = TRUE;
-		OutputDiscLog("VIDEO");
+		OutputLog(standardOut | fileDisc, "VIDEO");
 	}
-	if ((discType & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
+	if ((pUmdInfo->type & PSP_UMD_TYPE_AUDIO) == PSP_UMD_TYPE_AUDIO) {
 		if (bMulti) {
-			OutputDiscLog(" ");
+			OutputLog(standardOut | fileDisc, " ");
 		}
-		OutputDiscLog("AUDIO");
+		OutputLog(standardOut | fileDisc, "AUDIO");
 	}
-	OutputDiscLog(")\n\n");
+	OutputLog(standardOut | fileDisc, ")\n");
 
-	int nL0L1LBA = 0;
-	ret = sceIoDevctl("umd0:", 0x01F20002, NULL, 0, &nL0L1LBA, sizeof(int));
-	if (ret < 0) {
-		pspPrintf("Cannot run sceIoDevctl: 0x01F20002\n");
+	int nLastLBA = 0;
+	ret = sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_LAST_LBA, NULL, 0, &nLastLBA, sizeof(int));
+	if (ret != 0) {
+		OutputPspError("sceIoDevctl", IOCTL_UMD_GET_LAST_LBA, ret);
 		return FALSE;
 	}
-	nL0L1LBA += 1;
+	int nAllLength = nLastLBA + 1;
 
 	int nL0LBA = 0;
-	ret = sceIoDevctl("umd0:", 0x01F20003, NULL, 0, &nL0LBA, sizeof(int));
-	if (ret < 0) {
-		pspPrintf("Cannot run sceIoDevctl: 0x01F20003\n");
+	ret = sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_LAST_LBA_OF_L0, NULL, 0, &nL0LBA, sizeof(int));
+	if (ret != 0) {
+		OutputPspError("sceIoDevctl", IOCTL_UMD_GET_LAST_LBA_OF_L0, ret);
 		return FALSE;
 	}
-	nL0LBA += 1;
+	int nL0Length = nL0LBA + 1;
 
-	if (nL0LBA == nL0L1LBA) {
-		OutputDiscLog("L0 length: %6d (0x%05x)\n\n", nL0LBA, nL0LBA);
+	if (nL0Length == nAllLength) {
+		OutputLog(standardOut | fileDisc, "  L0 length: %6d (0x%05x)\n", nL0Length, nL0Length);
 	}
 	else {
-		OutputDiscLog("L0 length: %6d (0x%05x)\n", nL0LBA, nL0LBA);
-		OutputDiscLog("L1 length: %6d (0x%05x)\n", nL0L1LBA - nL0LBA, nL0L1LBA - nL0LBA);
-		OutputDiscLog("---------------------------\n");
-		OutputDiscLog("    Total: %6d (0x%05x)\n\n", nL0L1LBA, nL0L1LBA);
+		OutputLog(standardOut | fileDisc, 
+			"  L0 length: %6d (0x%05x)\n"
+			"  L1 length: %6d (0x%05x)\n"
+			"  ---------------------------\n"
+			"      Total: %6d (0x%05x)\n"
+			, nL0Length, nL0Length, nAllLength - nL0Length, nAllLength - nL0Length, nAllLength, nAllLength);
 	}
 
-	*pDiscSize = nL0L1LBA * DISC_MAIN_DATA_SIZE;
-	OutputDiscLog(" FileSize: %d (0x%08x)\n\n", *pDiscSize, *pDiscSize);
-
-	unsigned char unknown[4] = { 0 };
-	ret = sceIoDevctl("umd0:", 0x01F20014, NULL, 0, unknown, sizeof(unknown));
-	if (ret < 0) {
-		pspPrintf("Cannot run sceIoDevctl: 0x01F20014\n");
-		return FALSE;
-	}
-	OutputDiscLog("0x01F20014 is unknown: %02x %02x %02x %02x\n", unknown[0], unknown[1], unknown[2], unknown[3]);
-
-	int unknown2 = 0;
-	ret = sceIoDevctl("umd0:", 0x01F200A0, NULL, 0, &unknown2, sizeof(unknown2));
-	if (ret < 0) {
-		pspPrintf("Cannot run sceIoDevctl: 0x01F200A0\n");
-		return FALSE;
-	}
-	OutputDiscLog("0x01F200A0 is unknown: %02x\n", unknown2);
+	*pDiscSize = nAllLength * DISC_MAIN_DATA_SIZE;
+	OutputLog(standardOut | fileDisc, "   FileSize: %d (0x%08x)\n", *pDiscSize, *pDiscSize);
 	FcloseAndNull(g_LogFile.fpDisc);
 	return TRUE;
 }
 
 int GetMSInfo(MS_INFO* info)
 {
-	if (sceIoDevctl("ms0:", 0x02425818, &info, 4, NULL, 0) >= 0) {
+	int ret = sceIoDevctl(DEVICE_MS, IOCTL_MS_GET_MS_INFO, &info, 4, NULL, 0);
+	if (ret == 0) {
 		info->smax = (info->cluster_max  * info->sector_count) * info->sector_size;
 		info->sfree = (info->cluster_free * info->sector_count) * info->sector_size;
 		info->sused = info->smax - info->sfree;
 		return TRUE;
 	}
-	pspPrintf("Cannot run sceIoDevctl: 0x02425818\n");
+	OutputPspError("sceIoDevctl", IOCTL_MS_GET_MS_INFO, ret);
 	return FALSE;
 }

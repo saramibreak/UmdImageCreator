@@ -1,0 +1,23 @@
+	.set noreorder
+
+#include "pspstub.s"
+
+	STUB_START	"pspUmdMan_driver",0x40090000,0x00110005
+	STUB_FUNC	0x361633FC,_sceUmdManGetUmdDrive
+	STUB_FUNC	0x7E1FCC75,_sceUmdManGetInquiry
+	STUB_FUNC	0x17CD2732,_sceUmdExecInquiryCmd
+	STUB_FUNC	0x4EBE4D03,_sceUmdManActivate
+	STUB_FUNC	0x1730E2DD,_sceUmdManCheckDeviceReady
+	STUB_FUNC	0x3E97E8C8,_sceUmdManGetDiscInfo
+	STUB_FUNC	0x01CA9D0C,_sceUmdManGetUmdDiscInfo
+	STUB_FUNC	0x441AA9CD,_sceUmdExecReadCapacityCmd
+	STUB_FUNC	0x2D2BAB06,_sceUmdExecRead10Cmd
+	STUB_FUNC	0x5F19EE47,_sceUmdExecGetConfigurationCmd
+	STUB_FUNC	0xfc603a62,_sceUmdExecReadDiscInfoCmd
+	STUB_FUNC	0xEB2DE626,_sceUmdExecModSenseCmd
+	STUB_FUNC	0x86B312D0,_sceUmdExecReadUMDStructureCmd
+	STUB_FUNC	0x91B874C1,_sceUmdExecSetCDSpeedCmd
+	STUB_FUNC	0xCAB41374,_sceUmdExecMechaStatCmd
+	STUB_FUNC	0x655463A8,_sceUmdExecGetMediaInfoCmd
+	STUB_FUNC	0x78F4D4BF,_sceUmdExecReadMKICmd
+	STUB_END

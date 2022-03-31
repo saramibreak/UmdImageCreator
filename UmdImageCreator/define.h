@@ -1,4 +1,4 @@
-//#define RUN_FROM_GAME
-#ifndef RUN_FROM_GAME
-#define PRX
+#define RUN_FROM_GAME
+#ifdef RUN_FROM_GAME
+#define PBP
 #endif

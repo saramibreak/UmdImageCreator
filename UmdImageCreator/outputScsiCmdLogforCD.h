@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 sarami
+ * Copyright 2018-2022 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,9 +49,13 @@ BOOL OutputFsPathTableRecord(
 	LPUINT uiDirPosNum
 );
 
-VOID OutputCDMain(
+VOID OutputMainChannel(
 	LOG_TYPE type,
 	LPBYTE lpBuf,
 	INT nLBA,
 	INT nSize
+);
+
+VOID OutputInquiry(
+	PINQUIRYDATA pInquiry
 );

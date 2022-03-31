@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 sarami
+ * Copyright 2018-2022 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -453,7 +453,7 @@ BOOL OutputFsPathTableRecord(
 		OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F("Path Table Record"), (INT)uiPathTblPos, (INT)uiPathTblPos);
 	for (UINT i = 0; i < uiPathTblSize;) {
 		if (*uiDirPosNum > PATH_TABLE_RECORD_SIZE) {
-			OutputErrorString("Directory Record is over %d\n", PATH_TABLE_RECORD_SIZE);
+			pspPrintf("Directory Record is over %d\n", PATH_TABLE_RECORD_SIZE);
 			FlushLog();
 			return FALSE;
 		}
@@ -503,7 +503,7 @@ BOOL OutputFsPathTableRecord(
 	return TRUE;
 }
 
-VOID OutputCDMain(
+VOID OutputMainChannel(
 	LOG_TYPE type,
 	LPBYTE lpBuf,
 	INT nLBA,
@@ -527,4 +527,86 @@ VOID OutputCDMain(
 		}
 		OutputLog(type, "\n");
 	}
+}
+
+VOID OutputInquiry(
+	PINQUIRYDATA pInquiry
+) {
+	OutputDriveLog(
+		OUTPUT_DHYPHEN_PLUS_STR("InquiryData")
+		"\t          DeviceType: ");
+	switch (pInquiry->DeviceType) {
+	case DIRECT_ACCESS_DEVICE:
+		OutputDriveLog("DirectAccessDevice (Floppy etc)\n");
+		break;
+	case READ_ONLY_DIRECT_ACCESS_DEVICE:
+		OutputDriveLog("ReadOnlyDirectAccessDevice (CD/DVD etc)\n");
+		break;
+	case OPTICAL_DEVICE:
+		OutputDriveLog("OpticalDisk\n");
+		break;
+	default:
+		OutputDriveLog("OtherDevice\n");
+		break;
+	}
+	OutputDriveLog(
+		"\t DeviceTypeQualifier: ");
+	switch (pInquiry->DeviceTypeQualifier) {
+	case DEVICE_QUALIFIER_ACTIVE:
+		OutputDriveLog("Active\n");
+		break;
+	case DEVICE_QUALIFIER_NOT_ACTIVE:
+		OutputDriveLog("NotActive\n");
+		break;
+	case DEVICE_QUALIFIER_NOT_SUPPORTED:
+		OutputDriveLog("NotSupported\n");
+		break;
+	default:
+		OutputDriveLog("\n");
+		break;
+	}
+
+	OutputDriveLog(
+		"\t  DeviceTypeModifier: %u\n"
+		"\t      RemovableMedia: %s\n"
+		"\t            Versions: %u\n"
+		"\t  ResponseDataFormat: %u\n"
+		"\t           HiSupport: %s\n"
+		"\t             NormACA: %s\n"
+		"\t       TerminateTask: %s\n"
+		"\t                AERC: %s\n"
+		"\t    AdditionalLength: %u\n"
+		"\t       MediumChanger: %s\n"
+		"\t           MultiPort: %s\n"
+		"\t   EnclosureServices: %s\n"
+		"\t           SoftReset: %s\n"
+		"\t        CommandQueue: %s\n"
+		"\t      LinkedCommands: %s\n"
+		"\t  RelativeAddressing: %s\n",
+		pInquiry->DeviceTypeModifier,
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->RemovableMedia),
+		pInquiry->Versions,
+		pInquiry->ResponseDataFormat,
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->HiSupport),
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->NormACA),
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->TerminateTask),
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->AERC),
+		pInquiry->AdditionalLength,
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->MediumChanger),
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->MultiPort),
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->EnclosureServices),
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->SoftReset),
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->CommandQueue),
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->LinkedCommands),
+		BOOLEAN_TO_STRING_YES_NO(pInquiry->RelativeAddressing));
+
+	OutputDriveLog(
+		"\t            VendorId: %.8s\n"
+		"\t           ProductId: %.16s\n"
+		"\tProductRevisionLevel: %.4s\n"
+		"\t      VendorSpecific: %.20s\n"
+		, pInquiry->VendorId
+		, pInquiry->ProductId
+		, pInquiry->ProductRevisionLevel
+		, pInquiry->VendorSpecific);
 }

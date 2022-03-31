@@ -1,5 +1,5 @@
 /**
- * Copyright 2018-2021 sarami
+ * Copyright 2018-2022 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <errno.h>
+#include <string.h>
+
 #include "define.h"
 #include "convert.h"
 #include "execScsiCmdforFileSystem.h"
 #include "get.h"
 #include "output.h"
 #include "outputScsiCmdLogforCD.h"
-
-#include <errno.h>
-#include <string.h>
-
-extern int nWriteToY;
 
 BOOL ExecReadDisc(
 	SceUID uid,
@@ -33,13 +31,15 @@ BOOL ExecReadDisc(
 ) {
 	INT seek[4] = { 0 };
 	seek[0] = nLBA;
-	INT result = sceIoIoctl(uid, 0x01F100A6, seek, sizeof(seek), NULL, 0);
+	// 0x01F100A6
+	INT result = sceIoIoctl(uid, IOCTL_UMD_SEEK, seek, sizeof(seek), NULL, 0);
 	if (result < 0) {
 		OutputLastErrorNumAndString(errno, _T(__FUNCTION__), __LINE__);
 		return 0;
 	}
 	INT numberOfSectors = byTransferLen;
-	result = sceIoIoctl(uid, 0x01F30003, &numberOfSectors, sizeof(INT), lpBuf, numberOfSectors);
+	// 0x01F30003
+	result = sceIoIoctl(uid, IOCTL_UMD_GET_MAIN_CHANNEL, &numberOfSectors, sizeof(INT), lpBuf, numberOfSectors);
 	if (result < 0) {
 		OutputLastErrorNumAndString(errno, _T(__FUNCTION__), __LINE__);
 		return 0;
@@ -75,7 +75,7 @@ BOOL ReadDirectoryRecordDetail(
 	}
 	BYTE byRoop = byTransferLen;
 	for (BYTE i = 0; i < byRoop; i++) {
-		OutputCDMain(fileMainInfo, lpBuf + DISC_MAIN_DATA_SIZE * i, nLBA + i, DISC_MAIN_DATA_SIZE);
+		OutputMainChannel(fileMainInfo, lpBuf + DISC_MAIN_DATA_SIZE * i, nLBA + i, DISC_MAIN_DATA_SIZE);
 	}
 
 	UINT uiOfs = 0;
@@ -162,9 +162,6 @@ BOOL ReadDirectoryRecord(
 	BYTE byTransferLen = 1;
 	pPathTblRec[0].uiDirSize = dwRootDataLen;
 
-#ifdef PRX
-	nWriteToY += 4;
-#endif
 	for (UINT uiPathTblIdx = 0; uiPathTblIdx < uiDirPosNum; uiPathTblIdx++) {
 		INT nLBA = (INT)pPathTblRec[uiPathTblIdx].uiPosOfDir;
 		if (pPathTblRec[uiPathTblIdx].uiDirSize > DISC_MAIN_DATA_SIZE) {
@@ -198,11 +195,11 @@ BOOL ReadDirectoryRecord(
 #ifdef PBP
 		OutputString(_T("\rReading DirectoryRecord %4d/%4d"), uiPathTblIdx + 1, uiDirPosNum);
 #else
-		pspDebugScreenSetXY(0, nWriteToY);
-		OutputString(_T("Reading DirectoryRecord %4d/%4d"), uiPathTblIdx + 1, uiDirPosNum);
+		pspDebugScreenSetXY(0, pspDebugScreenGetY());
+		pspPrintf("Reading DirectoryRecord %4d/%4d", uiPathTblIdx + 1, uiDirPosNum);
 #endif
 	}
-	OutputString(_T("\n"));
+	pspPrintf("\n");
 	return TRUE;
 }
 
@@ -233,7 +230,7 @@ BOOL ReadPathTableRecord(
 				return FALSE;
 			}
 			for (BYTE i = 0; i < byTransferLen; i++) {
-				OutputCDMain(fileMainInfo, lpBuf + DISC_MAIN_DATA_SIZE * i, (INT)uiPathTblPos + i, DISC_MAIN_DATA_SIZE);
+				OutputMainChannel(fileMainInfo, lpBuf + DISC_MAIN_DATA_SIZE * i, (INT)uiPathTblPos + i, DISC_MAIN_DATA_SIZE);
 			}
 			uiPathTblPos += byTransferLen;
 		}
@@ -247,7 +244,7 @@ BOOL ReadPathTableRecord(
 			return FALSE;
 		}
 		for (BYTE i = 0; i < byTransferLen; i++) {
-			OutputCDMain(fileMainInfo, lpBuf + dwBufOfs + DISC_MAIN_DATA_SIZE * i, (INT)uiPathTblPos + i, DISC_MAIN_DATA_SIZE);
+			OutputMainChannel(fileMainInfo, lpBuf + dwBufOfs + DISC_MAIN_DATA_SIZE * i, (INT)uiPathTblPos + i, DISC_MAIN_DATA_SIZE);
 		}
 		if (!OutputFsPathTableRecord(lpBuf, uiLogicalBlkCoef, uiPathTblPos, uiPathTblSize, pPathTblRec, uiDirPosNum)) {
 			return FALSE;
@@ -261,7 +258,7 @@ BOOL ReadPathTableRecord(
 			return FALSE;
 		}
 		for (BYTE i = 0; i < byTransferLen; i++) {
-			OutputCDMain(fileMainInfo, lpBuf + DISC_MAIN_DATA_SIZE * i, (INT)uiPathTblPos + i, DISC_MAIN_DATA_SIZE);
+			OutputMainChannel(fileMainInfo, lpBuf + DISC_MAIN_DATA_SIZE * i, (INT)uiPathTblPos + i, DISC_MAIN_DATA_SIZE);
 		}
 		if (!OutputFsPathTableRecord(lpBuf, uiLogicalBlkCoef, uiPathTblPos, uiPathTblSize, pPathTblRec, uiDirPosNum)) {
 			return FALSE;
@@ -323,7 +320,7 @@ BOOL ReadVolumeDescriptor(
 				}
 				*lpReadVD = TRUE;
 			}
-			OutputCDMain(fileMainInfo, lpBuf, nTmpLBA, DISC_MAIN_DATA_SIZE);
+			OutputMainChannel(fileMainInfo, lpBuf, nTmpLBA, DISC_MAIN_DATA_SIZE);
 			OutputFsVolumeDescriptor(lpBuf, nTmpLBA++);
 		}
 		else {

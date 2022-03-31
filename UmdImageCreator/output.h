@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 sarami
+ * Copyright 2018-2022 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 #pragma once
+#include <stdio.h>
+
 #include "windef.h"
 #include "struct.h"
 #include "forwardDeclaration.h"
 #include "define.h"
-
-#include <stdio.h>
 
 #define BOOLEAN_TO_STRING_TRUE_FALSE(_b_)		((_b_) ? _T("True") : _T("False"))
 #define BOOLEAN_TO_STRING_YES_NO(_b_)			((_b_) ? _T("Yes") : _T("No"))
@@ -27,21 +27,19 @@
 #define STR_DOUBLE_HYPHEN_B	"========== "
 #define STR_DOUBLE_HYPHEN_E	" ==========\n"
 #define STR_LBA				"LBA[%06d, %#07x]: "
-#define STR_OPCODE			"OpCode[%#02x]: "
-#define STR_C2FLAG			"C2flag[%d]: "
-#define STR_SUBCODE			"SubCode[%x]: "
-#define STR_TRACK			"Track[%02d]: "
-#define STR_SUB				"Sub"
-#define STR_NO_SUPPORT		" doesn't support on this drive\n"
 
 #define OUTPUT_DHYPHEN_PLUS_STR(str)					STR_DOUBLE_HYPHEN_B str STR_DOUBLE_HYPHEN_E
 #define OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA_F(str)			STR_DOUBLE_HYPHEN_B STR_LBA str STR_DOUBLE_HYPHEN_E
 #define OUTPUT_DHYPHEN_PLUS_STR_WITH_LBA				STR_DOUBLE_HYPHEN_B STR_LBA "%" CHARWIDTH "s" STR_DOUBLE_HYPHEN_E
 
 #ifdef RUN_FROM_GAME
-#define pspPrintf pspDebugScreenPrintf
+#define pspPrintf(format, ...) pspDebugScreenPrintf(format, ##__VA_ARGS__)
 #else
-#define pspPrintf pspDebugScreenKprintf
+#define pspPrintf(format, ...) \
+{ \
+	pspDebugScreenSetXY(pspDebugScreenGetX(), pspDebugScreenGetY()); \
+	pspDebugScreenKprintf(format, ##__VA_ARGS__); \
+}
 #endif
 
 // http://www.katsuster.net/index.php?arg_act=cmd_show_diary&arg_date=20160108
@@ -51,12 +49,18 @@
 extern _LOG_FILE g_LogFile;
 #define FlushLog() \
 { \
+	fflush(g_LogFile.fpDrive); \
+	fflush(g_LogFile.fpDisc); \
 	fflush(g_LogFile.fpVolDesc); \
 	fflush(g_LogFile.fpMainInfo); \
 	fflush(g_LogFile.fpMainError); \
 }
 
 #define OutputErrorString(str, ...)	pspPrintf(str, ##__VA_ARGS__);
+
+#define OutputDriveLog(str, ...)		fprintf(g_LogFile.fpDrive, str, ##__VA_ARGS__);
+#define OutputDriveWithLBALog(str, nLBA, ...) \
+	fprintf(g_LogFile.fpDrive, STR_LBA str, nLBA, nLBA, ##__VA_ARGS__);
 
 #define OutputDiscLog(str, ...)		fprintf(g_LogFile.fpDisc, str, ##__VA_ARGS__);
 #define OutputDiscWithLBALog(str, nLBA, ...) \
@@ -98,13 +102,6 @@ extern _LOG_FILE g_LogFile;
 		OutputMainErrorLog(str, ##__VA_ARGS__); \
 	} \
 }
-#ifdef UNICODE
-#define WFLAG "w, ccs=UTF-8"
-#define AFLAG "a, ccs=UTF-8"
-#else
-#define WFLAG "w"
-#define AFLAG "a"
-#endif
 
 #define FcloseAndNull(fp) \
 { \
@@ -127,6 +124,8 @@ VOID OutputLastErrorNumAndString(
 	LPCTSTR pszFuncName,
 	LONG lLineNum
 );
+
+void OutputPspError(const char* string, int value, int errorCode);
 
 int OutputParamSfo(const char* paramsfo);
 

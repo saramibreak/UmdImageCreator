@@ -17,3 +17,9 @@
 
 ## v1.4 (2022-02-22)
 - changed: Replaced ':' to '_' (Disc ID)
+
+## v1.5 (2022-04-01)
+- changed: refactoring
+- added: output inquiry data to _drive.txt
+- added: pspumdman.prx (this module is used only for the purpose of some tests)
+- added: document (IoctlCommandList.txt, PrxAnalysis.txt)

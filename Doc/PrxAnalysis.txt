@@ -1,0 +1,256 @@
+1. Introduction
+This is the document that recorded a result of the analysis of the unimplemented kernel function, especially a related UMD drive.
+
+2. Analysis method
+2-1. Download the official firmware to the PSP page of the playstation.com (old FW can be downloaded using https://web.archive.org/).
+2-2. Use the pspdecrypt (https://github.com/John-K/pspdecrypt) to decrypt EBOOT.PBP.
+2-3. You can get the decrypted prx file in the EBOOT\F0\kd\ directory.
+
+3. Analysis result
+UMD drive works by umdman.prx.
+
+A part of the umdman.prx on 6.61 kernel is below.
+
+ Address 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 0123456789ABCDEF
+--------+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+----------------
+ 0xEC90              73 63 65 55 6D 64 4D 61 6E 5F 64 72     sceUmdMan_dr
+ 0xECA0  69 76 65 72 00 00 00 00 94 9E 06 02 03 A2 3E 0D iver
+ 0xECB0  6D D2 C8 0D 61 8A 64 0F 1C 38 D3 14 76 0D F4 17
+ 0xECC0  13 A3 19 1B 42 FD C3 1E F4 FF 9A 1F 41 46 E3 1F
+ 0xECD0  BB 80 65 26 9A 86 C1 27 76 E3 1A 29 65 9A 5F 2C
+ 0xECE0  9B 95 BE 2C B1 18 E9 2C B9 5B FB 32 B0 5D 37 34
+ 0xECF0  3C AC 05 3A D6 E7 6D 3A 3D 52 8C 3C 99 8F 6E 40
+ 0xED00  5B 22 BE 40 44 4A 89 43 D8 B6 E2 47 AF 98 3F 4D
+ 0xED10  A3 13 B9 4F 88 22 A2 50 31 AF 19 52 38 AC FD 57
+ 0xED20  3C 4A C9 5A D1 F8 19 65 E0 B3 E2 65 57 FD 17 6D
+ 0xED30  35 70 9E 70 33 E1 6A 73 50 13 E8 77 31 73 28 78
+ 0xED40  0C 7F D8 7B 60 E1 6C 80 5D 1D D3 80 BE E7 E5 81
+ 0xED50  10 2E 16 88 11 D6 FE 8C BD 3B A3 8D 3A C1 F7 8F
+ 0xED60  7D 7B 1E 92 73 6F 10 9F 3D 06 84 A6 09 61 53 A7
+ 0xED70  06 33 72 AD 41 70 F0 AE CE 65 1F B0 A7 3D A4 B0
+ 0xED80  D1 44 9A B8 48 7B DC B8 70 4D 97 BD A1 5D 98 BE
+ 0xED90  85 1B EE BE C9 D6 15 C6 FA 37 D1 C8 25 10 D3 CA
+ 0xEDA0  E0 F4 DC CA 84 48 79 CB D8 BE 40 CC 23 80 47 D1
+ 0xEDB0  F4 7F 9D D2 F3 D6 72 D3 66 B5 67 DA 15 69 71 E3
+ 0xEDC0  EF EC 79 E7 CE 41 08 EB 64 D1 53 ED 21 31 BF EE
+ 0xEDD0  08 82 1D F3 7B ED B8 F5 45 82 2A F6 9B E6 61 F8
+ 0xEDE0  E9 B6 74 FB 
+--------+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+----------------
+ => NID bytes start from 0xECA8 and end in 0xEDD3
+
+NID and Function Name lists are below.
+(Blank name indicates UNKNOWN.)
+
+ NID        | Function Name             | 1st Used
+------------+---------------------------+----------
+ 0x02069E94 |                           | None
+ 0x0D3EA203 | sceUmdManTerm             | 1.00
+ 0x0DC8D26D | sceUmdManWaitSema         | 1.50
+ 0x0F648A61 |                           | None
+ 0x14D3381C | sceUmdExecTestCmd         | 1.00
+ 0x17F40D76 |                           | None
+ 0x1B19A313 | sceUmdExecInquiryCmd      | 1.00
+ 0x1EC3FD42 |                           | None
+ 0x1F9AFFF4 | sceUmdManMediaPresent     | 1.50
+ 0x1FE34641 |                           | None
+ 0x266580BB |                           | None
+ 0x27C1869A |                           | None
+ 0x291AE376 |                           | None
+ 0x2C5F9A65 |                           | None
+ 0x2CBE959B | sceUmdExecReqSenseCmd     | 1.00
+ 0x2CE918B1 |                           | None
+ 0x32FB5BB9 |                           | None
+ 0x34375DB0 |                           | None
+ 0x3A05AC3C |                           | None
+ 0x3A6DE7D6 |                           | None
+ 0x3C8C523D |                           | None
+ 0x406E8F99 |                           | None
+ 0x40BE225B |                           | None
+ 0x43894A44 |                           | None
+ 0x47E2B6D8 | sceUmdManGetUmdDrive      | 1.00
+ 0x4D3F98AF |                           | None
+ 0x4FB913A3 | sceUmdManGetIntrStateFlag | 1.50
+ 0x50A22288 |                           | None
+ 0x5219AF31 |                           | None
+ 0x57FDAC38 |                           | None
+ 0x5AC94A3C |                           | None
+ 0x6519F8D1 |                           | None
+ 0x65E2B3E0 |                           | None
+ 0x6D17FD57 |                           | None
+ 0x709E7035 |                           | None
+ 0x736AE133 |                           | 1.00
+ 0x77E81350 |                           | None
+ 0x78287331 |                           | None
+ 0x7BD87F0C |                           | None
+ 0x806CE160 |                           | None
+ 0x80D31D5D |                           | None
+ 0x81E5E7BE |                           | None
+ 0x88162E10 |                           | None
+ 0x8CFED611 | sceUmdManStart            | 1.00
+ 0x8DA33BBD |                           | None
+ 0x8FF7C13A |                           | None
+ 0x921E7B7D |                           | None
+ 0x9F106F73 | sceUmdManPollSema         | 1.50
+ 0xA684063D |                           | None
+ 0xA7536109 |                           | None
+ 0xAD723306 |                           | None
+ 0xAEF07041 |                           | None
+ 0xB01F65CE |                           | None
+ 0xB0A43DA7 | sceUmdManSignalSema       | 1.50
+ 0xB89A44D1 |                           | None
+ 0xB8DC7B48 |                           | None
+ 0xBD974D70 |                           | None
+ 0xBE985DA1 |                           | None
+ 0xBEEE1B85 |                           | None
+ 0xC615D6C9 |                           | None
+ 0xC8D137FA |                           | None
+ 0xCAD31025 | sceUmdManStop             | 1.00
+ 0xCADCF4E0 |                           | None
+ 0xCB794884 |                           | None
+ 0xCC40BED8 |                           | None
+ 0xD1478023 |                           | None
+ 0xD29D7FF4 |                           | None
+ 0xD372D6F3 |                           | None
+ 0xDA67B566 |                           | None
+ 0xE3716915 |                           | None
+ 0xE779ECEF | sceUmdManGetInquiry       | 1.00
+ 0xEB0841CE |                           | None
+ 0xED53D164 |                           | None
+ 0xEEBF3121 |                           | None
+ 0xF31D8208 |                           | None
+ 0xF5B8ED7B |                           | None
+ 0xF62A8245 |                           | None
+ 0xF861E69B |                           | None
+ 0xFB74B6E9 |                           | None
+------------+---------------------------+----------
+
+Many functions are unknown because SCE started "randomising" the NIDs from fw 3.70 and onwards.
+(http://uofw.github.io/upspd/docs/SilverSpring_Blog/my.malloc.us/silverspring/nid-explained/index.html)
+ => Actually 3.60, not 3.70
+
+On the other hand, a part of the umdman.prx on 3.52 kernel is below.
+
+ Address 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 0123456789ABCDEF
+--------+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+----------------
+ 0x103D0                                     73 63 65 55             sceU
+ 0x103E0 6D 64 4D 61 6E 5F 64 72 69 76 65 72 00 00 00 00 mdMan_driver
+ 0x103F0 C1 78 BD 08 40 D5 14 0D 03 A2 3E 0D 6D D2 C8 0D 
+ 0x10400 22 23 8B 10 1C 38 D3 14 80 18 DE 18 13 A3 19 1B 
+ 0x10410 FD F9 1B 1B 6A 27 A9 1D F4 FF 9A 1F 75 69 0E 25 
+ 0x10420 8E 07 87 27 9A FE 08 2A 9B 56 39 2A 37 6C 75 2C 
+ 0x10430 9B 95 BE 2C 1E 31 49 2E 6E 4B 70 39 BF BA 44 3D 
+ 0x10440 71 AA CF 3D A5 48 5B 40 F5 E7 17 42 D1 8D D2 42 
+ 0x10450 06 E3 81 45 D8 B6 E2 47 25 49 5D 48 A3 13 B9 4F 
+ 0x10460 B3 03 85 52 1A 67 2F 55 15 64 A9 5A CE 69 B6 5F 
+ 0x10470 CD 3E 93 60 52 2A C3 61 A5 07 EB 61 28 FD AC 63 
+ 0x10480 C6 DE D0 65 7E B9 E1 65 09 77 57 68 A7 E3 94 70 
+ 0x10490 33 E1 6A 73 8F 9F E4 73 3A C0 E6 77 7C 30 3D 7C 
+ 0x104A0 8D A1 F2 7D 09 24 48 7F 8E 0A 41 84 C5 A6 AE 85 
+ 0x104B0 E4 D1 09 86 C7 FF 34 86 11 D6 FE 8C 33 CC F1 92 
+ 0x104C0 F3 DC 14 98 81 53 34 98 73 6F 10 9F B3 CA 69 A8 
+ 0x104D0 91 ED A4 AA A7 3D A4 B0 55 DC A6 B0 81 83 36 B2 
+ 0x104E0 21 F8 11 B5 B1 FD 9D B6 88 A4 13 BD 6F 47 88 BF 
+ 0x104F0 79 ED 8A BF 12 72 5D C2 00 F2 68 CA 25 10 D3 CA 
+ 0x10500 C6 CF 80 CC 57 C8 A5 CE 3E 5E E5 CE 96 F2 D4 D1 
+ 0x10510 0E 05 7D D2 7E AD 1D D3 A2 F4 A2 D7 0A C1 92 E1 
+ 0x10520 E0 48 F4 E3 C5 ED B7 E5 EF EC 79 E7 D1 26 34 EC 
+ 0x10530 A8 66 D5 EF 2D F6 AF F4 9F 81 5D F6 FC 91 BE F6 
+ 0x10540 7C E1 19 F8 FE F5 FE FC
+--------+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+----------------
+
+ NID        | Function Name                             | 1st Used
+------------+-------------------------------------------+----------
+ 0x08BD78C1 | sceUmdManExecAtaCmd                       | 2.71
+ 0x0D14D540 | sceUmdManGetBootFrom                      | 2.00
+ 0x0D3EA203 | sceUmdManTerm                             | 1.00
+ 0x0DC8D26D | sceUmdManWaitSema                         | 1.50
+ 0x108B2322 | sceUmdExecGetMediaInfoCmd                 | 1.00
+ 0x14D3381C | sceUmdExecTestCmd                         | 1.00
+ 0x18DE1880 | sceUmdExecPrefetch10Cmd                   | 1.00
+ 0x1B19A313 | sceUmdExecInquiryCmd                      | 1.00
+ 0x1B1BF9FD | sceUmdExecRead10Cmd                       | 1.00
+ 0x1DA9276A |                                           | 2.71
+ 0x1F9AFFF4 | sceUmdManMediaPresent                     | 1.50
+ 0x250E6975 | sceUmdExecSeekCmd                         | 1.00
+ 0x2787078E | sceUmdManUnRegisterImposeCallback         | 1.50
+ 0x2A08FE9A | sceUmdExecPreventAllowMediaCmd            | 1.00
+ 0x2A39569B | sceUmdExecModSenseCmd                     | 1.00
+ 0x2C756C37 | sceUmdManGetErrorStatus                   | 1.50
+ 0x2CBE959B | sceUmdExecReqSenseCmd                     | 1.00
+ 0x2E49311E |                                           | 2.00
+ 0x39704B6E | sceUmdManSetEnableReadAhead               | 1.50
+ 0x3D44BABF | sceUmdExecReadUMDStructureCmd             | 1.00
+ 0x3DCFAA71 |                                           | 1.50
+ 0x405B48A5 |                                           | 2.00
+ 0x4217E7F5 | sceUmdManUnRegisterInsertEjectUMDCallBack | 1.50
+ 0x42D28DD1 | sceUmdManGetReadyFlag                     | 1.50
+ 0x4581E306 | sceUmdManGetPowerStat                     | 1.00
+ 0x47E2B6D8 | sceUmdManGetUmdDrive                      | 1.00
+ 0x485D4925 | sceUmdExecSetStreamingCmd                 | 1.00
+ 0x4FB913A3 | sceUmdManGetIntrStateFlag                 | 1.50
+ 0x528503B3 |                                           | 2.71
+ 0x552F671A |                                           | 2.00
+ 0x5AA96415 | sceUmdExecReadCapacityCmd                 | 1.00
+ 0x5FB669CE |                                           | 2.71
+ 0x60933ECD |                                           | 2.71
+ 0x61C32A52 | sceUmdExecSetAreaLimitCmd                 | 1.00
+ 0x61EB07A5 | sceUmdExecGetErrorLogCmd                  | 1.00
+ 0x63ACFD28 | sceUmdManSetDisableReadAhead              | 1.50
+ 0x65D0DEC6 |                                           | 2.00
+ 0x65E1B97E | sceUmdExecGetEventStatusCmd               | 1.00
+ 0x68577709 | sceUmdExecAllocateFromReadCmd             | 1.00
+ 0x7094E3A7 | sceUmdExecSetAccessLimitCmd               | 1.00
+ 0x736AE133 |                                           | 1.00
+ 0x73E49F8F | sceUmdExecClearCacheInfoCmd               | 1.00
+ 0x77E6C03A |                                           | 1.00
+ 0x7C3D307C | sceUmdManSPKGetMKI                        | 1.00
+ 0x7DF2A18D | sceUmdManSetAlarm                         | 1.00
+ 0x7F482409 | sceUmdManLeptonReset                      | 2.00
+ 0x84410A8E | sceUmdManSetReadAheadSize                 | 1.50
+ 0x85AEA6C5 |                                           | 2.71
+ 0x8609D1E4 | sceUmdManGetDiscInfo                      | 1.00
+ 0x8634FFC7 |                                           | 1.00
+ 0x8CFED611 | sceUmdManStart                            | 1.00
+ 0x92F1CC33 | sceUmdExecAdjustDataCmd                   | 1.00
+ 0x9814DCF3 |                                           | 1.50
+ 0x98345381 | sceUmdExecReportCacheCmd                  | 1.00
+ 0x9F106F73 | sceUmdManPollSema                         | 1.50
+ 0xA869CAB3 |                                           | 1.00
+ 0xAAA4ED91 | sceUmdManGetDiscInfo4VSH                  | 1.00
+ 0xB0A43DA7 | sceUmdManSignalSema                       | 1.50
+ 0xB0A6DC55 | sceUmdManCancelAlarm                      | 1.00
+ 0xB2368381 | sceUmdManCheckDeviceReady                 | 1.00
+ 0xB511F821 |                                           | 1.00
+ 0xB69DFDB1 | sceUmdManSoftReset                        | 2.71
+ 0xBD13A488 |                                           | 1.50
+ 0xBF88476F | sceUmdExecSetCDSpeedCmd                   | 1.00
+ 0xBF8AED79 | sceUmdManRegisterInsertEjectUMDCallBack   | 1.50
+ 0xC25D7212 | sceUmdExecGetConfigurationCmd             | 2.71
+ 0xCA68F200 | sceUmdManChangePowerMode                  | 1.00
+ 0xCAD31025 | sceUmdManStop                             | 1.00
+ 0xCC80CFC6 | sceUmdManActivate                         | 1.50
+ 0xCEA5C857 |                                           | 1.00
+ 0xCEE55E3E | sceUmdExecModSelectCmd                    | 1.00
+ 0xD1D4F296 | sceUmdManGetCommandTimerFlag              | 1.00
+ 0xD27D050E | sceUmdManInit                             | 1.00
+ 0xD31DAD7E | sceUmdExecSetLockLengthCmd                | 1.00
+ 0xD7A2F4A2 | sceUmdExecReadDiscInfoCmd                 | 2.71
+ 0xE192C10A | sceUmdManGetUmdDiscInfo                   | 1.00
+ 0xE3F448E0 | sceUmdExecStartStopUnitCmd                | 1.00
+ 0xE5B7EDC5 | sceUmdExecMechaStatCmd                    | 1.00
+ 0xE779ECEF | sceUmdManGetInquiry                       | 1.00
+ 0xEC3426D1 | sceUmdManIsUmdDrive                       | 2.71
+ 0xEFD566A8 |                                           | 2.00
+ 0xF4AFF62D |                                           | 1.00
+ 0xF65D819F | sceUmdManRegisterImposeCallBack           | 1.50
+ 0xF6BE91FC |                                           | 1.00
+ 0xF819E17C | sceUmdExecReadMKICmd                      | 1.00
+ 0xFCFEF5FE | sceUmdManValidateUMD                      | 1.00
+------------+-------------------------------------------+----------
+
+4. Conclusion
+Therefore, FW 1.00 ... 3.52 are needed to access to the SCSI-like function (e.g. sceUmdExecRead10Cmd).
+
+See also "PSP-PRX-Libraries-Documentation-Project" (https://github.com/mathieulh/PSP-PRX-Libraries-Documentation-Project)
+ => This project reveals the prx files from 1.00 to 5.00
+
