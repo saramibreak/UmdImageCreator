@@ -1,0 +1,20 @@
+* CHANGELOG.md
+** Change log of this app.
+
+* IoctlCommandList.txt
+** Ioctl Command List that PSP uses.
+
+* PrxAnalysis.txt
+** The result that analized the umdman.prx of FW 6.61 and 3.52.
+
+* umd9660_disasm352.txt
+** The result that disassembled the umd9660.prx of FW 3.52 using prxtool (https://github.com/pspdev/prxtool/).
+
+* umd9660_disasm352_c.txt
+** The file that converted umd9660_disasm352.txt to C language like string using prxtool-helper (http://misakalab.mithria.net/top/prxtool-helper).
+
+* umdman_disasm352.txt
+** The result that disassembled the umd9660.prx of FW 3.52 using prxtool.
+
+* umdman_disasm352_c.txt
+** The file that converted umdman_disasm352.txt to C language like string using prxtool-helper.
