@@ -9,126 +9,7 @@ This is the document that recorded a result of the analysis of the unimplemented
 3. Analysis result
 UMD drive works by umdman.prx.
 
-A part of the umdman.prx on 6.61 kernel is below.
-
- Address 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 0123456789ABCDEF
---------+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+----------------
- 0xEC90              73 63 65 55 6D 64 4D 61 6E 5F 64 72     sceUmdMan_dr
- 0xECA0  69 76 65 72 00 00 00 00 94 9E 06 02 03 A2 3E 0D iver
- 0xECB0  6D D2 C8 0D 61 8A 64 0F 1C 38 D3 14 76 0D F4 17
- 0xECC0  13 A3 19 1B 42 FD C3 1E F4 FF 9A 1F 41 46 E3 1F
- 0xECD0  BB 80 65 26 9A 86 C1 27 76 E3 1A 29 65 9A 5F 2C
- 0xECE0  9B 95 BE 2C B1 18 E9 2C B9 5B FB 32 B0 5D 37 34
- 0xECF0  3C AC 05 3A D6 E7 6D 3A 3D 52 8C 3C 99 8F 6E 40
- 0xED00  5B 22 BE 40 44 4A 89 43 D8 B6 E2 47 AF 98 3F 4D
- 0xED10  A3 13 B9 4F 88 22 A2 50 31 AF 19 52 38 AC FD 57
- 0xED20  3C 4A C9 5A D1 F8 19 65 E0 B3 E2 65 57 FD 17 6D
- 0xED30  35 70 9E 70 33 E1 6A 73 50 13 E8 77 31 73 28 78
- 0xED40  0C 7F D8 7B 60 E1 6C 80 5D 1D D3 80 BE E7 E5 81
- 0xED50  10 2E 16 88 11 D6 FE 8C BD 3B A3 8D 3A C1 F7 8F
- 0xED60  7D 7B 1E 92 73 6F 10 9F 3D 06 84 A6 09 61 53 A7
- 0xED70  06 33 72 AD 41 70 F0 AE CE 65 1F B0 A7 3D A4 B0
- 0xED80  D1 44 9A B8 48 7B DC B8 70 4D 97 BD A1 5D 98 BE
- 0xED90  85 1B EE BE C9 D6 15 C6 FA 37 D1 C8 25 10 D3 CA
- 0xEDA0  E0 F4 DC CA 84 48 79 CB D8 BE 40 CC 23 80 47 D1
- 0xEDB0  F4 7F 9D D2 F3 D6 72 D3 66 B5 67 DA 15 69 71 E3
- 0xEDC0  EF EC 79 E7 CE 41 08 EB 64 D1 53 ED 21 31 BF EE
- 0xEDD0  08 82 1D F3 7B ED B8 F5 45 82 2A F6 9B E6 61 F8
- 0xEDE0  E9 B6 74 FB 
---------+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+----------------
- => NID bytes start from 0xECA8 and end in 0xEDD3
-
-NID and Function Name lists are below.
-(Blank name indicates UNKNOWN.)
-
- NID        | Function Name             | 1st Used
-------------+---------------------------+----------
- 0x02069E94 |                           | None
- 0x0D3EA203 | sceUmdManTerm             | 1.00
- 0x0DC8D26D | sceUmdManWaitSema         | 1.50
- 0x0F648A61 |                           | None
- 0x14D3381C | sceUmdExecTestCmd         | 1.00
- 0x17F40D76 |                           | None
- 0x1B19A313 | sceUmdExecInquiryCmd      | 1.00
- 0x1EC3FD42 |                           | None
- 0x1F9AFFF4 | sceUmdManMediaPresent     | 1.50
- 0x1FE34641 |                           | None
- 0x266580BB |                           | None
- 0x27C1869A |                           | None
- 0x291AE376 |                           | None
- 0x2C5F9A65 |                           | None
- 0x2CBE959B | sceUmdExecReqSenseCmd     | 1.00
- 0x2CE918B1 |                           | None
- 0x32FB5BB9 |                           | None
- 0x34375DB0 |                           | None
- 0x3A05AC3C |                           | None
- 0x3A6DE7D6 |                           | None
- 0x3C8C523D |                           | None
- 0x406E8F99 |                           | None
- 0x40BE225B |                           | None
- 0x43894A44 |                           | None
- 0x47E2B6D8 | sceUmdManGetUmdDrive      | 1.00
- 0x4D3F98AF |                           | None
- 0x4FB913A3 | sceUmdManGetIntrStateFlag | 1.50
- 0x50A22288 |                           | None
- 0x5219AF31 |                           | None
- 0x57FDAC38 |                           | None
- 0x5AC94A3C |                           | None
- 0x6519F8D1 |                           | None
- 0x65E2B3E0 |                           | None
- 0x6D17FD57 |                           | None
- 0x709E7035 |                           | None
- 0x736AE133 |                           | 1.00
- 0x77E81350 |                           | None
- 0x78287331 |                           | None
- 0x7BD87F0C |                           | None
- 0x806CE160 |                           | None
- 0x80D31D5D |                           | None
- 0x81E5E7BE |                           | None
- 0x88162E10 |                           | None
- 0x8CFED611 | sceUmdManStart            | 1.00
- 0x8DA33BBD |                           | None
- 0x8FF7C13A |                           | None
- 0x921E7B7D |                           | None
- 0x9F106F73 | sceUmdManPollSema         | 1.50
- 0xA684063D |                           | None
- 0xA7536109 |                           | None
- 0xAD723306 |                           | None
- 0xAEF07041 |                           | None
- 0xB01F65CE |                           | None
- 0xB0A43DA7 | sceUmdManSignalSema       | 1.50
- 0xB89A44D1 |                           | None
- 0xB8DC7B48 |                           | None
- 0xBD974D70 |                           | None
- 0xBE985DA1 |                           | None
- 0xBEEE1B85 |                           | None
- 0xC615D6C9 |                           | None
- 0xC8D137FA |                           | None
- 0xCAD31025 | sceUmdManStop             | 1.00
- 0xCADCF4E0 |                           | None
- 0xCB794884 |                           | None
- 0xCC40BED8 |                           | None
- 0xD1478023 |                           | None
- 0xD29D7FF4 |                           | None
- 0xD372D6F3 |                           | None
- 0xDA67B566 |                           | None
- 0xE3716915 |                           | None
- 0xE779ECEF | sceUmdManGetInquiry       | 1.00
- 0xEB0841CE |                           | None
- 0xED53D164 |                           | None
- 0xEEBF3121 |                           | None
- 0xF31D8208 |                           | None
- 0xF5B8ED7B |                           | None
- 0xF62A8245 |                           | None
- 0xF861E69B |                           | None
- 0xFB74B6E9 |                           | None
-------------+---------------------------+----------
-
-Many functions are unknown because SCE started "randomising" the NIDs from fw 3.70 and onwards.
-(http://uofw.github.io/upspd/docs/SilverSpring_Blog/my.malloc.us/silverspring/nid-explained/index.html)
- => Actually 3.60, not 3.70
-
-On the other hand, a part of the umdman.prx on 3.52 kernel is below.
+A part of the umdman.prx on 3.52 kernel is below.
 
  Address 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 0123456789ABCDEF
 --------+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+----------------
@@ -157,6 +38,8 @@ On the other hand, a part of the umdman.prx on 3.52 kernel is below.
  0x10530 A8 66 D5 EF 2D F6 AF F4 9F 81 5D F6 FC 91 BE F6 
  0x10540 7C E1 19 F8 FE F5 FE FC
 --------+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+----------------
+
+NID and Function Name lists are below. Blank name indicates UNKNOWN.
 
  NID        | Function Name                             | 1st Used
 ------------+-------------------------------------------+----------
@@ -247,6 +130,124 @@ On the other hand, a part of the umdman.prx on 3.52 kernel is below.
  0xF819E17C | sceUmdExecReadMKICmd                      | 1.00
  0xFCFEF5FE | sceUmdManValidateUMD                      | 1.00
 ------------+-------------------------------------------+----------
+
+On the other hand, a part of the umdman.prx on 6.61 kernel is below.
+
+ Address 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 0123456789ABCDEF
+--------+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+----------------
+ 0xEC90              73 63 65 55 6D 64 4D 61 6E 5F 64 72     sceUmdMan_dr
+ 0xECA0  69 76 65 72 00 00 00 00 94 9E 06 02 03 A2 3E 0D iver
+ 0xECB0  6D D2 C8 0D 61 8A 64 0F 1C 38 D3 14 76 0D F4 17
+ 0xECC0  13 A3 19 1B 42 FD C3 1E F4 FF 9A 1F 41 46 E3 1F
+ 0xECD0  BB 80 65 26 9A 86 C1 27 76 E3 1A 29 65 9A 5F 2C
+ 0xECE0  9B 95 BE 2C B1 18 E9 2C B9 5B FB 32 B0 5D 37 34
+ 0xECF0  3C AC 05 3A D6 E7 6D 3A 3D 52 8C 3C 99 8F 6E 40
+ 0xED00  5B 22 BE 40 44 4A 89 43 D8 B6 E2 47 AF 98 3F 4D
+ 0xED10  A3 13 B9 4F 88 22 A2 50 31 AF 19 52 38 AC FD 57
+ 0xED20  3C 4A C9 5A D1 F8 19 65 E0 B3 E2 65 57 FD 17 6D
+ 0xED30  35 70 9E 70 33 E1 6A 73 50 13 E8 77 31 73 28 78
+ 0xED40  0C 7F D8 7B 60 E1 6C 80 5D 1D D3 80 BE E7 E5 81
+ 0xED50  10 2E 16 88 11 D6 FE 8C BD 3B A3 8D 3A C1 F7 8F
+ 0xED60  7D 7B 1E 92 73 6F 10 9F 3D 06 84 A6 09 61 53 A7
+ 0xED70  06 33 72 AD 41 70 F0 AE CE 65 1F B0 A7 3D A4 B0
+ 0xED80  D1 44 9A B8 48 7B DC B8 70 4D 97 BD A1 5D 98 BE
+ 0xED90  85 1B EE BE C9 D6 15 C6 FA 37 D1 C8 25 10 D3 CA
+ 0xEDA0  E0 F4 DC CA 84 48 79 CB D8 BE 40 CC 23 80 47 D1
+ 0xEDB0  F4 7F 9D D2 F3 D6 72 D3 66 B5 67 DA 15 69 71 E3
+ 0xEDC0  EF EC 79 E7 CE 41 08 EB 64 D1 53 ED 21 31 BF EE
+ 0xEDD0  08 82 1D F3 7B ED B8 F5 45 82 2A F6 9B E6 61 F8
+ 0xEDE0  E9 B6 74 FB 
+--------+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+----------------
+ => NID bytes start from 0xECA8 and end in 0xEDD3
+
+ NID        | Function Name                             | 1st Used
+------------+-------------------------------------------+----------
+ 0x02069E94 | Same as 0xB511F821 of 3.52                | None -> detected comparing with 3.52
+ 0x0D3EA203 | sceUmdManTerm                             | 1.00
+ 0x0DC8D26D | sceUmdManWaitSema                         | 1.50
+ 0x0F648A61 | Same as 0x85AEA6C5 of 3.52                | None -> detected comparing with 3.52
+ 0x14D3381C | sceUmdExecTestCmd                         | 1.00
+ 0x17F40D76 | Same as 0x1DA9276A of 3.52                | None -> detected comparing with 3.52
+ 0x1B19A313 | sceUmdExecInquiryCmd                      | 1.00
+ 0x1EC3FD42 | Same as 0x8634FFC7 of 3.52                | None -> detected comparing with 3.52
+ 0x1F9AFFF4 | sceUmdManMediaPresent                     | 1.50
+ 0x1FE34641 | sceUmdManSoftReset                        | None -> detected comparing with 3.52
+ 0x266580BB | Same as 0xF6BE91FC of 3.52                | None -> detected comparing with 3.52
+ 0x27C1869A | sceUmdExecReportCacheCmd                  | None -> detected comparing with 3.52
+ 0x291AE376 | Same as 0xEFD566A8 of 3.52                | None -> detected comparing with 3.52
+ 0x2C5F9A65 | sceUmdExecModSelectCmd                    | None -> detected comparing with 3.52
+ 0x2CBE959B | sceUmdExecReqSenseCmd                     | 1.00
+ 0x2CE918B1 | sceUmdManGetCommandTimerFlag              | None -> detected comparing with 3.52
+ 0x32FB5BB9 | sceUmdManValidateUMD                      | None -> detected comparing with 3.52
+ 0x34375DB0 | sceUmdManUnRegisterImposeCallback         | None -> detected comparing with 3.52
+ 0x3A05AC3C | sceUmdManIsUmdDrive                       | None -> detected comparing with 3.52 (a little different)
+ 0x3A6DE7D6 | Same as 0x77E6C03A of 3.52                | None -> detected comparing with 3.52
+ 0x3C8C523D | sceUmdManRegisterInsertEjectUMDCallBack   | None -> detected comparing with 3.52
+ 0x406E8F99 | sceUmdExecReadUMDStructureCmd             | None -> detected comparing with 3.52
+ 0x40BE225B | sceUmdManGetErrorStatus                   | None -> detected comparing with 3.52
+ 0x43894A44 | sceUmdManSetEnableReadAhead               | None -> detected comparing with 3.52
+ 0x47E2B6D8 | sceUmdManGetUmdDrive                      | 1.00
+ 0x4D3F98AF | sceUmdExecAdjustDataCmd                   | None -> detected comparing with 3.52
+ 0x4FB913A3 | sceUmdManGetIntrStateFlag                 | 1.50
+ 0x50A22288 | sceUmdExecSetCDSpeedCmd                   | None -> detected comparing with 3.52
+ 0x5219AF31 | sceUmdExecStartStopUnitCmd                | None -> detected comparing with 3.52
+ 0x57FDAC38 | Same as 0xA869CAB3 of 3.52                | None -> detected comparing with 3.52
+ 0x5AC94A3C | sceUmdExecPreventAllowMediaCmd            | None -> detected comparing with 3.52
+ 0x6519F8D1 | sceUmdManSetAlarm                         | None -> detected comparing with 3.52
+ 0x65E2B3E0 | Same as 0x60933ECD of 3.52                | None -> detected comparing with 3.52
+ 0x6D17FD57 | sceUmdExecReadMKICmd                      | None -> detected comparing with 3.52
+ 0x709E7035 | sceUmdManCancelAlarm                      | None -> detected comparing with 3.52
+ 0x736AE133 | Same as 0x736AE133 of 3.52                | None -> detected comparing with 3.52
+ 0x77E81350 | sceUmdExecSetAreaLimitCmd                 | None -> detected comparing with 3.52
+ 0x78287331 | sceUmdManGetDiscInfo                      | None -> detected comparing with 3.52
+ 0x7BD87F0C | sceUmdManGetPowerStat                     | None -> detected comparing with 3.52
+ 0x806CE160 | Same as 0x5FB669CE of 3.52                | None -> detected comparing with 3.52
+ 0x80D31D5D | sceUmdManRegisterImposeCallBack           | None -> detected comparing with 3.52
+ 0x81E5E7BE | sceUmdManGetBootFrom                      | None -> detected comparing with 3.52
+ 0x88162E10 | Same as 0xCEA5C857 of 3.52                | None -> detected comparing with 3.52
+ 0x8CFED611 | sceUmdManStart                            | 1.00
+ 0x8DA33BBD | sceUmdExecAllocateFromReadCmd             | None -> detected comparing with 3.52
+ 0x8FF7C13A | Same as 0xBD13A488 of 3.52                | None -> detected comparing with 3.52
+ 0x921E7B7D | sceUmdManGetReadyFlag                     | None -> detected comparing with 3.52
+ 0x9F106F73 | sceUmdManPollSema                         | 1.50
+ 0xA684063D | sceUmdManChangePowerMode                  | None -> detected comparing with 3.52
+ 0xA7536109 | sceUmdManUnRegisterInsertEjectUMDCallBack | None
+ 0xAD723306 | Same as 0x3DCFAA71 of 3.52                | None -> detected comparing with 3.52
+ 0xAEF07041 | Same as 0x405B48A5 of 3.52                | None -> detected comparing with 3.52
+ 0xB01F65CE | sceUmdExecSeekCmd                         | None -> detected comparing with 3.52
+ 0xB0A43DA7 | sceUmdManSignalSema                       | 1.50
+ 0xB89A44D1 | Same as 0x9814DCF3 of 3.52                | None -> detected comparing with 3.52
+ 0xB8DC7B48 | sceUmdManGetDiscInfo4VSH                  | None -> detected comparing with 3.52
+ 0xBD974D70 | sceUmdExecGetEventStatusCmd               | None -> detected comparing with 3.52
+ 0xBE985DA1 | Same as 0xF4AFF62D of 3.52                | None -> detected comparing with 3.52
+ 0xBEEE1B85 | sceUmdManExecAtaCmd                       | None -> detected comparing with 3.52
+ 0xC615D6C9 | sceUmdExecPrefetch10Cmd                   | None -> detected comparing with 3.52
+ 0xC8D137FA | Same as 0x528503B3 of 3.52                | None -> detected comparing with 3.52
+ 0xCAD31025 | sceUmdManStop                             | 1.00
+ 0xCADCF4E0 | sceUmdManSetDisableReadAhead              | None -> detected comparing with 3.52
+ 0xCB794884 | sceUmdManActivate                         | None -> detected comparing with 3.52
+ 0xCC40BED8 | sceUmdExecReadCapacityCmd                 | None -> detected comparing with 3.52
+ 0xD1478023 | sceUmdManGetUmdDiscInfo                   | None -> detected comparing with 3.52
+ 0xD29D7FF4 | sceUmdManLeptonReset                      | None -> detected comparing with 3.52
+ 0xD372D6F3 | sceUmdManCheckDeviceReady                 | None -> detected comparing with 3.52
+ 0xDA67B566 | sceUmdManInit                             | None -> detected comparing with 3.52
+ 0xE3716915 | sceUmdExecRead10Cmd                       | None -> detected comparing with 3.52
+ 0xE779ECEF | sceUmdManGetInquiry                       | 1.00
+ 0xEB0841CE | sceUmdExecModSenseCmd                     | None -> detected comparing with 3.52
+ 0xED53D164 | Same as 0x552F671A of 3.52                | None -> detected comparing with 3.52
+ 0xEEBF3121 | sceUmdExecSetLockLengthCmd                | None
+ 0xF31D8208 | Same as 0x65D0DEC6 of 3.52                | None -> detected comparing with 3.52
+ 0xF5B8ED7B | Same as 0x2E49311E of 3.52                | None -> detected comparing with 3.52
+ 0xF62A8245 | sceUmdManSetReadAheadSize                 | None -> detected comparing with 3.52
+ 0xF861E69B | sceUmdExecReadDiscInfoCmd                 | None -> detected comparing with 3.52
+ 0xFB74B6E9 | sceUmdManSPKGetMKI                        | None -> detected comparing with 3.52
+------------+-------------------------------------------+----------
+
+Many NIDs are changed from FW 3.52 because SCE started "randomising" the NIDs from FW 3.70 and onwards. (Actually 3.60, not 3.70)
+These new NIDs are not actually “random” but instead, they now append a new 128bit “randomising key” to the end of each string before the SHA1 hash is calculated.
+(http://uofw.github.io/upspd/docs/SilverSpring_Blog/my.malloc.us/silverspring/nid-explained/index.html)
+
+For this reason, we cannot access to the function from FW 3.60 to FW 6.61 if NID changes.
 
 4. Conclusion
 Therefore, FW 1.00 ... 3.52 are needed to access to the SCSI-like function (e.g. sceUmdExecRead10Cmd).

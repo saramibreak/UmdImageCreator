@@ -11,10 +11,22 @@
 ** The result that disassembled the umd9660.prx of FW 3.52 using prxtool (https://github.com/pspdev/prxtool/).
 
 * umd9660_disasm352_c.txt
-** The file that converted umd9660_disasm352.txt to C language like string using prxtool-helper (http://misakalab.mithria.net/top/prxtool-helper).
+** The file that converted umd9660_disasm352.txt to C language like string using prxtool-helper (https://web.archive.org/web/20230528220926/http://misakalab.mithria.net/top/prxtool-helper).
+
+* umd9660_disasm661.txt
+** The result that disassembled the umd9660.prx of FW 6.61 using prxtool.
+
+* umd9660_disasm661_c.txt
+** The file that converted umd9660_disasm661.txt to C language like string using prxtool-helper.
 
 * umdman_disasm352.txt
-** The result that disassembled the umd9660.prx of FW 3.52 using prxtool.
+** The result that disassembled the umdman.prx of FW 3.52 using prxtool.
 
 * umdman_disasm352_c.txt
 ** The file that converted umdman_disasm352.txt to C language like string using prxtool-helper.
+
+* umdman_disasm661.txt
+** The result that disassembled the umdman.prx of FW 6.61 using prxtool.
+
+* umdman_disasm661_c.txt
+** The file that converted umdman_disasm661.txt to C language like string using prxtool-helper.
