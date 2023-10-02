@@ -27,7 +27,7 @@
 	0x0000005C: 0x354A0013 '..J5' - ori        $t2, $t2, 0x13
 	0x00000060: 0x14440012 '..D.' - bne        $v0, $a0, loc_000000AC
 	0x00000064: 0x00003021 '!0..' - move       $a2, $zr
-	0x00000068: 0x0C0018B9 '....' - jal        ThreadManForKernel_4E3A1105
+	0x00000068: 0x0C0018B9 '....' - jal        sceKernelWaitSema
 	0x0000006C: 0x8E040048 'H...' - lw         $a0, 72($s0)
 	0x00000070: 0x02403021 '!0@.' - move       $a2, $s2
 	0x00000074: 0x02603821 '!8`.' - move       $a3, $s3
@@ -39,7 +39,7 @@
 	0x0000008C: 0xAE220018 '..".' - sw         $v0, 24($s1)
 	0x00000090: 0xAE23001C '..#.' - sw         $v1, 28($s1)
 	0x00000094: 0x24050001 '...$' - li         $a1, 1
-	0x00000098: 0x0C0018B5 '....' - jal        ThreadManForKernel_3F53E640
+	0x00000098: 0x0C0018B5 '....' - jal        sceKernelSignalSema
 	0x0000009C: 0x8E040048 'H...' - lw         $a0, 72($s0)
 	0x000000A0: 0x8E2A0018 '..*.' - lw         $t2, 24($s1)
 	0x000000A4: 0x8E2B001C '..+.' - lw         $t3, 28($s1)
@@ -82,7 +82,7 @@ loc_000000D0:		; Refs: 0x0000007C
 	0x00000120: 0x24050001 '...$' - li         $a1, 1
 	0x00000124: 0x1444000F '..D.' - bne        $v0, $a0, loc_00000164
 	0x00000128: 0x34670013 '..g4' - ori        $a3, $v1, 0x13
-	0x0000012C: 0x0C0018B9 '....' - jal        ThreadManForKernel_4E3A1105
+	0x0000012C: 0x0C0018B9 '....' - jal        sceKernelWaitSema
 	0x00000130: 0x8E440048 'H.D.' - lw         $a0, 72($s2)
 	0x00000134: 0x00403821 '!8@.' - move       $a3, $v0
 	0x00000138: 0x04400009 '..@.' - bltz       $v0, loc_00000160
@@ -92,7 +92,7 @@ loc_000000D0:		; Refs: 0x0000007C
 	0x00000148: 0x00408021 '!.@.' - move       $s0, $v0
 	0x0000014C: 0x1040000B '..@.' - beqz       $v0, loc_0000017C
 	0x00000150: 0x24050001 '...$' - li         $a1, 1
-	0x00000154: 0x0C0018B5 '....' - jal        ThreadManForKernel_3F53E640
+	0x00000154: 0x0C0018B5 '....' - jal        sceKernelSignalSema
 	0x00000158: 0x8E440048 'H.D.' - lw         $a0, 72($s2)
 	0x0000015C: 0x02003821 '!8..' - move       $a3, $s0
 
@@ -109,7 +109,7 @@ loc_00000164:		; Refs: 0x00000108 0x00000124
 
 loc_0000017C:		; Refs: 0x0000014C 
 	0x0000017C: 0xAE200010 '.. .' - sw         $zr, 16($s1)
-	0x00000180: 0x0C0018B5 '....' - jal        ThreadManForKernel_3F53E640
+	0x00000180: 0x0C0018B5 '....' - jal        sceKernelSignalSema
 	0x00000184: 0x8E440048 'H.D.' - lw         $a0, 72($s2)
 	0x00000188: 0x08000058 'X...' - j          loc_00000160
 	0x0000018C: 0x00003821 '!8..' - move       $a3, $zr
@@ -181,7 +181,7 @@ loc_00000250:		; Refs: 0x00000238 0x00000394 0x000003B0
 	0x0000025C: 0x8FBF0064 'd...' - lw         $ra, 100($sp)
 	0x00000260: 0x8E840048 'H...' - lw         $a0, 72($s4)
 	0x00000264: 0x24050001 '...$' - li         $a1, 1
-	0x00000268: 0x0C0018B9 '....' - jal        ThreadManForKernel_4E3A1105
+	0x00000268: 0x0C0018B9 '....' - jal        sceKernelWaitSema
 	0x0000026C: 0x00003021 '!0..' - move       $a2, $zr
 	0x00000270: 0x04400042 'B.@.' - bltz       $v0, loc_0000037C
 	0x00000274: 0x00409021 '!.@.' - move       $s2, $v0
@@ -221,7 +221,7 @@ loc_000002B0:		; Refs: 0x0000029C
 	0x000002F4: 0x262513E4 '..%&' - addiu      $a1, $s1, 5092
 	0x000002F8: 0x27A60030 '0..'' - addiu      $a2, $sp, 48
 	0x000002FC: 0x24041000 '...$' - li         $a0, 4096
-	0x00000300: 0x0C0018BD '....' - jal        ThreadManForKernel_BC31C1B9
+	0x00000300: 0x0C0018BD '....' - jal        sceKernelExtendKernelStack
 	0x00000304: 0xAFA2004C 'L...' - sw         $v0, 76($sp)
 	0x00000308: 0x14400013 '..@.' - bnez       $v0, loc_00000358
 	0x0000030C: 0x00409021 '!.@.' - move       $s2, $v0
@@ -246,7 +246,7 @@ loc_000002B0:		; Refs: 0x0000029C
 
 loc_00000358:		; Refs: 0x00000288 0x00000308 
 	0x00000358: 0x8E840048 'H...' - lw         $a0, 72($s4)
-	0x0000035C: 0x0C0018B5 '....' - jal        ThreadManForKernel_3F53E640
+	0x0000035C: 0x0C0018B5 '....' - jal        sceKernelSignalSema
 	0x00000360: 0x24050001 '...$' - li         $a1, 1
 	0x00000364: 0x0C001929 ')...' - jal        sceUmdManSignalSema
 	0x00000368: 0x00000000 '....' - nop        
@@ -262,11 +262,11 @@ loc_0000037C:		; Refs: 0x00000270
 	0x00000388: 0x02401021 '!.@.' - move       $v0, $s2
 
 loc_0000038C:		; Refs: 0x00000248 
-	0x0000038C: 0x0C0018BB '....' - jal        ThreadManForKernel_85A2A5BF
+	0x0000038C: 0x0C0018BB '....' - jal        sceKernelIsUserModeThread
 	0x00000390: 0x00000000 '....' - nop        
 	0x00000394: 0x1040FFAE '..@.' - beqz       $v0, loc_00000250
 	0x00000398: 0x00000000 '....' - nop        
-	0x0000039C: 0x0C001899 '....' - jal        SysMemForKernel_FC114573
+	0x0000039C: 0x0C001899 '....' - jal        sceKernelGetCompiledSdkVersion
 	0x000003A0: 0x00000000 '....' - nop        
 	0x000003A4: 0x3C0C0300 '...<' - lui        $t4, 0x300
 	0x000003A8: 0x0182502A '*P..' - slt        $t2, $t4, $v0
@@ -363,9 +363,9 @@ loc_000004CC:		; Refs: 0x0000049C
 	0x000004F4: 0xAFA00010 '....' - sw         $zr, 16($sp)
 	0x000004F8: 0xAFA00014 '....' - sw         $zr, 20($sp)
 	0x000004FC: 0xAFA00018 '....' - sw         $zr, 24($sp)
-	0x00000500: 0x0C0018A3 '....' - jal        SysclibForKernel_7661E728
+	0x00000500: 0x0C0018A3 '....' - jal        sprintf
 	0x00000504: 0xAFA0001C '....' - sw         $zr, 28($sp)
-	0x00000508: 0x0C0018A1 '....' - jal        SysclibForKernel_52DF196C
+	0x00000508: 0x0C0018A1 '....' - jal        strlen
 	0x0000050C: 0x03A02021 '! ..' - move       $a0, $sp
 	0x00000510: 0x2C490020 ' .I,' - sltiu      $t1, $v0, 32
 	0x00000514: 0x3C0A8001 '...<' - lui        $t2, 0x8001
@@ -380,7 +380,7 @@ loc_000004CC:		; Refs: 0x0000049C
 	0x00000538: 0x00000000 '....' - nop        
 	0x0000053C: 0x10400005 '..@.' - beqz       $v0, loc_00000554
 	0x00000540: 0x00000000 '....' - nop        
-	0x00000544: 0x0C0018BB '....' - jal        ThreadManForKernel_85A2A5BF
+	0x00000544: 0x0C0018BB '....' - jal        sceKernelIsUserModeThread
 	0x00000548: 0x00000000 '....' - nop        
 	0x0000054C: 0x14400033 '3.@.' - bnez       $v0, loc_0000061C
 	0x00000550: 0x00000000 '....' - nop        
@@ -394,7 +394,7 @@ loc_00000554:		; Refs: 0x0000053C 0x0000062C
 	0x00000568: 0x37030013 '...7' - ori        $v1, $t8, 0x13
 	0x0000056C: 0x8C440048 'H.D.' - lw         $a0, 72($v0)
 	0x00000570: 0x24050001 '...$' - li         $a1, 1
-	0x00000574: 0x0C0018B9 '....' - jal        ThreadManForKernel_4E3A1105
+	0x00000574: 0x0C0018B9 '....' - jal        sceKernelWaitSema
 	0x00000578: 0x00003021 '!0..' - move       $a2, $zr
 	0x0000057C: 0x00408021 '!.@.' - move       $s0, $v0
 	0x00000580: 0x0440FFC8 '..@.' - bltz       $v0, loc_000004A4
@@ -418,13 +418,13 @@ loc_00000554:		; Refs: 0x0000053C 0x0000062C
 	0x000005C8: 0x8E430060 '`.C.' - lw         $v1, 96($s2)
 	0x000005CC: 0x02759021 '!.u.' - addu       $s2, $s3, $s5
 	0x000005D0: 0x0003CAC0 '....' - sll        $t9, $v1, 11
-	0x000005D4: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x000005D4: 0x0C0018AB '....' - jal        memcpy
 	0x000005D8: 0xAE790058 'X.y.' - sw         $t9, 88($s3)
 	0x000005DC: 0x02A03021 '!0..' - move       $a2, $s5
 	0x000005E0: 0x26640028 '(.d&' - addiu      $a0, $s3, 40
 	0x000005E4: 0x0000A021 '!...' - move       $s4, $zr
 	0x000005E8: 0x0000A821 '!...' - move       $s5, $zr
-	0x000005EC: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x000005EC: 0x0C0018AB '....' - jal        memcpy
 	0x000005F0: 0x03A02821 '!(..' - move       $a1, $sp
 	0x000005F4: 0xA2400028 '(.@.' - sb         $zr, 40($s2)
 	0x000005F8: 0x24050001 '...$' - li         $a1, 1
@@ -432,19 +432,19 @@ loc_00000554:		; Refs: 0x0000053C 0x0000062C
 	0x00000600: 0x8E640048 'H.d.' - lw         $a0, 72($s3)
 	0x00000604: 0xAE340018 '..4.' - sw         $s4, 24($s1)
 	0x00000608: 0xAE35001C '..5.' - sw         $s5, 28($s1)
-	0x0000060C: 0x0C0018B5 '....' - jal        ThreadManForKernel_3F53E640
+	0x0000060C: 0x0C0018B5 '....' - jal        sceKernelSignalSema
 	0x00000610: 0xAE330010 '..3.' - sw         $s3, 16($s1)
 	0x00000614: 0x08000129 ')...' - j          loc_000004A4
 	0x00000618: 0x02001821 '!...' - move       $v1, $s0
 
 loc_0000061C:		; Refs: 0x0000054C 
-	0x0000061C: 0x0C001899 '....' - jal        SysMemForKernel_FC114573
+	0x0000061C: 0x0C001899 '....' - jal        sceKernelGetCompiledSdkVersion
 	0x00000620: 0x00000000 '....' - nop        
 	0x00000624: 0x3C0F0300 '...<' - lui        $t7, 0x300
 	0x00000628: 0x01E2702A '*p..' - slt        $t6, $t7, $v0
 	0x0000062C: 0x11C0FFC9 '....' - beqz       $t6, loc_00000554
 	0x00000630: 0x240403E8 '...$' - li         $a0, 1000
-	0x00000634: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x00000634: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x00000638: 0x3C108021 '!..<' - lui        $s0, 0x8021
 	0x0000063C: 0x08000129 ')...' - j          loc_000004A4
 	0x00000640: 0x36030001 '...6' - ori        $v1, $s0, 0x1
@@ -496,7 +496,7 @@ loc_000006D4:		; Refs: 0x00000690
 	0x000006E0: 0x34640013 '..d4' - ori        $a0, $v1, 0x13
 	0x000006E4: 0x8E640048 'H.d.' - lw         $a0, 72($s3)
 	0x000006E8: 0x24050001 '...$' - li         $a1, 1
-	0x000006EC: 0x0C0018B9 '....' - jal        ThreadManForKernel_4E3A1105
+	0x000006EC: 0x0C0018B9 '....' - jal        sceKernelWaitSema
 	0x000006F0: 0x00003021 '!0..' - move       $a2, $zr
 	0x000006F4: 0x0440FFEA '..@.' - bltz       $v0, loc_000006A0
 	0x000006F8: 0x00402021 '! @.' - move       $a0, $v0
@@ -534,7 +534,7 @@ loc_00000764:		; Refs: 0x000007A8 0x000007C8
 
 loc_00000768:		; Refs: 0x0000072C 0x0000073C 0x00000758 0x000007B0 0x000007E0 0x00000808 0x00000884 0x000008B0 0x000008E4 0x0000090C 0x00000920 0x00000938 0x00000948 
 	0x00000768: 0x8E640048 'H.d.' - lw         $a0, 72($s3)
-	0x0000076C: 0x0C0018B5 '....' - jal        ThreadManForKernel_3F53E640
+	0x0000076C: 0x0C0018B5 '....' - jal        sceKernelSignalSema
 	0x00000770: 0x24050001 '...$' - li         $a1, 1
 	0x00000774: 0x0C0018CB '....' - jal        sceUmd_659587F7
 	0x00000778: 0x02002021 '! ..' - move       $a0, $s0
@@ -676,7 +676,7 @@ loc_00000928:		; Refs: 0x00000788
 
 loc_00000950:		; Refs: 0x00000704 
 	0x00000950: 0x8E640048 'H.d.' - lw         $a0, 72($s3)
-	0x00000954: 0x0C0018B5 '....' - jal        ThreadManForKernel_3F53E640
+	0x00000954: 0x0C0018B5 '....' - jal        sceKernelSignalSema
 	0x00000958: 0x24050001 '...$' - li         $a1, 1
 	0x0000095C: 0x3C078001 '...<' - lui        $a3, 0x8001
 	0x00000960: 0x080001A8 '....' - j          loc_000006A0
@@ -778,11 +778,11 @@ loc_00000A88:		; Refs: 0x00000A70 0x00000AB4 0x00000AD0
 	0x00000AA8: 0x00402021 '! @.' - move       $a0, $v0
 
 loc_00000AAC:		; Refs: 0x00000A80 
-	0x00000AAC: 0x0C0018BB '....' - jal        ThreadManForKernel_85A2A5BF
+	0x00000AAC: 0x0C0018BB '....' - jal        sceKernelIsUserModeThread
 	0x00000AB0: 0x00000000 '....' - nop        
 	0x00000AB4: 0x1040FFF4 '..@.' - beqz       $v0, loc_00000A88
 	0x00000AB8: 0x00000000 '....' - nop        
-	0x00000ABC: 0x0C001899 '....' - jal        SysMemForKernel_FC114573
+	0x00000ABC: 0x0C001899 '....' - jal        sceKernelGetCompiledSdkVersion
 	0x00000AC0: 0x00000000 '....' - nop        
 	0x00000AC4: 0x3C080300 '...<' - lui        $t0, 0x300
 	0x00000AC8: 0x0102382A '*8..' - slt        $a3, $t0, $v0
@@ -822,11 +822,11 @@ loc_00000B1C:		; Refs: 0x00000B04 0x00000B44 0x00000B60
 	0x00000B38: 0x00402021 '! @.' - move       $a0, $v0
 
 loc_00000B3C:		; Refs: 0x00000B14 
-	0x00000B3C: 0x0C0018BB '....' - jal        ThreadManForKernel_85A2A5BF
+	0x00000B3C: 0x0C0018BB '....' - jal        sceKernelIsUserModeThread
 	0x00000B40: 0x00000000 '....' - nop        
 	0x00000B44: 0x1040FFF5 '..@.' - beqz       $v0, loc_00000B1C
 	0x00000B48: 0x00000000 '....' - nop        
-	0x00000B4C: 0x0C001899 '....' - jal        SysMemForKernel_FC114573
+	0x00000B4C: 0x0C001899 '....' - jal        sceKernelGetCompiledSdkVersion
 	0x00000B50: 0x00000000 '....' - nop        
 	0x00000B54: 0x3C0C0300 '...<' - lui        $t4, 0x300
 	0x00000B58: 0x3C0E8021 '!..<' - lui        $t6, 0x8021
@@ -875,7 +875,7 @@ loc_00000BE8:		; Refs: 0x00000A0C
 	0x00000BEC: 0x00000000 '....' - nop        
 	0x00000BF0: 0x10400005 '..@.' - beqz       $v0, loc_00000C08
 	0x00000BF4: 0x00000000 '....' - nop        
-	0x00000BF8: 0x0C0018BB '....' - jal        ThreadManForKernel_85A2A5BF
+	0x00000BF8: 0x0C0018BB '....' - jal        sceKernelIsUserModeThread
 	0x00000BFC: 0x00000000 '....' - nop        
 	0x00000C00: 0x14400012 '..@.' - bnez       $v0, loc_00000C4C
 	0x00000C04: 0x00000000 '....' - nop        
@@ -894,13 +894,13 @@ loc_00000C08:		; Refs: 0x00000BF0 0x00000C60
 	0x00000C30: 0xAFB60008 '....' - sw         $s6, 8($sp)
 	0x00000C34: 0xAFB30018 '....' - sw         $s3, 24($sp)
 	0x00000C38: 0xAFB4000C '....' - sw         $s4, 12($sp)
-	0x00000C3C: 0x0C0018BD '....' - jal        ThreadManForKernel_BC31C1B9
+	0x00000C3C: 0x0C0018BD '....' - jal        sceKernelExtendKernelStack
 	0x00000C40: 0xAFA2001C '....' - sw         $v0, 28($sp)
 	0x00000C44: 0x08000296 '....' - j          loc_00000A58
 	0x00000C48: 0x00402021 '! @.' - move       $a0, $v0
 
 loc_00000C4C:		; Refs: 0x00000C00 
-	0x00000C4C: 0x0C001899 '....' - jal        SysMemForKernel_FC114573
+	0x00000C4C: 0x0C001899 '....' - jal        sceKernelGetCompiledSdkVersion
 	0x00000C50: 0x00000000 '....' - nop        
 	0x00000C54: 0x3C040300 '...<' - lui        $a0, 0x300
 	0x00000C58: 0x0082282A '*(..' - slt        $a1, $a0, $v0
@@ -958,7 +958,7 @@ module_start:
 	0x00000CD4: 0x24040008 '...$' - li         $a0, 8
 	0x00000CD8: 0xAC440010 '..D.' - sw         $a0, 16($v0)
 	0x00000CDC: 0x3C020000 '...<' - lui        $v0, 0x0
-	0x00000CE0: 0x0C001885 '....' - jal        IoFileMgrForKernel_8E982A74
+	0x00000CE0: 0x0C001885 '....' - jal        sceIoAddDrv
 	0x00000CE4: 0x24446A38 '8jD$' - addiu      $a0, $v0, 27192
 	0x00000CE8: 0x00002021 '! ..' - move       $a0, $zr
 	0x00000CEC: 0x0440001E '..@.' - bltz       $v0, loc_00000D68
@@ -993,7 +993,7 @@ loc_00000D3C:		; Refs: 0x00000D24
 
 loc_00000D58:		; Refs: 0x00000D88 
 	0x00000D58: 0x24040005 '...$' - li         $a0, 5
-	0x00000D5C: 0x0C001891 '....' - jal        SysMemForKernel_55A40B2C
+	0x00000D5C: 0x0C001891 '....' - jal        sceKernelQueryMemoryPartitionInfo
 	0x00000D60: 0x24E50040 '@..$' - addiu      $a1, $a3, 64
 	0x00000D64: 0x00001821 '!...' - move       $v1, $zr
 
@@ -1015,7 +1015,7 @@ loc_00000D90:		; Refs: 0x00000D34
 	0x00000D90: 0x24446A2C ',jD$' - addiu      $a0, $v0, 27180
 
 loc_00000D94:		; Refs: 0x00000D14 
-	0x00000D94: 0x0C001887 '....' - jal        IoFileMgrForKernel_C7F35804
+	0x00000D94: 0x0C001887 '....' - jal        sceIoDelDrv
 	0x00000D98: 0x00000000 '....' - nop        
 	0x00000D9C: 0x0800035A 'Z...' - j          loc_00000D68
 	0x00000DA0: 0x24030001 '...$' - li         $v1, 1
@@ -1613,7 +1613,7 @@ loc_00001560:		; Refs: 0x00001510
 	0x00001560: 0x3C120000 '...<' - lui        $s2, 0x0
 	0x00001564: 0x26E40045 'E..&' - addiu      $a0, $s7, 69
 	0x00001568: 0x26456B14 '.kE&' - addiu      $a1, $s2, 27412
-	0x0000156C: 0x0C0018A7 '....' - jal        SysclibForKernel_81D0D1F7
+	0x0000156C: 0x0C0018A7 '....' - jal        memcmp
 	0x00001570: 0x24060005 '...$' - li         $a2, 5
 	0x00001574: 0x3C11C021 '!..<' - lui        $s1, 0xC021
 	0x00001578: 0x1440FFED '..@.' - bnez       $v0, loc_00001530
@@ -1634,7 +1634,7 @@ loc_00001560:		; Refs: 0x00001510
 loc_000015B0:		; Refs: 0x000015CC 
 	0x000015B0: 0x02602021 '! `.' - move       $a0, $s3
 	0x000015B4: 0x2406000A '...$' - li         $a2, 10
-	0x000015B8: 0x0C0018A7 '....' - jal        SysclibForKernel_81D0D1F7
+	0x000015B8: 0x0C0018A7 '....' - jal        memcmp
 	0x000015BC: 0x26310001 '..1&' - addiu      $s1, $s1, 1
 	0x000015C0: 0x2652000A '..R&' - addiu      $s2, $s2, 10
 	0x000015C4: 0x10400007 '..@.' - beqz       $v0, loc_000015E4
@@ -1754,7 +1754,7 @@ sceUmd9660Init:		; Refs: 0x00000DB8
 	0x00001700: 0xAFB3000C '....' - sw         $s3, 12($sp)
 	0x00001704: 0xAFB20008 '....' - sw         $s2, 8($sp)
 	0x00001708: 0xAFB10004 '....' - sw         $s1, 4($sp)
-	0x0000170C: 0x0C00188F '....' - jal        SysMemForKernel_1C1FBFE7
+	0x0000170C: 0x0C00188F '....' - jal        sceKernelCreateHeap
 	0x00001710: 0xAFB00000 '....' - sw         $s0, 0($sp)
 	0x00001714: 0x04400050 'P.@.' - bltz       $v0, loc_00001858
 	0x00001718: 0x3C030000 '...<' - lui        $v1, 0x0
@@ -1784,13 +1784,13 @@ loc_00001744:		; Refs: 0x000017A0
 	0x00001770: 0xACF60028 '(...' - sw         $s6, 40($a3)
 	0x00001774: 0xACF50024 '$...' - sw         $s5, 36($a3)
 	0x00001778: 0xACE0002C ',...' - sw         $zr, 44($a3)
-	0x0000177C: 0x0C00189B '....' - jal        SysclibForKernel_10F3BB61
+	0x0000177C: 0x0C00189B '....' - jal        memset
 	0x00001780: 0xACE00030 '0...' - sw         $zr, 48($a3)
 	0x00001784: 0x02002021 '! ..' - move       $a0, $s0
 	0x00001788: 0x02603821 '!8`.' - move       $a3, $s3
 	0x0000178C: 0x27C56B2C ',k.'' - addiu      $a1, $fp, 27436
 	0x00001790: 0x26E66B34 '4k.&' - addiu      $a2, $s7, 27444
-	0x00001794: 0x0C0018A3 '....' - jal        SysclibForKernel_7661E728
+	0x00001794: 0x0C0018A3 '....' - jal        sprintf
 	0x00001798: 0x26730001 '..s&' - addiu      $s3, $s3, 1
 	0x0000179C: 0x2A640002 '..d*' - slti       $a0, $s3, 2
 	0x000017A0: 0x1480FFE8 '....' - bnez       $a0, loc_00001744
@@ -1822,17 +1822,17 @@ loc_000017C4:		; Refs: 0x0000184C
 	0x00001800: 0xAD40000C '..@.' - sw         $zr, 12($t2)
 	0x00001804: 0xAD600050 'P.`.' - sw         $zr, 80($t3)
 	0x00001808: 0xAD400004 '..@.' - sw         $zr, 4($t2)
-	0x0000180C: 0x0C00189B '....' - jal        SysclibForKernel_10F3BB61
+	0x0000180C: 0x0C00189B '....' - jal        memset
 	0x00001810: 0xAE57000C '..W.' - sw         $s7, 12($s2)
 	0x00001814: 0x02352021 '! 5.' - addu       $a0, $s1, $s5
 	0x00001818: 0x00002821 '!(..' - move       $a1, $zr
-	0x0000181C: 0x0C00189B '....' - jal        SysclibForKernel_10F3BB61
+	0x0000181C: 0x0C00189B '....' - jal        memset
 	0x00001820: 0x24060020 ' ..$' - li         $a2, 32
 	0x00001824: 0x27C46B38 '8k.'' - addiu      $a0, $fp, 27448
 	0x00001828: 0x24050001 '...$' - li         $a1, 1
 	0x0000182C: 0x24060001 '...$' - li         $a2, 1
 	0x00001830: 0x24070001 '...$' - li         $a3, 1
-	0x00001834: 0x0C0018C1 '....' - jal        ThreadManForKernel_D6DA4BA1
+	0x00001834: 0x0C0018C1 '....' - jal        sceKernelCreateSema
 	0x00001838: 0x00004021 '!@..' - move       $t0, $zr
 	0x0000183C: 0x00408021 '!.@.' - move       $s0, $v0
 	0x00001840: 0x26310068 'h.1&' - addiu      $s1, $s1, 104
@@ -1868,7 +1868,7 @@ loc_0000189C:		; Refs: 0x000018B4
 	0x000018A0: 0x26310068 'h.1&' - addiu      $s1, $s1, 104
 	0x000018A4: 0x05A00003 '....' - bltz       $t5, loc_000018B4
 	0x000018A8: 0x01A02021 '! ..' - move       $a0, $t5
-	0x000018AC: 0x0C0018AF '....' - jal        ThreadManForKernel_28B6489C
+	0x000018AC: 0x0C0018AF '....' - jal        sceKernelDeleteSema
 	0x000018B0: 0x00000000 '....' - nop        
 
 loc_000018B4:		; Refs: 0x000018A4 
@@ -1876,7 +1876,7 @@ loc_000018B4:		; Refs: 0x000018A4
 	0x000018B8: 0x8E2D0000 '..-.' - lw         $t5, 0($s1)
 	0x000018BC: 0x3C110000 '...<' - lui        $s1, 0x0
 	0x000018C0: 0x262F0088 '../&' - addiu      $t7, $s1, 136
-	0x000018C4: 0x0C001897 '....' - jal        SysMemForKernel_C9805775
+	0x000018C4: 0x0C001897 '....' - jal        sceKernelDeleteHeap
 	0x000018C8: 0x8DE40014 '....' - lw         $a0, 20($t7)
 	0x000018CC: 0x08000616 '....' - j          loc_00001858
 	0x000018D0: 0x02001021 '!...' - move       $v0, $s0
@@ -2161,7 +2161,7 @@ sub_00001C68:		; Refs: 0x000035AC
 	0x00001C68: 0x27BDFFC0 '...'' - addiu      $sp, $sp, -64
 	0x00001C6C: 0xAFB00030 '0...' - sw         $s0, 48($sp)
 	0x00001C70: 0xAFBF0034 '4...' - sw         $ra, 52($sp)
-	0x00001C74: 0x0C00187F '....' - jal        InterruptManagerForKernel_092968F4
+	0x00001C74: 0x0C00187F '....' - jal        sceKernelCpuSuspendIntr
 	0x00001C78: 0x00000000 '....' - nop        
 	0x00001C7C: 0x03A02021 '! ..' - move       $a0, $sp
 	0x00001C80: 0x27A50020 ' ..'' - addiu      $a1, $sp, 32
@@ -2189,7 +2189,7 @@ loc_00001CAC:		; Refs: 0x00001CCC
 	0x00001CD0: 0xAD00005C '\...' - sw         $zr, 92($t0)
 
 loc_00001CD4:		; Refs: 0x00001C8C 0x00001C94 
-	0x00001CD4: 0x0C001881 '....' - jal        InterruptManagerForKernel_5F10D406
+	0x00001CD4: 0x0C001881 '....' - jal        sceKernelCpuResumeIntr
 	0x00001CD8: 0x02002021 '! ..' - move       $a0, $s0
 	0x00001CDC: 0x8FBF0034 '4...' - lw         $ra, 52($sp)
 	0x00001CE0: 0x8FB00030 '0...' - lw         $s0, 48($sp)
@@ -2255,7 +2255,7 @@ sub_00001D80:		; Refs: 0x00000554
 	0x00001D88: 0x00001021 '!...' - move       $v0, $zr
 	0x00001D8C: 0x10800018 '....' - beqz       $a0, loc_00001DF0
 	0x00001D90: 0xAFB00000 '....' - sw         $s0, 0($sp)
-	0x00001D94: 0x0C00187F '....' - jal        InterruptManagerForKernel_092968F4
+	0x00001D94: 0x0C00187F '....' - jal        sceKernelCpuSuspendIntr
 	0x00001D98: 0x00000000 '....' - nop        
 	0x00001D9C: 0x3C030000 '...<' - lui        $v1, 0x0
 	0x00001DA0: 0x00402021 '! @.' - move       $a0, $v0
@@ -2281,7 +2281,7 @@ loc_00001DDC:		; Refs: 0x00001DC8
 	0x00001DE0: 0x26100068 'h..&' - addiu      $s0, $s0, 104
 
 loc_00001DE4:		; Refs: 0x00001DA8 
-	0x00001DE4: 0x0C001881 '....' - jal        InterruptManagerForKernel_5F10D406
+	0x00001DE4: 0x0C001881 '....' - jal        sceKernelCpuResumeIntr
 	0x00001DE8: 0x00000000 '....' - nop        
 	0x00001DEC: 0x00001021 '!...' - move       $v0, $zr
 
@@ -2293,7 +2293,7 @@ loc_00001DF0:		; Refs: 0x00001D8C 0x00001E0C
 
 loc_00001E00:		; Refs: 0x00001DD4 
 	0x00001E00: 0x24030080 '...$' - li         $v1, 128
-	0x00001E04: 0x0C001881 '....' - jal        InterruptManagerForKernel_5F10D406
+	0x00001E04: 0x0C001881 '....' - jal        sceKernelCpuResumeIntr
 	0x00001E08: 0xACC3000C '....' - sw         $v1, 12($a2)
 	0x00001E0C: 0x0800077C '|...' - j          loc_00001DF0
 	0x00001E10: 0x02001021 '!...' - move       $v0, $s0
@@ -2648,7 +2648,7 @@ loc_00002258:		; Refs: 0x000028EC 0x0000291C
 	0x0000225C: 0x3C0B0000 '...<' - lui        $t3, 0x0
 
 loc_00002260:		; Refs: 0x00002820 
-	0x00002260: 0x0C0018CF '....' - jal        sceUmd_D45D1FE6
+	0x00002260: 0x0C0018CF '....' - jal        sceUmdGetDriveStatus
 	0x00002264: 0x00000000 '....' - nop        
 	0x00002268: 0x30440008 '..D0' - andi       $a0, $v0, 0x8
 	0x0000226C: 0x1480015C '\...' - bnez       $a0, loc_000027E0
@@ -2913,7 +2913,7 @@ loc_000025A8:		; Refs: 0x00002374
 	0x000025B8: 0xAFAB001C '....' - sw         $t3, 28($sp)
 
 loc_000025BC:		; Refs: 0x00002368 
-	0x000025BC: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x000025BC: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x000025C0: 0x240403E8 '...$' - li         $a0, 1000
 	0x000025C4: 0x080008BD '....' - j          loc_000022F4
 	0x000025C8: 0x8FC30000 '....' - lw         $v1, 0($fp)
@@ -2991,7 +2991,7 @@ loc_00002688:		; Refs: 0x0000229C
 	0x000026B0: 0x3C1E0000 '...<' - lui        $fp, 0x0
 	0x000026B4: 0x27C21400 '...'' - addiu      $v0, $fp, 5120
 	0x000026B8: 0x00462823 '#(F.' - subu       $a1, $v0, $a2
-	0x000026BC: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x000026BC: 0x0C0018AB '....' - jal        memcpy
 	0x000026C0: 0x02C02021 '! ..' - move       $a0, $s6
 	0x000026C4: 0x8E550018 '..U.' - lw         $s5, 24($s2)
 	0x000026C8: 0x8E46001C '..F.' - lw         $a2, 28($s2)
@@ -3002,7 +3002,7 @@ loc_000026D0:		; Refs: 0x00002728
 	0x000026D4: 0x26C50400 '...&' - addiu      $a1, $s6, 1024
 
 loc_000026D8:		; Refs: 0x00002738 0x00002784 
-	0x000026D8: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x000026D8: 0x0C0018AB '....' - jal        memcpy
 	0x000026DC: 0x00000000 '....' - nop        
 	0x000026E0: 0x0C001929 ')...' - jal        sceUmdManSignalSema
 	0x000026E4: 0x00000000 '....' - nop        
@@ -3073,7 +3073,7 @@ loc_000027A0:		; Refs: 0x00002280
 	0x000027A8: 0x00000000 '....' - nop        
 
 loc_000027AC:		; Refs: 0x000027D8 
-	0x000027AC: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x000027AC: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x000027B0: 0x240403E8 '...$' - li         $a0, 1000
 	0x000027B4: 0x240F0020 ' ..$' - li         $t7, 32
 	0x000027B8: 0x3C0E0000 '...<' - lui        $t6, 0x0
@@ -3092,7 +3092,7 @@ loc_000027D0:		; Refs: 0x000027A4
 	0x000027DC: 0x00000000 '....' - nop        
 
 loc_000027E0:		; Refs: 0x0000226C 
-	0x000027E0: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x000027E0: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x000027E4: 0x240403E8 '...$' - li         $a0, 1000
 	0x000027E8: 0x3C1EC021 '!..<' - lui        $fp, 0xC021
 	0x000027EC: 0x24080020 ' ..$' - li         $t0, 32
@@ -3104,11 +3104,11 @@ loc_000027E0:		; Refs: 0x0000226C
 
 loc_00002804:		; Refs: 0x00002258 
 	0x00002804: 0x25640400 '..d%' - addiu      $a0, $t3, 1024
-	0x00002808: 0x0C0018C7 '....' - jal        UtilsForKernel_BFA98062
+	0x00002808: 0x0C0018C7 '....' - jal        sceKernelDcacheInvalidateRange
 	0x0000280C: 0x24050800 '...$' - li         $a1, 2048
 	0x00002810: 0x3C050000 '...<' - lui        $a1, 0x0
 	0x00002814: 0x24A40C00 '...$' - addiu      $a0, $a1, 3072
-	0x00002818: 0x0C0018C7 '....' - jal        UtilsForKernel_BFA98062
+	0x00002818: 0x0C0018C7 '....' - jal        sceKernelDcacheInvalidateRange
 	0x0000281C: 0x24050800 '...$' - li         $a1, 2048
 	0x00002820: 0x08000898 '....' - j          loc_00002260
 	0x00002824: 0x00000000 '....' - nop        
@@ -3142,7 +3142,7 @@ loc_0000285C:		; Refs: 0x00002844
 	0x00002884: 0x02804821 '!H..' - move       $t1, $s4
 	0x00002888: 0x0440000A '..@.' - bltz       $v0, loc_000028B4
 	0x0000288C: 0xAFA20038 '8...' - sw         $v0, 56($sp)
-	0x00002890: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x00002890: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x00002894: 0x240403E8 '...$' - li         $a0, 1000
 	0x00002898: 0x24160020 ' ..$' - li         $s6, 32
 	0x0000289C: 0x3C140000 '...<' - lui        $s4, 0x0
@@ -3222,7 +3222,7 @@ loc_0000298C:		; Refs: 0x00002868
 	0x00002994: 0x00000000 '....' - nop        
 
 loc_00002998:		; Refs: 0x000029B0 
-	0x00002998: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x00002998: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x0000299C: 0x240403E8 '...$' - li         $a0, 1000
 	0x000029A0: 0x080009F2 '....' - j          loc_000027C8
 	0x000029A4: 0x3C188021 '!..<' - lui        $t8, 0x8021
@@ -3299,7 +3299,7 @@ loc_00002A44:		; Refs: 0x0000219C
 	0x00002A98: 0xACF01400 '....' - sw         $s0, 5120($a3)
 
 loc_00002A9C:		; Refs: 0x00002164 0x00002170 
-	0x00002A9C: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x00002A9C: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x00002AA0: 0x00000000 '....' - nop        
 	0x00002AA4: 0x0800085E '^...' - j          loc_00002178
 	0x00002AA8: 0x00000000 '....' - nop        
@@ -3445,7 +3445,7 @@ loc_00002C20:		; Refs: 0x00002BF4
 	0x00002C68: 0x02202021 '!  .' - move       $a0, $s1
 
 loc_00002C6C:		; Refs: 0x00002CC0 
-	0x00002C6C: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x00002C6C: 0x0C0018AB '....' - jal        memcpy
 	0x00002C70: 0x00000000 '....' - nop        
 	0x00002C74: 0xAE72140C '..r.' - sw         $s2, 5132($s3)
 
@@ -3459,7 +3459,7 @@ loc_00002C78:		; Refs: 0x00002C50 0x00002CB0 0x00002CD4
 	0x00002C90: 0x02202021 '!  .' - move       $a0, $s1
 
 loc_00002C94:		; Refs: 0x00002D10 
-	0x00002C94: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x00002C94: 0x0C0018AB '....' - jal        memcpy
 	0x00002C98: 0x00000000 '....' - nop        
 	0x00002C9C: 0x08000B01 '....' - j          loc_00002C04
 	0x00002CA0: 0x00001021 '!...' - move       $v0, $zr
@@ -3482,7 +3482,7 @@ loc_00002CBC:		; Refs: 0x00002CF8
 	0x00002CDC: 0x8E060018 '....' - lw         $a2, 24($s0)
 	0x00002CE0: 0x24621400 '..b$' - addiu      $v0, $v1, 5120
 	0x00002CE4: 0x00462823 '#(F.' - subu       $a1, $v0, $a2
-	0x00002CE8: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x00002CE8: 0x0C0018AB '....' - jal        memcpy
 	0x00002CEC: 0x02202021 '!  .' - move       $a0, $s1
 	0x00002CF0: 0x8E050018 '....' - lw         $a1, 24($s0)
 	0x00002CF4: 0x8E06001C '....' - lw         $a2, 28($s0)
@@ -3502,7 +3502,7 @@ loc_00002D08:		; Refs: 0x00002D44
 	0x00002D24: 0x01462023 '# F.' - subu       $a0, $t2, $a2
 	0x00002D28: 0x25280C00 '..(%' - addiu      $t0, $t1, 3072
 	0x00002D2C: 0x00882821 '!(..' - addu       $a1, $a0, $t0
-	0x00002D30: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x00002D30: 0x0C0018AB '....' - jal        memcpy
 	0x00002D34: 0x02202021 '!  .' - move       $a0, $s1
 	0x00002D38: 0x8E130018 '....' - lw         $s3, 24($s0)
 	0x00002D3C: 0x8E070014 '....' - lw         $a3, 20($s0)
@@ -3559,7 +3559,7 @@ loc_00002DD4:		; Refs: 0x00002E20
 	0x00002DD8: 0x25020C00 '...%' - addiu      $v0, $t0, 3072
 	0x00002DDC: 0x02422821 '!(B.' - addu       $a1, $s2, $v0
 	0x00002DE0: 0x00E03021 '!0..' - move       $a2, $a3
-	0x00002DE4: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x00002DE4: 0x0C0018AB '....' - jal        memcpy
 	0x00002DE8: 0x02202021 '!  .' - move       $a0, $s1
 	0x00002DEC: 0x8E040014 '....' - lw         $a0, 20($s0)
 	0x00002DF0: 0x8E070018 '....' - lw         $a3, 24($s0)
@@ -3570,13 +3570,13 @@ loc_00002DD4:		; Refs: 0x00002E20
 	0x00002E04: 0x26050400 '...&' - addiu      $a1, $s0, 1024
 
 loc_00002E08:		; Refs: 0x00002E64 
-	0x00002E08: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x00002E08: 0x0C0018AB '....' - jal        memcpy
 	0x00002E0C: 0x00000000 '....' - nop        
 	0x00002E10: 0x08000B63 'c...' - j          loc_00002D8C
 	0x00002E14: 0x00001021 '!...' - move       $v0, $zr
 
 loc_00002E18:		; Refs: 0x00002DCC 0x00002E34 
-	0x00002E18: 0x0C0018A9 '....' - jal        SysclibForKernel_A48D2592
+	0x00002E18: 0x0C0018A9 '....' - jal        memmove
 	0x00002E1C: 0x02272021 '! '.' - addu       $a0, $s1, $a3
 	0x00002E20: 0x08000B75 'u...' - j          loc_00002DD4
 	0x00002E24: 0x8E070018 '....' - lw         $a3, 24($s0)
@@ -3605,7 +3605,7 @@ loc_00002E54:		; Refs: 0x00002E74
 	0x00002E68: 0x00E03021 '!0..' - move       $a2, $a3
 
 loc_00002E6C:		; Refs: 0x00002E4C 0x00002E88 
-	0x00002E6C: 0x0C0018A9 '....' - jal        SysclibForKernel_A48D2592
+	0x00002E6C: 0x0C0018A9 '....' - jal        memmove
 	0x00002E70: 0x02272021 '! '.' - addu       $a0, $s1, $a3
 	0x00002E74: 0x08000B95 '....' - j          loc_00002E54
 	0x00002E78: 0x8E070018 '....' - lw         $a3, 24($s0)
@@ -3667,7 +3667,7 @@ loc_00002F38:		; Refs: 0x00002F28
 	0x00002F40: 0x000E6880 '.h..' - sll        $t5, $t6, 2
 	0x00002F44: 0x01AE2021 '! ..' - addu       $a0, $t5, $t6
 	0x00002F48: 0x2C8C61A9 '.a.,' - sltiu      $t4, $a0, 25001
-	0x00002F4C: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x00002F4C: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x00002F50: 0x016C200A '. l.' - movz       $a0, $t3, $t4
 	0x00002F54: 0x0290302B '+0..' - sltu       $a2, $s4, $s0
 	0x00002F58: 0x10C0FFE5 '....' - beqz       $a2, loc_00002EF0
@@ -3704,7 +3704,7 @@ loc_00002F7C:		; Refs: 0x00002F6C
 	0x00002FCC: 0x02A02821 '!(..' - move       $a1, $s5
 	0x00002FD0: 0x0C0013FF '....' - jal        sub_00004FFC
 	0x00002FD4: 0x3C127FDE '...<' - lui        $s2, 0x7FDE
-	0x00002FD8: 0x0C0018B3 '....' - jal        ThreadManForKernel_369ED59D
+	0x00002FD8: 0x0C0018B3 '....' - jal        sceKernelGetSystemTimeLow
 	0x00002FDC: 0x3652EFF8 '..R6' - ori        $s2, $s2, 0xEFF8
 	0x00002FE0: 0x00409821 '!.@.' - move       $s3, $v0
 
@@ -3755,7 +3755,7 @@ loc_00002FE8:		; Refs: 0x000030A4
 	0x00003088: 0xAFA20038 '8...' - sw         $v0, 56($sp)
 
 loc_0000308C:		; Refs: 0x00003150 0x00003190 0x000031A0 
-	0x0000308C: 0x0C0018B3 '....' - jal        ThreadManForKernel_369ED59D
+	0x0000308C: 0x0C0018B3 '....' - jal        sceKernelGetSystemTimeLow
 	0x00003090: 0x00000000 '....' - nop        
 	0x00003094: 0x3C0C01C9 '...<' - lui        $t4, 0x1C9
 	0x00003098: 0x00535823 '#XS.' - subu       $t3, $v0, $s3
@@ -3830,7 +3830,7 @@ loc_0000316C:		; Refs: 0x00003144
 	0x0000317C: 0xAE340010 '..4.' - sw         $s4, 16($s1)
 
 loc_00003180:		; Refs: 0x00003058 
-	0x00003180: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x00003180: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x00003184: 0x24041388 '...$' - li         $a0, 5000
 	0x00003188: 0x0C00192F '/...' - jal        sceUmdManSoftReset
 	0x0000318C: 0x00000000 '....' - nop        
@@ -3838,13 +3838,13 @@ loc_00003180:		; Refs: 0x00003058
 	0x00003194: 0x00000000 '....' - nop        
 
 loc_00003198:		; Refs: 0x00003028 0x00003034 0x00003040 0x0000304C 
-	0x00003198: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x00003198: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x0000319C: 0x240403E8 '...$' - li         $a0, 1000
 	0x000031A0: 0x08000C23 '#...' - j          loc_0000308C
 	0x000031A4: 0x00000000 '....' - nop        
 
 loc_000031A8:		; Refs: 0x00003004 
-	0x000031A8: 0x0C0018B3 '....' - jal        ThreadManForKernel_369ED59D
+	0x000031A8: 0x0C0018B3 '....' - jal        sceKernelGetSystemTimeLow
 	0x000031AC: 0x00000000 '....' - nop        
 	0x000031B0: 0x0C0018DF '....' - jal        sceUmdCache_driver_95E528B6
 	0x000031B4: 0x8FA40034 '4...' - lw         $a0, 52($sp)
@@ -3865,7 +3865,7 @@ sceUmd9660InvalidateDeviceName:
 	0x000031DC: 0xAFBF000C '....' - sw         $ra, 12($sp)
 	0x000031E0: 0x1080001D '....' - beqz       $a0, loc_00003258
 	0x000031E4: 0xAFB00000 '....' - sw         $s0, 0($sp)
-	0x000031E8: 0x0C0018A1 '....' - jal        SysclibForKernel_52DF196C
+	0x000031E8: 0x0C0018A1 '....' - jal        strlen
 	0x000031EC: 0x00008021 '!...' - move       $s0, $zr
 	0x000031F0: 0x2C430020 ' .C,' - sltiu      $v1, $v0, 32
 	0x000031F4: 0x3C048001 '...<' - lui        $a0, 0x8001
@@ -3873,13 +3873,13 @@ sceUmd9660InvalidateDeviceName:
 	0x000031FC: 0x3485005B '[..4' - ori        $a1, $a0, 0x5B
 
 loc_00003200:		; Refs: 0x0000322C 
-	0x00003200: 0x0C0018A1 '....' - jal        SysclibForKernel_52DF196C
+	0x00003200: 0x0C0018A1 '....' - jal        strlen
 	0x00003204: 0x02402021 '! @.' - move       $a0, $s2
 	0x00003208: 0x0202302A '*0..' - slt        $a2, $s0, $v0
 	0x0000320C: 0x02501821 '!.P.' - addu       $v1, $s2, $s0
 	0x00003210: 0x10C00008 '....' - beqz       $a2, loc_00003234
 	0x00003214: 0x26100001 '...&' - addiu      $s0, $s0, 1
-	0x00003218: 0x0C00189D '....' - jal        SysclibForKernel_32C767F2
+	0x00003218: 0x0C00189D '....' - jal        look_ctype_table
 	0x0000321C: 0x80640000 '..d.' - lb         $a0, 0($v1)
 	0x00003220: 0x30450008 '..E0' - andi       $a1, $v0, 0x8
 	0x00003224: 0x10A00004 '....' - beqz       $a1, loc_00003238
@@ -3893,7 +3893,7 @@ loc_00003234:		; Refs: 0x00003210
 loc_00003238:		; Refs: 0x00003224 
 	0x00003238: 0x02202821 '!( .' - move       $a1, $s1
 	0x0000323C: 0x24446B34 '4kD$' - addiu      $a0, $v0, 27444
-	0x00003240: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x00003240: 0x0C0018A5 '....' - jal        strncmp
 	0x00003244: 0x24060003 '...$' - li         $a2, 3
 	0x00003248: 0x3C088001 '...<' - lui        $t0, 0x8001
 	0x0000324C: 0x35050013 '...5' - ori        $a1, $t0, 0x13
@@ -4043,13 +4043,13 @@ sub_0000341C:		; Refs: 0x00001210
 	0x00003444: 0xAFBF001C '....' - sw         $ra, 28($sp)
 
 loc_00003448:		; Refs: 0x00003474 
-	0x00003448: 0x0C0018A1 '....' - jal        SysclibForKernel_52DF196C
+	0x00003448: 0x0C0018A1 '....' - jal        strlen
 	0x0000344C: 0x02202021 '!  .' - move       $a0, $s1
 	0x00003450: 0x0202202A '* ..' - slt        $a0, $s0, $v0
 	0x00003454: 0x02301821 '!.0.' - addu       $v1, $s1, $s0
 	0x00003458: 0x10800008 '....' - beqz       $a0, loc_0000347C
 	0x0000345C: 0x26100001 '...&' - addiu      $s0, $s0, 1
-	0x00003460: 0x0C00189D '....' - jal        SysclibForKernel_32C767F2
+	0x00003460: 0x0C00189D '....' - jal        look_ctype_table
 	0x00003464: 0x80640000 '..d.' - lb         $a0, 0($v1)
 	0x00003468: 0x30430008 '..C0' - andi       $v1, $v0, 0x8
 	0x0000346C: 0x10600004 '..`.' - beqz       $v1, loc_00003480
@@ -4063,13 +4063,13 @@ loc_0000347C:		; Refs: 0x00003458
 loc_00003480:		; Refs: 0x0000346C 
 	0x00003480: 0x24456B34 '4kE$' - addiu      $a1, $v0, 27444
 	0x00003484: 0x02402021 '! @.' - move       $a0, $s2
-	0x00003488: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x00003488: 0x0C0018A5 '....' - jal        strncmp
 	0x0000348C: 0x24060003 '...$' - li         $a2, 3
 	0x00003490: 0x3C058001 '...<' - lui        $a1, 0x8001
 	0x00003494: 0x14400014 '..@.' - bnez       $v0, loc_000034E8
 	0x00003498: 0x34A30013 '...4' - ori        $v1, $a1, 0x13
 	0x0000349C: 0x02402021 '! @.' - move       $a0, $s2
-	0x000034A0: 0x0C0018AD '....' - jal        SysclibForKernel_B1DC2AE8
+	0x000034A0: 0x0C0018AD '....' - jal        strchr
 	0x000034A4: 0x2405003A ':..$' - li         $a1, 58
 	0x000034A8: 0x3C068001 '...<' - lui        $a2, 0x8001
 	0x000034AC: 0x1040000E '..@.' - beqz       $v0, loc_000034E8
@@ -4078,13 +4078,13 @@ loc_00003480:		; Refs: 0x0000346C
 	0x000034B8: 0x2511FFFD '...%' - addiu      $s1, $t0, -3
 	0x000034BC: 0x26450003 '..E&' - addiu      $a1, $s2, 3
 	0x000034C0: 0x03A02021 '! ..' - move       $a0, $sp
-	0x000034C4: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x000034C4: 0x0C0018AB '....' - jal        memcpy
 	0x000034C8: 0x02203021 '!0 .' - move       $a2, $s1
 	0x000034CC: 0x03B13821 '!8..' - addu       $a3, $sp, $s1
 	0x000034D0: 0xA0E00000 '....' - sb         $zr, 0($a3)
 	0x000034D4: 0x03A02021 '! ..' - move       $a0, $sp
 	0x000034D8: 0x00002821 '!(..' - move       $a1, $zr
-	0x000034DC: 0x0C00189F '....' - jal        SysclibForKernel_47DD934D
+	0x000034DC: 0x0C00189F '....' - jal        strtol
 	0x000034E0: 0x24060010 '...$' - li         $a2, 16
 	0x000034E4: 0x00401821 '!.@.' - move       $v1, $v0
 
@@ -4165,7 +4165,7 @@ sceUmd9660Term:		; Refs: 0x0000040C
 
 loc_000035D0:		; Refs: 0x000035DC 
 	0x000035D0: 0x2610FFFF '...&' - addiu      $s0, $s0, -1
-	0x000035D4: 0x0C0018AF '....' - jal        ThreadManForKernel_28B6489C
+	0x000035D4: 0x0C0018AF '....' - jal        sceKernelDeleteSema
 	0x000035D8: 0x26310068 'h.1&' - addiu      $s1, $s1, 104
 	0x000035DC: 0x0603FFFC '....' - bgezl      $s0, loc_000035D0
 	0x000035E0: 0x8E240000 '..$.' - lw         $a0, 0($s1)
@@ -4184,7 +4184,7 @@ loc_000035F4:		; Refs: 0x00003604
 	0x0000360C: 0x3C070000 '...<' - lui        $a3, 0x0
 	0x00003610: 0x24E30088 '...$' - addiu      $v1, $a3, 136
 	0x00003614: 0x8C640014 '..d.' - lw         $a0, 20($v1)
-	0x00003618: 0x0C001897 '....' - jal        SysMemForKernel_C9805775
+	0x00003618: 0x0C001897 '....' - jal        sceKernelDeleteHeap
 	0x0000361C: 0xAC600010 '..`.' - sw         $zr, 16($v1)
 	0x00003620: 0x00001821 '!...' - move       $v1, $zr
 
@@ -4217,7 +4217,7 @@ loc_00003624:		; Refs: 0x000035B4
 	0x00003688: 0xAFB3000C '....' - sw         $s3, 12($sp)
 	0x0000368C: 0x00A02021 '! ..' - move       $a0, $a1
 	0x00003690: 0x2406003F '?..$' - li         $a2, 63
-	0x00003694: 0x0C00189B '....' - jal        SysclibForKernel_10F3BB61
+	0x00003694: 0x0C00189B '....' - jal        memset
 	0x00003698: 0x00002821 '!(..' - move       $a1, $zr
 	0x0000369C: 0x240D0008 '...$' - li         $t5, 8
 	0x000036A0: 0x240C001C '...$' - li         $t4, 28
@@ -4251,7 +4251,7 @@ loc_000036D4:		; Refs: 0x0000371C
 	0x00003708: 0x00000000 '....' - nop        
 	0x0000370C: 0x0C0018F7 '....' - jal        sceUmdExecReqSenseCmd
 	0x00003710: 0x00000000 '....' - nop        
-	0x00003714: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x00003714: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x00003718: 0x240403E8 '...$' - li         $a0, 1000
 	0x0000371C: 0x08000DB5 '....' - j          loc_000036D4
 	0x00003720: 0x00000000 '....' - nop        
@@ -4327,7 +4327,7 @@ loc_000037CC:		; Refs: 0x0000382C
 	0x00003818: 0x24050020 ' ..$' - li         $a1, 32
 	0x0000381C: 0x10540005 '..T.' - beq        $v0, $s4, loc_00003834
 	0x00003820: 0x24080020 ' ..$' - li         $t0, 32
-	0x00003824: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x00003824: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x00003828: 0x00000000 '....' - nop        
 	0x0000382C: 0x08000DF3 '....' - j          loc_000037CC
 	0x00003830: 0x00000000 '....' - nop        
@@ -5382,7 +5382,7 @@ loc_00004594:		; Refs: 0x000045C0 0x000045C8
 	0x000045A4: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 loc_000045A8:		; Refs: 0x0000458C 
-	0x000045A8: 0x0C00188D '....' - jal        ModuleMgrForKernel_04B7BD22
+	0x000045A8: 0x0C00188D '....' - jal        sceKernelSearchModuleByName
 	0x000045AC: 0x00000000 '....' - nop        
 	0x000045B0: 0x58400005 '..@X' - blezl      $v0, loc_000045C8
 	0x000045B4: 0xAE000000 '....' - sw         $zr, 0($s0)
@@ -5425,9 +5425,9 @@ loc_0000460C:		; Refs: 0x0000468C
 	0x00004620: 0x27BD0020 ' ..'' - addiu      $sp, $sp, 32
 
 loc_00004624:		; Refs: 0x00004600 
-	0x00004624: 0x0C0018B1 '....' - jal        ThreadManForKernel_293B45B8
+	0x00004624: 0x0C0018B1 '....' - jal        sceKernelGetThreadId
 	0x00004628: 0x00000000 '....' - nop        
-	0x0000462C: 0x0C0018B3 '....' - jal        ThreadManForKernel_369ED59D
+	0x0000462C: 0x0C0018B3 '....' - jal        sceKernelGetSystemTimeLow
 	0x00004630: 0x00408021 '!.@.' - move       $s0, $v0
 	0x00004634: 0x24070020 ' ..$' - li         $a3, 32
 	0x00004638: 0x00F24823 '#H..' - subu       $t1, $a3, $s2
@@ -5451,7 +5451,7 @@ loc_00004668:		; Refs: 0x0000465C
 	0x00004678: 0x00D3182B '+...' - sltu       $v1, $a2, $s3
 	0x0000467C: 0x1460FFE2 '..`.' - bnez       $v1, loc_00004608
 	0x00004680: 0x02602021 '! `.' - move       $a0, $s3
-	0x00004684: 0x0C0018BF '....' - jal        ThreadManForKernel_CEADEB47
+	0x00004684: 0x0C0018BF '....' - jal        sceKernelDelayThread
 	0x00004688: 0x00000000 '....' - nop        
 	0x0000468C: 0x08001183 '....' - j          loc_0000460C
 	0x00004690: 0x8FBF0010 '....' - lw         $ra, 16($sp)
@@ -5466,7 +5466,7 @@ loc_00004668:		; Refs: 0x0000465C
 	0x000046B4: 0xAFB00000 '....' - sw         $s0, 0($sp)
 	0x000046B8: 0x00808021 '!...' - move       $s0, $a0
 	0x000046BC: 0xAFBF000C '....' - sw         $ra, 12($sp)
-	0x000046C0: 0x0C00187F '....' - jal        InterruptManagerForKernel_092968F4
+	0x000046C0: 0x0C00187F '....' - jal        sceKernelCpuSuspendIntr
 	0x000046C4: 0xAFB20008 '....' - sw         $s2, 8($sp)
 	0x000046C8: 0x02002021 '! ..' - move       $a0, $s0
 	0x000046CC: 0x02202821 '!( .' - move       $a1, $s1
@@ -5475,7 +5475,7 @@ loc_00004668:		; Refs: 0x0000465C
 	0x000046D8: 0x00408021 '!.@.' - move       $s0, $v0
 	0x000046DC: 0x1040000A '..@.' - beqz       $v0, loc_00004708
 	0x000046E0: 0x02402021 '! @.' - move       $a0, $s2
-	0x000046E4: 0x0C001881 '....' - jal        InterruptManagerForKernel_5F10D406
+	0x000046E4: 0x0C001881 '....' - jal        sceKernelCpuResumeIntr
 	0x000046E8: 0x02402021 '! @.' - move       $a0, $s2
 	0x000046EC: 0x02001021 '!...' - move       $v0, $s0
 
@@ -5488,7 +5488,7 @@ loc_000046F0:		; Refs: 0x00004710
 	0x00004704: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 loc_00004708:		; Refs: 0x000046DC 
-	0x00004708: 0x0C001881 '....' - jal        InterruptManagerForKernel_5F10D406
+	0x00004708: 0x0C001881 '....' - jal        sceKernelCpuResumeIntr
 	0x0000470C: 0x00000000 '....' - nop        
 	0x00004710: 0x080011BC '....' - j          loc_000046F0
 	0x00004714: 0x00001021 '!...' - move       $v0, $zr
@@ -5500,13 +5500,13 @@ sub_00004718:		; Refs: 0x00000140
 	0x0000471C: 0xAFB00000 '....' - sw         $s0, 0($sp)
 	0x00004720: 0x00808021 '!...' - move       $s0, $a0
 	0x00004724: 0xAFBF0008 '....' - sw         $ra, 8($sp)
-	0x00004728: 0x0C00187F '....' - jal        InterruptManagerForKernel_092968F4
+	0x00004728: 0x0C00187F '....' - jal        sceKernelCpuSuspendIntr
 	0x0000472C: 0xAFB10004 '....' - sw         $s1, 4($sp)
 	0x00004730: 0x02002021 '! ..' - move       $a0, $s0
 	0x00004734: 0x0C0013C8 '....' - jal        sub_00004F20
 	0x00004738: 0x00408821 '!.@.' - move       $s1, $v0
 	0x0000473C: 0x00408021 '!.@.' - move       $s0, $v0
-	0x00004740: 0x0C001881 '....' - jal        InterruptManagerForKernel_5F10D406
+	0x00004740: 0x0C001881 '....' - jal        sceKernelCpuResumeIntr
 	0x00004744: 0x02202021 '!  .' - move       $a0, $s1
 	0x00004748: 0x02001021 '!...' - move       $v0, $s0
 	0x0000474C: 0x8FBF0008 '....' - lw         $ra, 8($sp)
@@ -5523,7 +5523,7 @@ sub_00004760:		; Refs: 0x00000524
 	0x00004768: 0xAFBF0000 '....' - sw         $ra, 0($sp)
 	0x0000476C: 0x10800007 '....' - beqz       $a0, loc_0000478C
 	0x00004770: 0x34430016 '..C4' - ori        $v1, $v0, 0x16
-	0x00004774: 0x0C0018A1 '....' - jal        SysclibForKernel_52DF196C
+	0x00004774: 0x0C0018A1 '....' - jal        strlen
 	0x00004778: 0x00000000 '....' - nop        
 	0x0000477C: 0x3C058001 '...<' - lui        $a1, 0x8001
 	0x00004780: 0x2C440020 ' .D,' - sltiu      $a0, $v0, 32
@@ -5747,7 +5747,7 @@ sub_00004A18:		; Refs: 0x00000D80
 	0x00004A20: 0x3C020000 '...<' - lui        $v0, 0x0
 	0x00004A24: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x00004A28: 0xAFBF0000 '....' - sw         $ra, 0($sp)
-	0x00004A2C: 0x0C0018CD '....' - jal        sceUmd_7850F057
+	0x00004A2C: 0x0C0018CD '....' - jal        sceUmdRegisterGetUMDInfoCallBack
 	0x00004A30: 0x24450080 '..E$' - addiu      $a1, $v0, 128
 	0x00004A34: 0x8FBF0000 '....' - lw         $ra, 0($sp)
 	0x00004A38: 0x03E00008 '....' - jr         $ra
@@ -5758,7 +5758,7 @@ sub_00004A18:		; Refs: 0x00000D80
 sub_00004A40:		; Refs: 0x000003EC 
 	0x00004A40: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x00004A44: 0xAFBF0000 '....' - sw         $ra, 0($sp)
-	0x00004A48: 0x0C0018C9 '....' - jal        sceUmd_27A764A1
+	0x00004A48: 0x0C0018C9 '....' - jal        sceUmdUnRegisterGetUMDInfoCallBack
 	0x00004A4C: 0x00000000 '....' - nop        
 	0x00004A50: 0x8FBF0000 '....' - lw         $ra, 0($sp)
 	0x00004A54: 0x03E00008 '....' - jr         $ra
@@ -5987,7 +5987,7 @@ loc_00004CAC:		; Refs: 0x00004C9C
 	0x00004CE8: 0x02203021 '!0 .' - move       $a2, $s1
 	0x00004CEC: 0x14E00004 '....' - bnez       $a3, loc_00004D00
 	0x00004CF0: 0x35020016 '...5' - ori        $v0, $t0, 0x16
-	0x00004CF4: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x00004CF4: 0x0C0018AB '....' - jal        memcpy
 	0x00004CF8: 0x00000000 '....' - nop        
 	0x00004CFC: 0x00001021 '!...' - move       $v0, $zr
 
@@ -6014,7 +6014,7 @@ module_reboot_before:
 
 loc_00004D38:		; Refs: 0x00004D44 
 	0x00004D38: 0x2610FFFF '...&' - addiu      $s0, $s0, -1
-	0x00004D3C: 0x0C0018AF '....' - jal        ThreadManForKernel_28B6489C
+	0x00004D3C: 0x0C0018AF '....' - jal        sceKernelDeleteSema
 	0x00004D40: 0x26310068 'h.1&' - addiu      $s1, $s1, 104
 	0x00004D44: 0x0603FFFC '....' - bgezl      $s0, loc_00004D38
 	0x00004D48: 0x8E240000 '..$.' - lw         $a0, 0($s1)
@@ -6109,7 +6109,7 @@ sub_00004E20:		; Refs: 0x000015D4
 sub_00004E30:		; Refs: 0x00000D3C 
 	0x00004E30: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x00004E34: 0xAFBF0000 '....' - sw         $ra, 0($sp)
-	0x00004E38: 0x0C001889 '....' - jal        KDebugForKernel_24C32559
+	0x00004E38: 0x0C001889 '....' - jal        sceKernelDipsw
 	0x00004E3C: 0x24040013 '...$' - li         $a0, 19
 	0x00004E40: 0x10400007 '..@.' - beqz       $v0, loc_00004E60
 	0x00004E44: 0x3C030000 '...<' - lui        $v1, 0x0
@@ -6138,14 +6138,14 @@ sub_00004E68:		; Refs: 0x00000D2C
 	0x00004E80: 0x24070800 '...$' - li         $a3, 2048
 	0x00004E84: 0x24080001 '...$' - li         $t0, 1
 	0x00004E88: 0xAFBF0000 '....' - sw         $ra, 0($sp)
-	0x00004E8C: 0x0C0018B7 '....' - jal        ThreadManForKernel_446D8DE6
+	0x00004E8C: 0x0C0018B7 '....' - jal        sceKernelCreateThread
 	0x00004E90: 0x00004821 '!H..' - move       $t1, $zr
 	0x00004E94: 0x00402021 '! @.' - move       $a0, $v0
 	0x00004E98: 0x00002821 '!(..' - move       $a1, $zr
 	0x00004E9C: 0x04400005 '..@.' - bltz       $v0, loc_00004EB4
 	0x00004EA0: 0x00003021 '!0..' - move       $a2, $zr
 	0x00004EA4: 0x3C070000 '...<' - lui        $a3, 0x0
-	0x00004EA8: 0x0C0018C3 '....' - jal        ThreadManForKernel_F475845D
+	0x00004EA8: 0x0C0018C3 '....' - jal        sceKernelStartThread
 	0x00004EAC: 0xACE21414 '....' - sw         $v0, 5140($a3)
 	0x00004EB0: 0x00001021 '!...' - move       $v0, $zr
 
@@ -6298,23 +6298,23 @@ loc_00005054:		; Refs: 0x00005030
 	0x00005058: 0x02042823 '#(..' - subu       $a1, $s0, $a0
 	0x0000505C: 0x10900003 '....' - beq        $a0, $s0, loc_0000506C
 	0x00005060: 0x7C112804 '.(.|' - ins        $s1, $zr, 0, 6
-	0x00005064: 0x0C0018C5 '....' - jal        UtilsForKernel_34B9FA9E
+	0x00005064: 0x0C0018C5 '....' - jal        sceKernelDcacheWritebackInvalidateRange
 	0x00005068: 0x00000000 '....' - nop        
 
 loc_0000506C:		; Refs: 0x0000505C 
 	0x0000506C: 0x02302823 '#(0.' - subu       $a1, $s1, $s0
-	0x00005070: 0x0C0018C7 '....' - jal        UtilsForKernel_BFA98062
+	0x00005070: 0x0C0018C7 '....' - jal        sceKernelDcacheInvalidateRange
 	0x00005074: 0x02002021 '! ..' - move       $a0, $s0
 	0x00005078: 0x02512823 '#(Q.' - subu       $a1, $s2, $s1
 	0x0000507C: 0x1251FFEF '..Q.' - beq        $s2, $s1, loc_0000503C
 	0x00005080: 0x02202021 '!  .' - move       $a0, $s1
-	0x00005084: 0x0C0018C5 '....' - jal        UtilsForKernel_34B9FA9E
+	0x00005084: 0x0C0018C5 '....' - jal        sceKernelDcacheWritebackInvalidateRange
 	0x00005088: 0x00000000 '....' - nop        
 	0x0000508C: 0x08001410 '....' - j          loc_00005040
 	0x00005090: 0x8FBF000C '....' - lw         $ra, 12($sp)
 
 loc_00005094:		; Refs: 0x0000501C 
-	0x00005094: 0x0C0018C7 '....' - jal        UtilsForKernel_BFA98062
+	0x00005094: 0x0C0018C7 '....' - jal        sceKernelDcacheInvalidateRange
 	0x00005098: 0x00000000 '....' - nop        
 	0x0000509C: 0x08001410 '....' - j          loc_00005040
 	0x000050A0: 0x8FBF000C '....' - lw         $ra, 12($sp)
@@ -6332,18 +6332,18 @@ sub_000050A4:		; Refs: 0x00000D78
 	0x000050C0: 0x3C110000 '...<' - lui        $s1, 0x0
 	0x000050C4: 0xAFB00000 '....' - sw         $s0, 0($sp)
 	0x000050C8: 0xAFBF0008 '....' - sw         $ra, 8($sp)
-	0x000050CC: 0x0C00188F '....' - jal        SysMemForKernel_1C1FBFE7
+	0x000050CC: 0x0C00188F '....' - jal        sceKernelCreateHeap
 	0x000050D0: 0x3C100000 '...<' - lui        $s0, 0x0
 	0x000050D4: 0x00402021 '! @.' - move       $a0, $v0
 	0x000050D8: 0x24050800 '...$' - li         $a1, 2048
 	0x000050DC: 0x04400012 '..@.' - bltz       $v0, loc_00005128
 	0x000050E0: 0x00401821 '!.@.' - move       $v1, $v0
-	0x000050E4: 0x0C001893 '....' - jal        SysMemForKernel_636C953B
+	0x000050E4: 0x0C001893 '....' - jal        sceKernelAllocHeapMemory
 	0x000050E8: 0xAE021448 'H...' - sw         $v0, 5192($s0)
 	0x000050EC: 0x24050800 '...$' - li         $a1, 2048
 	0x000050F0: 0x1040001E '..@.' - beqz       $v0, loc_0000516C
 	0x000050F4: 0xAE2214DC '..".' - sw         $v0, 5340($s1)
-	0x000050F8: 0x0C001893 '....' - jal        SysMemForKernel_636C953B
+	0x000050F8: 0x0C001893 '....' - jal        sceKernelAllocHeapMemory
 	0x000050FC: 0x8E041448 'H...' - lw         $a0, 5192($s0)
 	0x00005100: 0x3C050000 '...<' - lui        $a1, 0x0
 	0x00005104: 0x3C030000 '...<' - lui        $v1, 0x0
@@ -6366,9 +6366,9 @@ loc_00005128:		; Refs: 0x000050DC 0x00005164 0x00005180
 
 loc_00005140:		; Refs: 0x00005114 
 	0x00005140: 0x8E041448 'H...' - lw         $a0, 5192($s0)
-	0x00005144: 0x0C001895 '....' - jal        SysMemForKernel_7B749390
+	0x00005144: 0x0C001895 '....' - jal        sceKernelFreeHeapMemory
 	0x00005148: 0x8E2514DC '..%.' - lw         $a1, 5340($s1)
-	0x0000514C: 0x0C001897 '....' - jal        SysMemForKernel_C9805775
+	0x0000514C: 0x0C001897 '....' - jal        sceKernelDeleteHeap
 	0x00005150: 0x8E041448 'H...' - lw         $a0, 5192($s0)
 	0x00005154: 0x3C088001 '...<' - lui        $t0, 0x8001
 	0x00005158: 0x2407FFFF '...$' - li         $a3, -1
@@ -6378,7 +6378,7 @@ loc_00005140:		; Refs: 0x00005114
 	0x00005168: 0xAE2014DC '.. .' - sw         $zr, 5340($s1)
 
 loc_0000516C:		; Refs: 0x000050F0 
-	0x0000516C: 0x0C001897 '....' - jal        SysMemForKernel_C9805775
+	0x0000516C: 0x0C001897 '....' - jal        sceKernelDeleteHeap
 	0x00005170: 0x8E041448 'H...' - lw         $a0, 5192($s0)
 	0x00005174: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x00005178: 0x2404FFFF '...$' - li         $a0, -1
@@ -6424,7 +6424,7 @@ sub_00005188:		; Refs: 0x000061B0
 	0x00005208: 0x352580C0 '..%5' - ori        $a1, $t1, 0x80C0
 	0x0000520C: 0x02003021 '!0..' - move       $a2, $s0
 	0x00005210: 0x24070024 '$..$' - li         $a3, 36
-	0x00005214: 0x0C001883 '....' - jal        IoFileMgrForKernel_54F5FB11
+	0x00005214: 0x0C001883 '....' - jal        sceIoDevctl
 	0x00005218: 0x24090800 '...$' - li         $t1, 2048
 
 loc_0000521C:		; Refs: 0x00005324 
@@ -6434,7 +6434,7 @@ loc_0000521C:		; Refs: 0x00005324
 	0x00005228: 0x3C150000 '...<' - lui        $s5, 0x0
 	0x0000522C: 0x26A56BA8 '.k.&' - addiu      $a1, $s5, 27560
 	0x00005230: 0x25440001 '..D%' - addiu      $a0, $t2, 1
-	0x00005234: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x00005234: 0x0C0018A5 '....' - jal        strncmp
 	0x00005238: 0x24060005 '...$' - li         $a2, 5
 	0x0000523C: 0x3C130000 '...<' - lui        $s3, 0x0
 	0x00005240: 0x1040001D '..@.' - beqz       $v0, loc_000052B8
@@ -6457,7 +6457,7 @@ loc_0000521C:		; Refs: 0x00005324
 	0x00005284: 0x02003021 '!0..' - move       $a2, $s0
 	0x00005288: 0x35A580C0 '...5' - ori        $a1, $t5, 0x80C0
 	0x0000528C: 0x24070024 '$..$' - li         $a3, 36
-	0x00005290: 0x0C001883 '....' - jal        IoFileMgrForKernel_54F5FB11
+	0x00005290: 0x0C001883 '....' - jal        sceIoDevctl
 	0x00005294: 0x24090800 '...$' - li         $t1, 2048
 
 loc_00005298:		; Refs: 0x000052FC 
@@ -6466,7 +6466,7 @@ loc_00005298:		; Refs: 0x000052FC
 	0x000052A0: 0x8E8E14DC '....' - lw         $t6, 5340($s4)
 	0x000052A4: 0x26A56BA8 '.k.&' - addiu      $a1, $s5, 27560
 	0x000052A8: 0x24060005 '...$' - li         $a2, 5
-	0x000052AC: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x000052AC: 0x0C0018A5 '....' - jal        strncmp
 	0x000052B0: 0x25C40001 '...%' - addiu      $a0, $t6, 1
 	0x000052B4: 0x00002821 '!(..' - move       $a1, $zr
 
@@ -6553,7 +6553,7 @@ sub_0000532C:		; Refs: 0x000061D0
 	0x000053D4: 0x02003021 '!0..' - move       $a2, $s0
 	0x000053D8: 0x346580C0 '..e4' - ori        $a1, $v1, 0x80C0
 	0x000053DC: 0x24070024 '$..$' - li         $a3, 36
-	0x000053E0: 0x0C001883 '....' - jal        IoFileMgrForKernel_54F5FB11
+	0x000053E0: 0x0C001883 '....' - jal        sceIoDevctl
 	0x000053E4: 0x24090800 '...$' - li         $t1, 2048
 
 loc_000053E8:		; Refs: 0x000054E4 
@@ -6590,12 +6590,12 @@ loc_0000541C:		; Refs: 0x000053F8
 	0x00005448: 0x10460009 '..F.' - beq        $v0, $a2, loc_00005470
 	0x0000544C: 0x3C190000 '...<' - lui        $t9, 0x0
 	0x00005450: 0x27306BB0 '.k0'' - addiu      $s0, $t9, 27568
-	0x00005454: 0x0C00188B '....' - jal        KDebugForKernel_84F370BC
+	0x00005454: 0x0C00188B '....' - jal        Kprintf
 	0x00005458: 0x02002021 '! ..' - move       $a0, $s0
 	0x0000545C: 0x3C180000 '...<' - lui        $t8, 0x0
-	0x00005460: 0x0C00188B '....' - jal        KDebugForKernel_84F370BC
+	0x00005460: 0x0C00188B '....' - jal        Kprintf
 	0x00005464: 0x27046BE8 '.k.'' - addiu      $a0, $t8, 27624
-	0x00005468: 0x0C00188B '....' - jal        KDebugForKernel_84F370BC
+	0x00005468: 0x0C00188B '....' - jal        Kprintf
 	0x0000546C: 0x02002021 '! ..' - move       $a0, $s0
 
 loc_00005470:		; Refs: 0x00005448 
@@ -6675,21 +6675,21 @@ loc_0000553C:		; Refs: 0x000055B4
 	0x0000555C: 0x2E070020 ' ...' - sltiu      $a3, $s0, 32
 	0x00005560: 0x10E000F8 '....' - beqz       $a3, loc_00005944
 	0x00005564: 0x02003021 '!0..' - move       $a2, $s0
-	0x00005568: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x00005568: 0x0C0018AB '....' - jal        memcpy
 	0x0000556C: 0x00000000 '....' - nop        
 	0x00005570: 0x02504821 '!HP.' - addu       $t1, $s2, $s0
 	0x00005574: 0xA1200000 '.. .' - sb         $zr, 0($t1)
 	0x00005578: 0x3C020000 '...<' - lui        $v0, 0x0
 	0x0000557C: 0x02402021 '! @.' - move       $a0, $s2
 	0x00005580: 0x02003021 '!0..' - move       $a2, $s0
-	0x00005584: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x00005584: 0x0C0018A5 '....' - jal        strncmp
 	0x00005588: 0x24456C20 ' lE$' - addiu      $a1, $v0, 27680
 	0x0000558C: 0x3C080000 '...<' - lui        $t0, 0x0
 	0x00005590: 0x02402021 '! @.' - move       $a0, $s2
 	0x00005594: 0x25056C30 '0l.%' - addiu      $a1, $t0, 27696
 	0x00005598: 0x10400008 '..@.' - beqz       $v0, loc_000055BC
 	0x0000559C: 0x02003021 '!0..' - move       $a2, $s0
-	0x000055A0: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x000055A0: 0x0C0018A5 '....' - jal        strncmp
 	0x000055A4: 0x00000000 '....' - nop        
 	0x000055A8: 0x10400005 '..@.' - beqz       $v0, loc_000055C0
 	0x000055AC: 0x24121400 '...$' - li         $s2, 5120
@@ -6726,7 +6726,7 @@ loc_000055C0:		; Refs: 0x000055A8
 	0x00005618: 0xAFAD0008 '....' - sw         $t5, 8($sp)
 	0x0000561C: 0xAFAC000C '....' - sw         $t4, 12($sp)
 	0x00005620: 0xAFAB001C '....' - sw         $t3, 28($sp)
-	0x00005624: 0x0C001893 '....' - jal        SysMemForKernel_636C953B
+	0x00005624: 0x0C001893 '....' - jal        sceKernelAllocHeapMemory
 	0x00005628: 0xAFAA0014 '....' - sw         $t2, 20($sp)
 	0x0000562C: 0x104000C2 '..@.' - beqz       $v0, loc_00005938
 	0x00005630: 0xAE421440 '@.B.' - sw         $v0, 5184($s2)
@@ -6737,7 +6737,7 @@ loc_000055C0:		; Refs: 0x000055A8
 	0x00005644: 0x00404021 '!@@.' - move       $t0, $v0
 	0x00005648: 0x36C580C0 '...6' - ori        $a1, $s6, 0x80C0
 	0x0000564C: 0x03A03021 '!0..' - move       $a2, $sp
-	0x00005650: 0x0C001883 '....' - jal        IoFileMgrForKernel_54F5FB11
+	0x00005650: 0x0C001883 '....' - jal        sceIoDevctl
 	0x00005654: 0x24070024 '$..$' - li         $a3, 36
 	0x00005658: 0x144000A6 '..@.' - bnez       $v0, loc_000058F4
 	0x0000565C: 0x00408021 '!.@.' - move       $s0, $v0
@@ -6832,7 +6832,7 @@ loc_00005784:		; Refs: 0x000058C8
 	0x00005788: 0x3C100000 '...<' - lui        $s0, 0x0
 	0x0000578C: 0x260414E4 '...&' - addiu      $a0, $s0, 5348
 	0x00005790: 0x25051000 '...%' - addiu      $a1, $t0, 4096
-	0x00005794: 0x0C0018A7 '....' - jal        SysclibForKernel_81D0D1F7
+	0x00005794: 0x0C0018A7 '....' - jal        memcmp
 	0x00005798: 0x24060020 ' ..$' - li         $a2, 32
 	0x0000579C: 0x10400035 '5.@.' - beqz       $v0, loc_00005874
 	0x000057A0: 0x3C110000 '...<' - lui        $s1, 0x0
@@ -6879,7 +6879,7 @@ loc_000057AC:		; Refs: 0x00005890
 	0x00005834: 0x8E841448 'H...' - lw         $a0, 5192($s4)
 
 loc_00005838:		; Refs: 0x00005888 
-	0x00005838: 0x0C001895 '....' - jal        SysMemForKernel_7B749390
+	0x00005838: 0x0C001895 '....' - jal        sceKernelFreeHeapMemory
 	0x0000583C: 0x8E451440 '@.E.' - lw         $a1, 5184($s2)
 	0x00005840: 0x00001021 '!...' - move       $v0, $zr
 
@@ -6941,7 +6941,7 @@ loc_000058F4:		; Refs: 0x00005658
 	0x000058F4: 0x8E841448 'H...' - lw         $a0, 5192($s4)
 
 loc_000058F8:		; Refs: 0x00005930 
-	0x000058F8: 0x0C001895 '....' - jal        SysMemForKernel_7B749390
+	0x000058F8: 0x0C001895 '....' - jal        sceKernelFreeHeapMemory
 	0x000058FC: 0x8E451440 '@.E.' - lw         $a1, 5184($s2)
 	0x00005900: 0x02001021 '!...' - move       $v0, $s0
 
@@ -7001,19 +7001,19 @@ loc_00005988:		; Refs: 0x000059F4
 	0x000059A4: 0x2E070020 ' ...' - sltiu      $a3, $s0, 32
 	0x000059A8: 0x10E0003B ';...' - beqz       $a3, loc_00005A98
 	0x000059AC: 0x02003021 '!0..' - move       $a2, $s0
-	0x000059B0: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x000059B0: 0x0C0018AB '....' - jal        memcpy
 	0x000059B4: 0x00000000 '....' - nop        
 	0x000059B8: 0x03B04021 '!@..' - addu       $t0, $sp, $s0
 	0x000059BC: 0xA1000000 '....' - sb         $zr, 0($t0)
 	0x000059C0: 0x03A02021 '! ..' - move       $a0, $sp
 	0x000059C4: 0x02003021 '!0..' - move       $a2, $s0
-	0x000059C8: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x000059C8: 0x0C0018A5 '....' - jal        strncmp
 	0x000059CC: 0x26A56C3C '<l.&' - addiu      $a1, $s5, 27708
 	0x000059D0: 0x02003021 '!0..' - move       $a2, $s0
 	0x000059D4: 0x03A02021 '! ..' - move       $a0, $sp
 	0x000059D8: 0x10400008 '..@.' - beqz       $v0, loc_000059FC
 	0x000059DC: 0x26656C4C 'Lle&' - addiu      $a1, $s3, 27724
-	0x000059E0: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x000059E0: 0x0C0018A5 '....' - jal        strncmp
 	0x000059E4: 0x00000000 '....' - nop        
 	0x000059E8: 0x50400005 '..@P' - beqzl      $v0, loc_00005A00
 	0x000059EC: 0x92280003 '..(.' - lbu        $t0, 3($s1)
@@ -7100,19 +7100,19 @@ loc_00005AD4:		; Refs: 0x00005B40
 	0x00005AF0: 0x2E070020 ' ...' - sltiu      $a3, $s0, 32
 	0x00005AF4: 0x10E0002B '+...' - beqz       $a3, loc_00005BA4
 	0x00005AF8: 0x02003021 '!0..' - move       $a2, $s0
-	0x00005AFC: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x00005AFC: 0x0C0018AB '....' - jal        memcpy
 	0x00005B00: 0x00000000 '....' - nop        
 	0x00005B04: 0x03B04021 '!@..' - addu       $t0, $sp, $s0
 	0x00005B08: 0xA1000000 '....' - sb         $zr, 0($t0)
 	0x00005B0C: 0x03A02021 '! ..' - move       $a0, $sp
 	0x00005B10: 0x02003021 '!0..' - move       $a2, $s0
-	0x00005B14: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x00005B14: 0x0C0018A5 '....' - jal        strncmp
 	0x00005B18: 0x26A56C58 'Xl.&' - addiu      $a1, $s5, 27736
 	0x00005B1C: 0x02003021 '!0..' - move       $a2, $s0
 	0x00005B20: 0x03A02021 '! ..' - move       $a0, $sp
 	0x00005B24: 0x10400008 '..@.' - beqz       $v0, loc_00005B48
 	0x00005B28: 0x26656C68 'hle&' - addiu      $a1, $s3, 27752
-	0x00005B2C: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x00005B2C: 0x0C0018A5 '....' - jal        strncmp
 	0x00005B30: 0x00000000 '....' - nop        
 	0x00005B34: 0x50400005 '..@P' - beqzl      $v0, loc_00005B4C
 	0x00005B38: 0x922F0003 '../.' - lbu        $t7, 3($s1)
@@ -7251,14 +7251,14 @@ loc_00005CDC:		; Refs: 0x00005D2C
 	0x00005CDC: 0x8E4314E0 '..C.' - lw         $v1, 5344($s2)
 	0x00005CE0: 0x10600006 '..`.' - beqz       $v1, loc_00005CFC
 	0x00005CE4: 0x00602821 '!(`.' - move       $a1, $v1
-	0x00005CE8: 0x0C001895 '....' - jal        SysMemForKernel_7B749390
+	0x00005CE8: 0x0C001895 '....' - jal        sceKernelFreeHeapMemory
 	0x00005CEC: 0x8E241448 'H.$.' - lw         $a0, 5192($s1)
 	0x00005CF0: 0x04400005 '..@.' - bltz       $v0, loc_00005D08
 	0x00005CF4: 0x00401821 '!.@.' - move       $v1, $v0
 	0x00005CF8: 0xAE4014E0 '..@.' - sw         $zr, 5344($s2)
 
 loc_00005CFC:		; Refs: 0x00005CE0 
-	0x00005CFC: 0x0C001897 '....' - jal        SysMemForKernel_C9805775
+	0x00005CFC: 0x0C001897 '....' - jal        sceKernelDeleteHeap
 	0x00005D00: 0x8E241448 'H.$.' - lw         $a0, 5192($s1)
 	0x00005D04: 0x00401821 '!.@.' - move       $v1, $v0
 
@@ -7272,7 +7272,7 @@ loc_00005D08:		; Refs: 0x00005CF0
 	0x00005D20: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 loc_00005D24:		; Refs: 0x00005CD4 
-	0x00005D24: 0x0C001895 '....' - jal        SysMemForKernel_7B749390
+	0x00005D24: 0x0C001895 '....' - jal        sceKernelFreeHeapMemory
 	0x00005D28: 0x8E241448 'H.$.' - lw         $a0, 5192($s1)
 	0x00005D2C: 0x08001737 '7...' - j          loc_00005CDC
 	0x00005D30: 0xAE0014DC '....' - sw         $zr, 5340($s0)
@@ -7346,19 +7346,19 @@ loc_00005DE8:		; Refs: 0x00005E58
 	0x00005E08: 0x2E070020 ' ...' - sltiu      $a3, $s0, 32
 	0x00005E0C: 0x10E00078 'x...' - beqz       $a3, loc_00005FF0
 	0x00005E10: 0x02003021 '!0..' - move       $a2, $s0
-	0x00005E14: 0x0C0018AB '....' - jal        SysclibForKernel_AB7592FF
+	0x00005E14: 0x0C0018AB '....' - jal        memcpy
 	0x00005E18: 0x00000000 '....' - nop        
 	0x00005E1C: 0x02504021 '!@P.' - addu       $t0, $s2, $s0
 	0x00005E20: 0xA1000000 '....' - sb         $zr, 0($t0)
 	0x00005E24: 0x02402021 '! @.' - move       $a0, $s2
 	0x00005E28: 0x02003021 '!0..' - move       $a2, $s0
-	0x00005E2C: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x00005E2C: 0x0C0018A5 '....' - jal        strncmp
 	0x00005E30: 0x26A56C74 'tl.&' - addiu      $a1, $s5, 27764
 	0x00005E34: 0x02402021 '! @.' - move       $a0, $s2
 	0x00005E38: 0x02003021 '!0..' - move       $a2, $s0
 	0x00005E3C: 0x10400008 '..@.' - beqz       $v0, loc_00005E60
 	0x00005E40: 0x26856C84 '.l.&' - addiu      $a1, $s4, 27780
-	0x00005E44: 0x0C0018A5 '....' - jal        SysclibForKernel_7AB35214
+	0x00005E44: 0x0C0018A5 '....' - jal        strncmp
 	0x00005E48: 0x00000000 '....' - nop        
 	0x00005E4C: 0x50400005 '..@P' - beqzl      $v0, loc_00005E64
 	0x00005E50: 0xAFA0001C '....' - sw         $zr, 28($sp)
@@ -7392,7 +7392,7 @@ loc_00005E64:		; Refs: 0x00005E4C
 	0x00005EB0: 0xAFA60008 '....' - sw         $a2, 8($sp)
 	0x00005EB4: 0xAFA2000C '....' - sw         $v0, 12($sp)
 	0x00005EB8: 0xAFBE001C '....' - sw         $fp, 28($sp)
-	0x00005EBC: 0x0C001893 '....' - jal        SysMemForKernel_636C953B
+	0x00005EBC: 0x0C001893 '....' - jal        sceKernelAllocHeapMemory
 	0x00005EC0: 0xAFA00014 '....' - sw         $zr, 20($sp)
 	0x00005EC4: 0x3C048001 '...<' - lui        $a0, 0x8001
 	0x00005EC8: 0xAE421444 'D.B.' - sw         $v0, 5188($s2)
@@ -7405,7 +7405,7 @@ loc_00005E64:		; Refs: 0x00005E4C
 	0x00005EE4: 0x00404021 '!@@.' - move       $t0, $v0
 	0x00005EE8: 0x362580C0 '..%6' - ori        $a1, $s1, 0x80C0
 	0x00005EEC: 0x03A03021 '!0..' - move       $a2, $sp
-	0x00005EF0: 0x0C001883 '....' - jal        IoFileMgrForKernel_54F5FB11
+	0x00005EF0: 0x0C001883 '....' - jal        sceIoDevctl
 	0x00005EF4: 0x24070024 '$..$' - li         $a3, 36
 	0x00005EF8: 0x1440002C ',.@.' - bnez       $v0, loc_00005FAC
 	0x00005EFC: 0x00408021 '!.@.' - move       $s0, $v0
@@ -7440,7 +7440,7 @@ loc_00005F58:		; Refs: 0x00005FA4
 	0x00005F58: 0x0C0017FF '....' - jal        sub_00005FFC
 	0x00005F5C: 0x00000000 '....' - nop        
 	0x00005F60: 0x8E641448 'H.d.' - lw         $a0, 5192($s3)
-	0x00005F64: 0x0C001895 '....' - jal        SysMemForKernel_7B749390
+	0x00005F64: 0x0C001895 '....' - jal        sceKernelFreeHeapMemory
 	0x00005F68: 0x8E451444 'D.E.' - lw         $a1, 5188($s2)
 	0x00005F6C: 0x00001821 '!...' - move       $v1, $zr
 
@@ -7467,7 +7467,7 @@ loc_00005FAC:		; Refs: 0x00005EF8
 	0x00005FAC: 0x8E641448 'H.d.' - lw         $a0, 5192($s3)
 
 loc_00005FB0:		; Refs: 0x00005FE8 
-	0x00005FB0: 0x0C001895 '....' - jal        SysMemForKernel_7B749390
+	0x00005FB0: 0x0C001895 '....' - jal        sceKernelFreeHeapMemory
 	0x00005FB4: 0x8E451444 'D.E.' - lw         $a1, 5188($s2)
 	0x00005FB8: 0x02001821 '!...' - move       $v1, $s0
 	0x00005FBC: 0x080017DC '....' - j          loc_00005F70
@@ -7684,268 +7684,268 @@ InitForKernel_7233B5BC:		; Refs: 0x00005874
 	0x000061F8: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine InterruptManagerForKernel_092968F4 - Address 0x000061FC 
+; Subroutine sceKernelCpuSuspendIntr - Address 0x000061FC 
 ; Imported from InterruptManagerForKernel
-InterruptManagerForKernel_092968F4:		; Refs: 0x00001C74 0x00001D94 0x000046C0 0x00004728 
+sceKernelCpuSuspendIntr:		; Refs: 0x00001C74 0x00001D94 0x000046C0 0x00004728 
 	0x000061FC: 0x03E00008 '....' - jr         $ra
 	0x00006200: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine InterruptManagerForKernel_5F10D406 - Address 0x00006204 
+; Subroutine sceKernelCpuResumeIntr - Address 0x00006204 
 ; Imported from InterruptManagerForKernel
-InterruptManagerForKernel_5F10D406:		; Refs: 0x00001CD4 0x00001DE4 0x00001E04 0x000046E4 0x00004708 0x00004740 
+sceKernelCpuResumeIntr:		; Refs: 0x00001CD4 0x00001DE4 0x00001E04 0x000046E4 0x00004708 0x00004740 
 	0x00006204: 0x03E00008 '....' - jr         $ra
 	0x00006208: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine IoFileMgrForKernel_54F5FB11 - Address 0x0000620C 
+; Subroutine sceIoDevctl - Address 0x0000620C 
 ; Imported from IoFileMgrForKernel
-IoFileMgrForKernel_54F5FB11:		; Refs: 0x00005214 0x00005290 0x000053E0 0x00005650 0x00005EF0 
+sceIoDevctl:		; Refs: 0x00005214 0x00005290 0x000053E0 0x00005650 0x00005EF0 
 	0x0000620C: 0x03E00008 '....' - jr         $ra
 	0x00006210: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine IoFileMgrForKernel_8E982A74 - Address 0x00006214 
+; Subroutine sceIoAddDrv - Address 0x00006214 
 ; Imported from IoFileMgrForKernel
-IoFileMgrForKernel_8E982A74:		; Refs: 0x00000CE0 
+sceIoAddDrv:		; Refs: 0x00000CE0 
 	0x00006214: 0x03E00008 '....' - jr         $ra
 	0x00006218: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine IoFileMgrForKernel_C7F35804 - Address 0x0000621C 
+; Subroutine sceIoDelDrv - Address 0x0000621C 
 ; Imported from IoFileMgrForKernel
-IoFileMgrForKernel_C7F35804:		; Refs: 0x00000D94 
+sceIoDelDrv:		; Refs: 0x00000D94 
 	0x0000621C: 0x03E00008 '....' - jr         $ra
 	0x00006220: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine KDebugForKernel_24C32559 - Address 0x00006224 
+; Subroutine sceKernelDipsw - Address 0x00006224 
 ; Imported from KDebugForKernel
-KDebugForKernel_24C32559:		; Refs: 0x00004E38 
+sceKernelDipsw:		; Refs: 0x00004E38 
 	0x00006224: 0x03E00008 '....' - jr         $ra
 	0x00006228: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine KDebugForKernel_84F370BC - Address 0x0000622C 
+; Subroutine Kprintf - Address 0x0000622C 
 ; Imported from KDebugForKernel
-KDebugForKernel_84F370BC:		; Refs: 0x00005454 0x00005460 0x00005468 
+Kprintf:		; Refs: 0x00005454 0x00005460 0x00005468 
 	0x0000622C: 0x03E00008 '....' - jr         $ra
 	0x00006230: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ModuleMgrForKernel_04B7BD22 - Address 0x00006234 
+; Subroutine sceKernelSearchModuleByName - Address 0x00006234 
 ; Imported from ModuleMgrForKernel
-ModuleMgrForKernel_04B7BD22:		; Refs: 0x000045A8 
+sceKernelSearchModuleByName:		; Refs: 0x000045A8 
 	0x00006234: 0x03E00008 '....' - jr         $ra
 	0x00006238: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysMemForKernel_1C1FBFE7 - Address 0x0000623C 
+; Subroutine sceKernelCreateHeap - Address 0x0000623C 
 ; Imported from SysMemForKernel
-SysMemForKernel_1C1FBFE7:		; Refs: 0x0000170C 0x000050CC 
+sceKernelCreateHeap:		; Refs: 0x0000170C 0x000050CC 
 	0x0000623C: 0x03E00008 '....' - jr         $ra
 	0x00006240: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysMemForKernel_55A40B2C - Address 0x00006244 
+; Subroutine sceKernelQueryMemoryPartitionInfo - Address 0x00006244 
 ; Imported from SysMemForKernel
-SysMemForKernel_55A40B2C:		; Refs: 0x00000D5C 
+sceKernelQueryMemoryPartitionInfo:		; Refs: 0x00000D5C 
 	0x00006244: 0x03E00008 '....' - jr         $ra
 	0x00006248: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysMemForKernel_636C953B - Address 0x0000624C 
+; Subroutine sceKernelAllocHeapMemory - Address 0x0000624C 
 ; Imported from SysMemForKernel
-SysMemForKernel_636C953B:		; Refs: 0x000050E4 0x000050F8 0x00005624 0x00005EBC 
+sceKernelAllocHeapMemory:		; Refs: 0x000050E4 0x000050F8 0x00005624 0x00005EBC 
 	0x0000624C: 0x03E00008 '....' - jr         $ra
 	0x00006250: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysMemForKernel_7B749390 - Address 0x00006254 
+; Subroutine sceKernelFreeHeapMemory - Address 0x00006254 
 ; Imported from SysMemForKernel
-SysMemForKernel_7B749390:		; Refs: 0x00005144 0x00005838 0x000058F8 0x00005CE8 0x00005D24 0x00005F64 0x00005FB0 
+sceKernelFreeHeapMemory:		; Refs: 0x00005144 0x00005838 0x000058F8 0x00005CE8 0x00005D24 0x00005F64 0x00005FB0 
 	0x00006254: 0x03E00008 '....' - jr         $ra
 	0x00006258: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysMemForKernel_C9805775 - Address 0x0000625C 
+; Subroutine sceKernelDeleteHeap - Address 0x0000625C 
 ; Imported from SysMemForKernel
-SysMemForKernel_C9805775:		; Refs: 0x000018C4 0x00003618 0x0000514C 0x0000516C 0x00005CFC 
+sceKernelDeleteHeap:		; Refs: 0x000018C4 0x00003618 0x0000514C 0x0000516C 0x00005CFC 
 	0x0000625C: 0x03E00008 '....' - jr         $ra
 	0x00006260: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysMemForKernel_FC114573 - Address 0x00006264 
+; Subroutine sceKernelGetCompiledSdkVersion - Address 0x00006264 
 ; Imported from SysMemForKernel
-SysMemForKernel_FC114573:		; Refs: 0x0000039C 0x0000061C 0x00000ABC 0x00000B4C 0x00000C4C 
+sceKernelGetCompiledSdkVersion:		; Refs: 0x0000039C 0x0000061C 0x00000ABC 0x00000B4C 0x00000C4C 
 	0x00006264: 0x03E00008 '....' - jr         $ra
 	0x00006268: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_10F3BB61 - Address 0x0000626C 
+; Subroutine memset - Address 0x0000626C 
 ; Imported from SysclibForKernel
-SysclibForKernel_10F3BB61:		; Refs: 0x0000177C 0x0000180C 0x0000181C 0x00003694 
+memset:		; Refs: 0x0000177C 0x0000180C 0x0000181C 0x00003694 
 	0x0000626C: 0x03E00008 '....' - jr         $ra
 	0x00006270: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_32C767F2 - Address 0x00006274 
+; Subroutine look_ctype_table - Address 0x00006274 
 ; Imported from SysclibForKernel
-SysclibForKernel_32C767F2:		; Refs: 0x00003218 0x00003460 
+look_ctype_table:		; Refs: 0x00003218 0x00003460 
 	0x00006274: 0x03E00008 '....' - jr         $ra
 	0x00006278: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_47DD934D - Address 0x0000627C 
+; Subroutine strtol - Address 0x0000627C 
 ; Imported from SysclibForKernel
-SysclibForKernel_47DD934D:		; Refs: 0x000034DC 
+strtol:		; Refs: 0x000034DC 
 	0x0000627C: 0x03E00008 '....' - jr         $ra
 	0x00006280: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_52DF196C - Address 0x00006284 
+; Subroutine strlen - Address 0x00006284 
 ; Imported from SysclibForKernel
-SysclibForKernel_52DF196C:		; Refs: 0x00000508 0x000031E8 0x00003200 0x00003448 0x00004774 
+strlen:		; Refs: 0x00000508 0x000031E8 0x00003200 0x00003448 0x00004774 
 	0x00006284: 0x03E00008 '....' - jr         $ra
 	0x00006288: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_7661E728 - Address 0x0000628C 
+; Subroutine sprintf - Address 0x0000628C 
 ; Imported from SysclibForKernel
-SysclibForKernel_7661E728:		; Refs: 0x00000500 0x00001794 
+sprintf:		; Refs: 0x00000500 0x00001794 
 	0x0000628C: 0x03E00008 '....' - jr         $ra
 	0x00006290: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_7AB35214 - Address 0x00006294 
+; Subroutine strncmp - Address 0x00006294 
 ; Imported from SysclibForKernel
-SysclibForKernel_7AB35214:		; Refs: 0x00003240 0x00003488 0x00005234 0x000052AC 0x00005584 0x000055A0 0x000059C8 0x000059E0 0x00005B14 0x00005B2C 0x00005E2C 0x00005E44 
+strncmp:		; Refs: 0x00003240 0x00003488 0x00005234 0x000052AC 0x00005584 0x000055A0 0x000059C8 0x000059E0 0x00005B14 0x00005B2C 0x00005E2C 0x00005E44 
 	0x00006294: 0x03E00008 '....' - jr         $ra
 	0x00006298: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_81D0D1F7 - Address 0x0000629C 
+; Subroutine memcmp - Address 0x0000629C 
 ; Imported from SysclibForKernel
-SysclibForKernel_81D0D1F7:		; Refs: 0x0000156C 0x000015B8 0x00005794 
+memcmp:		; Refs: 0x0000156C 0x000015B8 0x00005794 
 	0x0000629C: 0x03E00008 '....' - jr         $ra
 	0x000062A0: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_A48D2592 - Address 0x000062A4 
+; Subroutine memmove - Address 0x000062A4 
 ; Imported from SysclibForKernel
-SysclibForKernel_A48D2592:		; Refs: 0x00002E18 0x00002E6C 
+memmove:		; Refs: 0x00002E18 0x00002E6C 
 	0x000062A4: 0x03E00008 '....' - jr         $ra
 	0x000062A8: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_AB7592FF - Address 0x000062AC 
+; Subroutine memcpy - Address 0x000062AC 
 ; Imported from SysclibForKernel
-SysclibForKernel_AB7592FF:		; Refs: 0x000005D4 0x000005EC 0x000026BC 0x000026D8 0x00002C6C 0x00002C94 0x00002CE8 0x00002D30 0x00002DE4 0x00002E08 0x000034C4 0x00004CF4 0x00005568 0x000059B0 0x00005AFC 0x00005E14 
+memcpy:		; Refs: 0x000005D4 0x000005EC 0x000026BC 0x000026D8 0x00002C6C 0x00002C94 0x00002CE8 0x00002D30 0x00002DE4 0x00002E08 0x000034C4 0x00004CF4 0x00005568 0x000059B0 0x00005AFC 0x00005E14 
 	0x000062AC: 0x03E00008 '....' - jr         $ra
 	0x000062B0: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_B1DC2AE8 - Address 0x000062B4 
+; Subroutine strchr - Address 0x000062B4 
 ; Imported from SysclibForKernel
-SysclibForKernel_B1DC2AE8:		; Refs: 0x000034A0 
+strchr:		; Refs: 0x000034A0 
 	0x000062B4: 0x03E00008 '....' - jr         $ra
 	0x000062B8: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_28B6489C - Address 0x000062BC 
+; Subroutine sceKernelDeleteSema - Address 0x000062BC 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_28B6489C:		; Refs: 0x000018AC 0x000035D4 0x00004D3C 
+sceKernelDeleteSema:		; Refs: 0x000018AC 0x000035D4 0x00004D3C 
 	0x000062BC: 0x03E00008 '....' - jr         $ra
 	0x000062C0: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_293B45B8 - Address 0x000062C4 
+; Subroutine sceKernelGetThreadId - Address 0x000062C4 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_293B45B8:		; Refs: 0x00004624 
+sceKernelGetThreadId:		; Refs: 0x00004624 
 	0x000062C4: 0x03E00008 '....' - jr         $ra
 	0x000062C8: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_369ED59D - Address 0x000062CC 
+; Subroutine sceKernelGetSystemTimeLow - Address 0x000062CC 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_369ED59D:		; Refs: 0x00002FD8 0x0000308C 0x000031A8 0x0000462C 
+sceKernelGetSystemTimeLow:		; Refs: 0x00002FD8 0x0000308C 0x000031A8 0x0000462C 
 	0x000062CC: 0x03E00008 '....' - jr         $ra
 	0x000062D0: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_3F53E640 - Address 0x000062D4 
+; Subroutine sceKernelSignalSema - Address 0x000062D4 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_3F53E640:		; Refs: 0x00000098 0x00000154 0x00000180 0x0000035C 0x0000060C 0x0000076C 0x00000954 
+sceKernelSignalSema:		; Refs: 0x00000098 0x00000154 0x00000180 0x0000035C 0x0000060C 0x0000076C 0x00000954 
 	0x000062D4: 0x03E00008 '....' - jr         $ra
 	0x000062D8: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_446D8DE6 - Address 0x000062DC 
+; Subroutine sceKernelCreateThread - Address 0x000062DC 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_446D8DE6:		; Refs: 0x00004E8C 
+sceKernelCreateThread:		; Refs: 0x00004E8C 
 	0x000062DC: 0x03E00008 '....' - jr         $ra
 	0x000062E0: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_4E3A1105 - Address 0x000062E4 
+; Subroutine sceKernelWaitSema - Address 0x000062E4 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_4E3A1105:		; Refs: 0x00000068 0x0000012C 0x00000268 0x00000574 0x000006EC 
+sceKernelWaitSema:		; Refs: 0x00000068 0x0000012C 0x00000268 0x00000574 0x000006EC 
 	0x000062E4: 0x03E00008 '....' - jr         $ra
 	0x000062E8: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_85A2A5BF - Address 0x000062EC 
+; Subroutine sceKernelIsUserModeThread - Address 0x000062EC 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_85A2A5BF:		; Refs: 0x0000038C 0x00000544 0x00000AAC 0x00000B3C 0x00000BF8 
+sceKernelIsUserModeThread:		; Refs: 0x0000038C 0x00000544 0x00000AAC 0x00000B3C 0x00000BF8 
 	0x000062EC: 0x03E00008 '....' - jr         $ra
 	0x000062F0: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_BC31C1B9 - Address 0x000062F4 
+; Subroutine sceKernelExtendKernelStack - Address 0x000062F4 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_BC31C1B9:		; Refs: 0x00000300 0x00000C3C 
+sceKernelExtendKernelStack:		; Refs: 0x00000300 0x00000C3C 
 	0x000062F4: 0x03E00008 '....' - jr         $ra
 	0x000062F8: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_CEADEB47 - Address 0x000062FC 
+; Subroutine sceKernelDelayThread - Address 0x000062FC 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_CEADEB47:		; Refs: 0x00000634 0x000025BC 0x000027AC 0x000027E0 0x00002890 0x00002998 0x00002A9C 0x00002F4C 0x00003180 0x00003198 0x00003714 0x00003824 0x00004684 
+sceKernelDelayThread:		; Refs: 0x00000634 0x000025BC 0x000027AC 0x000027E0 0x00002890 0x00002998 0x00002A9C 0x00002F4C 0x00003180 0x00003198 0x00003714 0x00003824 0x00004684 
 	0x000062FC: 0x03E00008 '....' - jr         $ra
 	0x00006300: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_D6DA4BA1 - Address 0x00006304 
+; Subroutine sceKernelCreateSema - Address 0x00006304 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_D6DA4BA1:		; Refs: 0x00001834 
+sceKernelCreateSema:		; Refs: 0x00001834 
 	0x00006304: 0x03E00008 '....' - jr         $ra
 	0x00006308: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine ThreadManForKernel_F475845D - Address 0x0000630C 
+; Subroutine sceKernelStartThread - Address 0x0000630C 
 ; Imported from ThreadManForKernel
-ThreadManForKernel_F475845D:		; Refs: 0x00004EA8 
+sceKernelStartThread:		; Refs: 0x00004EA8 
 	0x0000630C: 0x03E00008 '....' - jr         $ra
 	0x00006310: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine UtilsForKernel_34B9FA9E - Address 0x00006314 
+; Subroutine sceKernelDcacheWritebackInvalidateRange - Address 0x00006314 
 ; Imported from UtilsForKernel
-UtilsForKernel_34B9FA9E:		; Refs: 0x00005064 0x00005084 
+sceKernelDcacheWritebackInvalidateRange:		; Refs: 0x00005064 0x00005084 
 	0x00006314: 0x03E00008 '....' - jr         $ra
 	0x00006318: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine UtilsForKernel_BFA98062 - Address 0x0000631C 
+; Subroutine sceKernelDcacheInvalidateRange - Address 0x0000631C 
 ; Imported from UtilsForKernel
-UtilsForKernel_BFA98062:		; Refs: 0x00002808 0x00002818 0x00005070 0x00005094 
+sceKernelDcacheInvalidateRange:		; Refs: 0x00002808 0x00002818 0x00005070 0x00005094 
 	0x0000631C: 0x03E00008 '....' - jr         $ra
 	0x00006320: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine sceUmd_27A764A1 - Address 0x00006324 
+; Subroutine sceUmdUnRegisterGetUMDInfoCallBack - Address 0x00006324 
 ; Imported from sceUmd
-sceUmd_27A764A1:		; Refs: 0x00004A48 
+sceUmdUnRegisterGetUMDInfoCallBack:		; Refs: 0x00004A48 
 	0x00006324: 0x03E00008 '....' - jr         $ra
 	0x00006328: 0x00000000 '....' - nop        
 
@@ -7957,16 +7957,16 @@ sceUmd_659587F7:		; Refs: 0x0000036C 0x00000774 0x00000A58
 	0x00006330: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine sceUmd_7850F057 - Address 0x00006334 
+; Subroutine sceUmdRegisterGetUMDInfoCallBack - Address 0x00006334 
 ; Imported from sceUmd
-sceUmd_7850F057:		; Refs: 0x00004A2C 
+sceUmdRegisterGetUMDInfoCallBack:		; Refs: 0x00004A2C 
 	0x00006334: 0x03E00008 '....' - jr         $ra
 	0x00006338: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine sceUmd_D45D1FE6 - Address 0x0000633C 
+; Subroutine sceUmdGetDriveStatus - Address 0x0000633C 
 ; Imported from sceUmd
-sceUmd_D45D1FE6:		; Refs: 0x00002260 
+sceUmdGetDriveStatus:		; Refs: 0x00002260 
 	0x0000633C: 0x03E00008 '....' - jr         $ra
 	0x00006340: 0x00000000 '....' - nop        
 
