@@ -16,7 +16,7 @@
 #include <string.h>
 #include <pspkernel.h>
 
-#include "_external/pspUmdman_driver.h"
+#include "_external/pspUmdMan_driver.h"
 #include "get.h"
 #include "output.h"
 #include "outputScsiCmdLogforCD.h"
