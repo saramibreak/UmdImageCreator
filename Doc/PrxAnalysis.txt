@@ -235,7 +235,7 @@ On the other hand, a part of the umdman.prx on 6.61 kernel is below.
  0xE779ECEF | sceUmdManGetInquiry                       | 1.00
  0xEB0841CE | sceUmdExecModSenseCmd                     | None -> detected comparing with 3.52
  0xED53D164 | Same as 0x552F671A of 3.52                | None -> detected comparing with 3.52
- 0xEEBF3121 | sceUmdExecSetLockLengthCmd                | None
+ 0xEEBF3121 | sceUmdExecSetLockLengthCmd                | None -> detected comparing with 3.52
  0xF31D8208 | Same as 0x65D0DEC6 of 3.52                | None -> detected comparing with 3.52
  0xF5B8ED7B | Same as 0x2E49311E of 3.52                | None -> detected comparing with 3.52
  0xF62A8245 | sceUmdManSetReadAheadSize                 | None -> detected comparing with 3.52
@@ -243,15 +243,11 @@ On the other hand, a part of the umdman.prx on 6.61 kernel is below.
  0xFB74B6E9 | sceUmdManSPKGetMKI                        | None -> detected comparing with 3.52
 ------------+-------------------------------------------+----------
 
-Many NIDs are changed from FW 3.52 because SCE started "randomising" the NIDs from FW 3.70 and onwards. (Actually 3.60, not 3.70)
+Many NIDs are changed from FW 3.52 because SCE started "randomising" the NIDs from FW 3.70 and onwards.
 These new NIDs are not actually “random” but instead, they now append a new 128bit “randomising key” to the end of each string before the SHA1 hash is calculated.
 (http://uofw.github.io/upspd/docs/SilverSpring_Blog/my.malloc.us/silverspring/nid-explained/index.html)
 
-For this reason, we cannot access to the function from FW 3.60 to FW 6.61 if NID changes.
-
-4. Conclusion
-Therefore, FW 1.00 ... 3.52 are needed to access to the SCSI-like function (e.g. sceUmdExecRead10Cmd).
+But we can access to the function from FW 3.70 to FW 6.61 by comparing the assembly code.
 
 See also "PSP-PRX-Libraries-Documentation-Project" (https://github.com/mathieulh/PSP-PRX-Libraries-Documentation-Project)
  => This project reveals the prx files from 1.00 to 5.00
-

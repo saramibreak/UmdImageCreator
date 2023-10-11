@@ -345,7 +345,7 @@ loc_00000420:		; Refs: 0x00000448
 	0x00000424: 0x00000000 '....' - nop        
 	0x00000428: 0x14510019 '..Q.' - bne        $v0, $s1, loc_00000490
 	0x0000042C: 0x00408021 '!.@.' - move       $s0, $v0
-	0x00000430: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00000430: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00000434: 0x00000000 '....' - nop        
 	0x00000438: 0x10500005 '..P.' - beq        $v0, $s0, loc_00000450
 	0x0000043C: 0x24040050 'P..$' - li         $a0, 80
@@ -404,7 +404,7 @@ sub_000004CC:		; Refs: 0x00001328 0x000016A0 0x00002C68 0x00003688 0x000036B8 0x
 	0x000004CC: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x000004D0: 0xAFBF0000 '....' - sw         $ra, 0($sp)
 ; Data ref 0x011C39F4
-	0x000004D4: 0x0C0039F4 '.9..' - jal        sceSysreg_driver_16909002
+	0x000004D4: 0x0C0039F4 '.9..' - jal        sceSysregAtaBusClockEnable
 	0x000004D8: 0x00000000 '....' - nop        
 	0x000004DC: 0x0000000F '....' - sync       
 	0x000004E0: 0x3C03BDF0 '...<' - lui        $v1, 0xBDF0
@@ -1222,7 +1222,7 @@ loc_00000F68:		; Refs: 0x00000F0C
 	0x00000F68: 0x30830001 '...0' - andi       $v1, $a0, 0x1
 	0x00000F6C: 0x5060FFEA '..`P' - beqzl      $v1, loc_00000F18
 	0x00000F70: 0x2610000C '...&' - addiu      $s0, $s0, 12
-	0x00000F74: 0x0C0029C9 '.)..' - jal        sceUmdMan_driver_D1478023
+	0x00000F74: 0x0C0029C9 '.)..' - jal        sceUmdManGetUmdDiscInfo
 	0x00000F78: 0x00000000 '....' - nop        
 	0x00000F7C: 0x00135840 '@X..' - sll        $t3, $s3, 1
 	0x00000F80: 0x01735021 '!Ps.' - addu       $t2, $t3, $s3
@@ -1272,7 +1272,7 @@ loc_00001008:		; Refs: 0x00000EFC
 	0x0000100C: 0x16A0FFBE '....' - bnez       $s5, loc_00000F08
 	0x00001010: 0x30A2FFFF '...0' - andi       $v0, $a1, 0xFFFF
 ; Data ref 0x03C929C9
-	0x00001014: 0x0C0029C9 '.)..' - jal        sceUmdMan_driver_D1478023
+	0x00001014: 0x0C0029C9 '.)..' - jal        sceUmdManGetUmdDiscInfo
 	0x00001018: 0x00000000 '....' - nop        
 	0x0000101C: 0x00133840 '@8..' - sll        $a3, $s3, 1
 	0x00001020: 0x00F3C821 '!...' - addu       $t9, $a3, $s3
@@ -1501,11 +1501,11 @@ sub_000012E8:		; Refs: 0x0000B928
 	0x000012E8: 0x27BDFFE0 '...'' - addiu      $sp, $sp, -32
 	0x000012EC: 0xAFBF0010 '....' - sw         $ra, 16($sp)
 ; Data ref 0x046C39F4
-	0x000012F0: 0x0C0039F4 '.9..' - jal        sceSysreg_driver_16909002
+	0x000012F0: 0x0C0039F4 '.9..' - jal        sceSysregAtaBusClockEnable
 	0x000012F4: 0x00000000 '....' - nop        
-	0x000012F8: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x000012F8: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x000012FC: 0x00002021 '! ..' - move       $a0, $zr
-	0x00001300: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x00001300: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x00001304: 0x00000000 '....' - nop        
 	0x00001308: 0x30450004 '..E0' - andi       $a1, $v0, 0x4
 	0x0000130C: 0x3C03000F '...<' - lui        $v1, 0xF
@@ -1543,11 +1543,11 @@ sub_0000136C:		; Refs: 0x0000B940
 	0x0000136C: 0x27BDFFC0 '...'' - addiu      $sp, $sp, -64
 	0x00001370: 0xAFBF0030 '0...' - sw         $ra, 48($sp)
 ; Data ref 0x04D339F4
-	0x00001374: 0x0C0039F4 '.9..' - jal        sceSysreg_driver_16909002
+	0x00001374: 0x0C0039F4 '.9..' - jal        sceSysregAtaBusClockEnable
 	0x00001378: 0x00000000 '....' - nop        
-	0x0000137C: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000137C: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x00001380: 0x00002021 '! ..' - move       $a0, $zr
-	0x00001384: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x00001384: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x00001388: 0x00000000 '....' - nop        
 	0x0000138C: 0x30450004 '..E0' - andi       $a1, $v0, 0x4
 	0x00001390: 0x3C03000F '...<' - lui        $v1, 0xF
@@ -1596,11 +1596,11 @@ sub_0000141C:		; Refs: 0x0000B9A4
 	0x0000141C: 0x27BDFFC0 '...'' - addiu      $sp, $sp, -64
 	0x00001420: 0xAFBF0030 '0...' - sw         $ra, 48($sp)
 ; Data ref 0x04F339F4
-	0x00001424: 0x0C0039F4 '.9..' - jal        sceSysreg_driver_16909002
+	0x00001424: 0x0C0039F4 '.9..' - jal        sceSysregAtaBusClockEnable
 	0x00001428: 0x00000000 '....' - nop        
-	0x0000142C: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000142C: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x00001430: 0x00002021 '! ..' - move       $a0, $zr
-	0x00001434: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x00001434: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x00001438: 0x00000000 '....' - nop        
 	0x0000143C: 0x30450004 '..E0' - andi       $a1, $v0, 0x4
 	0x00001440: 0x3C03000F '...<' - lui        $v1, 0xF
@@ -1635,7 +1635,7 @@ loc_0000148C:		; Refs: 0x00001474
 	0x0000149C: 0x00401821 '!.@.' - move       $v1, $v0
 	0x000014A0: 0x1440FFF6 '..@.' - bnez       $v0, loc_0000147C
 	0x000014A4: 0x24050010 '...$' - li         $a1, 16
-	0x000014A8: 0x0C00397E '~9..' - jal        UtilsForKernel_BFA98062
+	0x000014A8: 0x0C00397E '~9..' - jal        sceKernelDcacheInvalidateRange
 	0x000014AC: 0x00000000 '....' - nop        
 	0x000014B0: 0x0C0000EA '....' - jal        sub_000003A8
 	0x000014B4: 0x24040005 '...$' - li         $a0, 5
@@ -1680,12 +1680,12 @@ sub_000014DC:		; Refs: 0x0000B974 0x0000BA58
 	0x00001538: 0xA3A80005 '....' - sb         $t0, 5($sp)
 	0x0000153C: 0xA3A90006 '....' - sb         $t1, 6($sp)
 ; Data ref 0x051F39F4
-	0x00001540: 0x0C0039F4 '.9..' - jal        sceSysreg_driver_16909002
+	0x00001540: 0x0C0039F4 '.9..' - jal        sceSysregAtaBusClockEnable
 	0x00001544: 0xA3A70004 '....' - sb         $a3, 4($sp)
 	0x00001548: 0x3C07000F '...<' - lui        $a3, 0xF
 	0x0000154C: 0x0C0007B4 '....' - jal        sub_00001ED0
 	0x00001550: 0x34E40013 '...4' - ori        $a0, $a3, 0x13
-	0x00001554: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x00001554: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x00001558: 0x00000000 '....' - nop        
 	0x0000155C: 0x30450004 '..E0' - andi       $a1, $v0, 0x4
 	0x00001560: 0x3C068021 '!..<' - lui        $a2, 0x8021
@@ -1701,10 +1701,10 @@ sub_000014DC:		; Refs: 0x0000B974 0x0000BA58
 	0x00001580: 0x02402021 '! @.' - move       $a0, $s2
 	0x00001584: 0x00002821 '!(..' - move       $a1, $zr
 	0x00001588: 0x34068000 '...4' - li         $a2, 0x8000
-	0x0000158C: 0x0C003936 '69..' - jal        SysclibForKernel_10F3BB61
+	0x0000158C: 0x0C003936 '69..' - jal        memset
 	0x00001590: 0x0040B821 '!.@.' - move       $s7, $v0
 	0x00001594: 0x00102AC0 '.*..' - sll        $a1, $s0, 11
-	0x00001598: 0x0C00397E '~9..' - jal        UtilsForKernel_BFA98062
+	0x00001598: 0x0C00397E '~9..' - jal        sceKernelDcacheInvalidateRange
 	0x0000159C: 0x02402021 '! @.' - move       $a0, $s2
 	0x000015A0: 0x24140001 '...$' - li         $s4, 1
 	0x000015A4: 0x24150009 '...$' - li         $s5, 9
@@ -1713,13 +1713,13 @@ sub_000014DC:		; Refs: 0x0000B974 0x0000BA58
 	0x000015B0: 0x2416003A ':..$' - li         $s6, 58
 
 loc_000015B4:		; Refs: 0x00001628 
-	0x000015B4: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x000015B4: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x000015B8: 0x00000000 '....' - nop        
 	0x000015BC: 0x10540038 '8.T.' - beq        $v0, $s4, loc_000016A0
 	0x000015C0: 0x00000000 '....' - nop        
 
 loc_000015C4:		; Refs: 0x000016BC 
-	0x000015C4: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x000015C4: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x000015C8: 0x00002021 '! ..' - move       $a0, $zr
 	0x000015CC: 0x3C108021 '!..<' - lui        $s0, 0x8021
 	0x000015D0: 0x02403821 '!8@.' - move       $a3, $s2
@@ -1727,14 +1727,14 @@ loc_000015C4:		; Refs: 0x000016BC
 	0x000015D8: 0x03A02821 '!(..' - move       $a1, $sp
 	0x000015DC: 0x1040001E '..@.' - beqz       $v0, loc_00001658
 	0x000015E0: 0x360A0003 '...6' - ori        $t2, $s0, 0x3
-	0x000015E4: 0x0C00170D '....' - jal        sceUmdMan_driver_6D17FD57
+	0x000015E4: 0x0C00170D '....' - jal        sceUmdExecReadMKICmd
 	0x000015E8: 0x97A60002 '....' - lhu        $a2, 2($sp)
 	0x000015EC: 0x00408021 '!.@.' - move       $s0, $v0
 	0x000015F0: 0x02202021 '!  .' - move       $a0, $s1
 	0x000015F4: 0x27A50010 '...'' - addiu      $a1, $sp, 16
 	0x000015F8: 0x10400014 '..@.' - beqz       $v0, loc_0000164C
 	0x000015FC: 0x24060012 '...$' - li         $a2, 18
-	0x00001600: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00001600: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00001604: 0x00000000 '....' - nop        
 	0x00001608: 0x93B80012 '....' - lbu        $t8, 18($sp)
 	0x0000160C: 0x3303000F '...3' - andi       $v1, $t8, 0xF
@@ -1806,12 +1806,12 @@ sub_000016C4:		; Refs: 0x0000BA70
 	0x000016C4: 0x27BDFFB0 '...'' - addiu      $sp, $sp, -80
 	0x000016C8: 0xAFBF0040 '@...' - sw         $ra, 64($sp)
 ; Data ref 0x057139F4
-	0x000016CC: 0x0C0039F4 '.9..' - jal        sceSysreg_driver_16909002
+	0x000016CC: 0x0C0039F4 '.9..' - jal        sceSysregAtaBusClockEnable
 	0x000016D0: 0x00000000 '....' - nop        
 	0x000016D4: 0x3C02000F '...<' - lui        $v0, 0xF
 	0x000016D8: 0x0C0007B4 '....' - jal        sub_00001ED0
 	0x000016DC: 0x34440003 '..D4' - ori        $a0, $v0, 0x3
-	0x000016E0: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x000016E0: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x000016E4: 0x00000000 '....' - nop        
 	0x000016E8: 0x30470004 '..G0' - andi       $a3, $v0, 0x4
 	0x000016EC: 0x3C088021 '!..<' - lui        $t0, 0x8021
@@ -2537,7 +2537,7 @@ sceUmdMan_driver_ED53D164:		; Refs: 0x00007E74 0x00008AD4
 	0x00001F94: 0xAFB10064 'd...' - sw         $s1, 100($sp)
 	0x00001F98: 0x00808821 '!...' - move       $s1, $a0
 ; Data ref 0x07C639F4
-	0x00001F9C: 0x0C0039F4 '.9..' - jal        sceSysreg_driver_16909002
+	0x00001F9C: 0x0C0039F4 '.9..' - jal        sceSysregAtaBusClockEnable
 	0x00001FA0: 0xAFB00060 '`...' - sw         $s0, 96($sp)
 	0x00001FA4: 0x0C0000B9 '....' - jal        sub_000002E4
 	0x00001FA8: 0x00000000 '....' - nop        
@@ -2704,13 +2704,13 @@ sub_00002188:		; Refs: 0x0000B98C
 	0x000021AC: 0xAFB50034 '4...' - sw         $s5, 52($sp)
 	0x000021B0: 0xAFB40030 '0...' - sw         $s4, 48($sp)
 	0x000021B4: 0xAFB3002C ',...' - sw         $s3, 44($sp)
-	0x000021B8: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x000021B8: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x000021BC: 0xAFB00020 ' ...' - sw         $s0, 32($sp)
 	0x000021C0: 0x00408821 '!.@.' - move       $s1, $v0
 	0x000021C4: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x000021C8: 0x12200013 '.. .' - beqz       $s1, loc_00002218
 	0x000021CC: 0x34430016 '..C4' - ori        $v1, $v0, 0x16
-	0x000021D0: 0x0C0029C9 '.)..' - jal        sceUmdMan_driver_D1478023
+	0x000021D0: 0x0C0029C9 '.)..' - jal        sceUmdManGetUmdDiscInfo
 	0x000021D4: 0x00000000 '....' - nop        
 	0x000021D8: 0x90440068 'h.D.' - lbu        $a0, 104($v0)
 	0x000021DC: 0x50800095 '...P' - beqzl      $a0, loc_00002434
@@ -2753,7 +2753,7 @@ loc_0000224C:		; Refs: 0x00002210
 loc_00002254:		; Refs: 0x00002410 
 	0x00002254: 0x3C1601AB '...<' - lui        $s6, 0x1AB
 	0x00002258: 0x36C43F00 '.?.6' - ori        $a0, $s6, 0x3F00
-	0x0000225C: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000225C: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00002260: 0xA3A00006 '....' - sb         $zr, 6($sp)
 	0x00002264: 0x3C178021 '!..<' - lui        $s7, 0x8021
 	0x00002268: 0xAFA20010 '....' - sw         $v0, 16($sp)
@@ -2765,18 +2765,18 @@ loc_00002254:		; Refs: 0x00002410
 	0x00002280: 0x241E0005 '...$' - li         $fp, 5
 
 loc_00002284:		; Refs: 0x000022E4 
-	0x00002284: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x00002284: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x00002288: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000228C: 0x1040002D '-.@.' - beqz       $v0, loc_00002344
 	0x00002290: 0x00000000 '....' - nop        
 	0x00002294: 0xAE350010 '..5.' - sw         $s5, 16($s1)
-	0x00002298: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00002298: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000229C: 0xAE36000C '..6.' - sw         $s6, 12($s1)
 	0x000022A0: 0x02202021 '!  .' - move       $a0, $s1
 	0x000022A4: 0x03A02821 '!(..' - move       $a1, $sp
 	0x000022A8: 0x1054001E '..T.' - beq        $v0, $s4, loc_00002324
 	0x000022AC: 0x02403021 '!0@.' - move       $a2, $s2
-	0x000022B0: 0x0C001816 '....' - jal        sceUmdMan_driver_8DA33BBD
+	0x000022B0: 0x0C001816 '....' - jal        sceUmdExecAllocateFromReadCmd
 	0x000022B4: 0x00000000 '....' - nop        
 	0x000022B8: 0x00408021 '!.@.' - move       $s0, $v0
 	0x000022BC: 0x02202021 '!  .' - move       $a0, $s1
@@ -2785,7 +2785,7 @@ loc_00002284:		; Refs: 0x000022E4
 	0x000022C8: 0x24060012 '...$' - li         $a2, 18
 	0x000022CC: 0x10530007 '..S.' - beq        $v0, $s3, loc_000022EC
 	0x000022D0: 0x00000000 '....' - nop        
-	0x000022D4: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x000022D4: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x000022D8: 0x24060012 '...$' - li         $a2, 18
 
 loc_000022DC:		; Refs: 0x00002300 0x0000230C 
@@ -2796,7 +2796,7 @@ loc_000022DC:		; Refs: 0x00002300 0x0000230C
 
 loc_000022EC:		; Refs: 0x000022CC 
 ; Data ref 0x08A1157C
-	0x000022EC: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x000022EC: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x000022F0: 0x00000000 '....' - nop        
 	0x000022F4: 0x9226002A '*.&.' - lbu        $a2, 42($s1)
 	0x000022F8: 0x3C078021 '!..<' - lui        $a3, 0x8021
@@ -2808,7 +2808,7 @@ loc_000022EC:		; Refs: 0x000022CC
 	0x00002310: 0x00000000 '....' - nop        
 
 loc_00002314:		; Refs: 0x000022C4 0x0000233C 0x00002380 
-	0x00002314: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00002314: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00002318: 0x8FA40010 '....' - lw         $a0, 16($sp)
 	0x0000231C: 0x08000886 '....' - j          loc_00002218
 	0x00002320: 0x02001821 '!...' - move       $v1, $s0
@@ -2826,7 +2826,7 @@ loc_00002324:		; Refs: 0x000022A8
 
 loc_00002344:		; Refs: 0x0000228C 
 ; Data ref 0x08C525B6
-	0x00002344: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x00002344: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x00002348: 0x00000000 '....' - nop        
 	0x0000234C: 0x30520004 '..R0' - andi       $s2, $v0, 0x4
 	0x00002350: 0x1240000D '..@.' - beqz       $s2, loc_00002388
@@ -2927,9 +2927,9 @@ loc_00002434:		; Refs: 0x000021DC
 	0x00002474: 0x00001021 '!...' - move       $v0, $zr
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_FB74B6E9 - Address 0x00002478 
+; Subroutine sceUmdManSPKGetMKI - Address 0x00002478 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_FB74B6E9:		; Refs: 0x00007394 
+sceUmdManSPKGetMKI:		; Refs: 0x00007394 
 ; Data ref 0x0000F540 ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x00002478: 0x3C030001 '...<' - lui        $v1, 0x1
 	0x0000247C: 0x03E00008 '....' - jr         $ra
@@ -3821,9 +3821,9 @@ loc_00002F60:		; Refs: 0x00002F50
 	0x00002F64: 0x2CC20001 '...,' - sltiu      $v0, $a2, 1
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_DA67B566 - Address 0x00002F68 
+; Subroutine sceUmdManInit - Address 0x00002F68 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_DA67B566:		; Refs: 0x0000B20C 0x0000C4E8 
+sceUmdManInit:		; Refs: 0x0000B20C 0x0000C4E8 
 	0x00002F68: 0x27BDFFE0 '...'' - addiu      $sp, $sp, -32
 ; Data ref 0x0001854C ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x00002F6C: 0x3C030002 '...<' - lui        $v1, 0x2
@@ -3860,7 +3860,7 @@ loc_00002FB0:		; Refs: 0x00002FEC
 	0x00002FDC: 0xACF10010 '....' - sw         $s1, 16($a3)
 	0x00002FE0: 0xACE00020 ' ...' - sw         $zr, 32($a3)
 ; Data ref 0x0BBC3936
-	0x00002FE4: 0x0C003936 '69..' - jal        SysclibForKernel_10F3BB61
+	0x00002FE4: 0x0C003936 '69..' - jal        memset
 	0x00002FE8: 0xACE00024 '$...' - sw         $zr, 36($a3)
 	0x00002FEC: 0x0641FFF0 '..A.' - bgez       $s2, loc_00002FB0
 	0x00002FF0: 0x02133821 '!8..' - addu       $a3, $s0, $s3
@@ -4110,7 +4110,7 @@ loc_000032A4:		; Refs: 0x00003508
 loc_000032D0:		; Refs: 0x000034F8 
 	0x000032D0: 0x0C0039AA '.9..' - jal        sceAta_driver_6C58F096
 	0x000032D4: 0x00000000 '....' - nop        
-	0x000032D8: 0x0C000D78 'x...' - jal        sceUmdMan_driver_8CFED611
+	0x000032D8: 0x0C000D78 'x...' - jal        sceUmdManStart
 	0x000032DC: 0x00002021 '! ..' - move       $a0, $zr
 	0x000032E0: 0x00409021 '!.@.' - move       $s2, $v0
 	0x000032E4: 0x3C048021 '!..<' - lui        $a0, 0x8021
@@ -4144,7 +4144,7 @@ loc_00003328:		; Refs: 0x00003430
 	0x00003334: 0x00000000 '....' - nop        
 	0x00003338: 0x10400006 '..@.' - beqz       $v0, loc_00003354
 	0x0000333C: 0x24040001 '...$' - li         $a0, 1
-	0x00003340: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x00003340: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x00003344: 0x00000000 '....' - nop        
 	0x00003348: 0x30590004 '..Y0' - andi       $t9, $v0, 0x4
 	0x0000334C: 0x13200014 '.. .' - beqz       $t9, loc_000033A0
@@ -4214,7 +4214,7 @@ loc_000033D0:		; Refs: 0x000033B8
 	0x000033F8: 0xAE6195E0 '..a.' - sw         $at, -27168($s3)
 	0x000033FC: 0x1040FFF0 '..@.' - beqz       $v0, loc_000033C0
 	0x00003400: 0x00000000 '....' - nop        
-	0x00003404: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x00003404: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x00003408: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000340C: 0x08000CF0 '....' - j          loc_000033C0
 	0x00003410: 0x00000000 '....' - nop        
@@ -4304,9 +4304,9 @@ loc_00003500:		; Refs: 0x0000329C
 	0x0000350C: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_CB794884 - Address 0x00003510 
+; Subroutine sceUmdManActivate - Address 0x00003510 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_CB794884:
+sceUmdManActivate:
 	0x00003510: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x00003514: 0xAFBF0008 '....' - sw         $ra, 8($sp)
 	0x00003518: 0xAFB10004 '....' - sw         $s1, 4($sp)
@@ -4317,7 +4317,7 @@ sceUmdMan_driver_CB794884:
 	0x00003528: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000352C: 0x10400022 '".@.' - beqz       $v0, loc_000035B8
 	0x00003530: 0x34A30006 '...4' - ori        $v1, $a1, 0x6
-	0x00003534: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x00003534: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x00003538: 0x00000000 '....' - nop        
 	0x0000353C: 0x3C048021 '!..<' - lui        $a0, 0x8021
 	0x00003540: 0x1040001D '..@.' - beqz       $v0, loc_000035B8
@@ -4325,7 +4325,7 @@ sceUmdMan_driver_CB794884:
 	0x00003548: 0x0C003910 '.9..' - jal        InterruptManagerForKernel_092968F4
 ; Data ref 0x00018540 ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x0000354C: 0x3C110002 '...<' - lui        $s1, 0x2
-	0x00003550: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x00003550: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x00003554: 0x00408021 '!.@.' - move       $s0, $v0
 	0x00003558: 0x30430002 '..C0' - andi       $v1, $v0, 0x2
 	0x0000355C: 0x2405FFFE '...$' - li         $a1, -2
@@ -4347,7 +4347,7 @@ sceUmdMan_driver_CB794884:
 	0x00003594: 0x00401821 '!.@.' - move       $v1, $v0
 
 loc_00003598:		; Refs: 0x000035D8 
-	0x00003598: 0x0C0029C6 '.)..' - jal        sceUmdMan_driver_921E7B7D
+	0x00003598: 0x0C0029C6 '.)..' - jal        sceUmdManGetReadyFlag
 	0x0000359C: 0x00000000 '....' - nop        
 	0x000035A0: 0x24060001 '...$' - li         $a2, 1
 	0x000035A4: 0x10460003 '..F.' - beq        $v0, $a2, loc_000035B4
@@ -4375,15 +4375,15 @@ loc_000035D0:		; Refs: 0x00003560
 	0x000035DC: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_8CFED611 - Address 0x000035E0 
+; Subroutine sceUmdManStart - Address 0x000035E0 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_8CFED611:		; Refs: 0x000032D8 0x0000AA68 0x0000AE1C 0x0000B85C 0x0000BC58 0x0000BF68 
+sceUmdManStart:		; Refs: 0x000032D8 0x0000AA68 0x0000AE1C 0x0000B85C 0x0000BC58 0x0000BF68 
 	0x000035E0: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x000035E4: 0xAFB10004 '....' - sw         $s1, 4($sp)
 	0x000035E8: 0xAFB00000 '....' - sw         $s0, 0($sp)
 	0x000035EC: 0xAFBF0008 '....' - sw         $ra, 8($sp)
 ; Data ref 0x0D660DEA
-	0x000035F0: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x000035F0: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x000035F4: 0x00808021 '!...' - move       $s0, $a0
 	0x000035F8: 0x00408821 '!.@.' - move       $s1, $v0
 	0x000035FC: 0x02002021 '! ..' - move       $a0, $s0
@@ -4414,9 +4414,9 @@ loc_00003644:		; Refs: 0x00003600 0x00003614
 	0x00003658: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_CAD31025 - Address 0x0000365C 
+; Subroutine sceUmdManStop - Address 0x0000365C 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_CAD31025:
+sceUmdManStop:
 	0x0000365C: 0x27BDFFE0 '...'' - addiu      $sp, $sp, -32
 	0x00003660: 0x24030001 '...$' - li         $v1, 1
 	0x00003664: 0x10830024 '$...' - beq        $a0, $v1, loc_000036F8
@@ -4533,9 +4533,9 @@ loc_00003798:		; Refs: 0x00003754
 	0x000037A4: 0x02001021 '!...' - move       $v0, $s0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_47E2B6D8 - Address 0x000037A8 
+; Subroutine sceUmdManGetUmdDrive - Address 0x000037A8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_47E2B6D8:		; Refs: 0x000012F8 0x0000137C 0x0000142C 0x000021B8 0x000035F0 0x00007BE0 0x00007F54 0x000094A8 0x0000A3C8 0x0000AAAC 0x0000AEA4 0x0000B958 0x0000BA3C 0x0000BBF4 0x0000BF04 0x0000C190 0x0000C418 0x0000C940 0x0000CE60 
+sceUmdManGetUmdDrive:		; Refs: 0x000012F8 0x0000137C 0x0000142C 0x000021B8 0x000035F0 0x00007BE0 0x00007F54 0x000094A8 0x0000A3C8 0x0000AAAC 0x0000AEA4 0x0000B958 0x0000BA3C 0x0000BBF4 0x0000BF04 0x0000C190 0x0000C418 0x0000C940 0x0000CE60 
 	0x000037A8: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x000037AC: 0xAFB00000 '....' - sw         $s0, 0($sp)
 ; Data ref 0x0001854C ... 0x00000000 0x00000000 0x00000000 0x00000000 
@@ -4574,9 +4574,9 @@ sub_000037F4:		; Refs: 0x00003620
 	0x0000380C: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_D372D6F3 - Address 0x00003810 
+; Subroutine sceUmdManCheckDeviceReady - Address 0x00003810 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_D372D6F3:		; Refs: 0x0000A464 
+sceUmdManCheckDeviceReady:		; Refs: 0x0000A464 
 	0x00003810: 0x27BDFFE0 '...'' - addiu      $sp, $sp, -32
 	0x00003814: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x00003818: 0xAFB00010 '....' - sw         $s0, 16($sp)
@@ -4631,9 +4631,9 @@ loc_000038B4:		; Refs: 0x0000389C
 	0x000038C0: 0x00001821 '!...' - move       $v1, $zr
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_E779ECEF - Address 0x000038C4 
+; Subroutine sceUmdManGetInquiry - Address 0x000038C4 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_E779ECEF:		; Refs: 0x00007B2C 
+sceUmdManGetInquiry:		; Refs: 0x00007B2C 
 	0x000038C4: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x000038C8: 0x3C02001E '...<' - lui        $v0, 0x1E
 	0x000038CC: 0xAFB10014 '....' - sw         $s1, 20($sp)
@@ -4652,12 +4652,12 @@ sceUmdMan_driver_E779ECEF:		; Refs: 0x00007B2C
 	0x00003900: 0xA3A50002 '....' - sb         $a1, 2($sp)
 	0x00003904: 0xA3A00000 '....' - sb         $zr, 0($sp)
 ; Data ref 0x0E0F25E2
-	0x00003908: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00003908: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000390C: 0xA3A00001 '....' - sb         $zr, 1($sp)
 	0x00003910: 0x0040A821 '!.@.' - move       $s5, $v0
 
 loc_00003914:		; Refs: 0x00003960 
-	0x00003914: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00003914: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00003918: 0x00000000 '....' - nop        
 	0x0000391C: 0x3C038001 '...<' - lui        $v1, 0x8001
 	0x00003920: 0x02202021 '!  .' - move       $a0, $s1
@@ -4665,7 +4665,7 @@ loc_00003914:		; Refs: 0x00003960
 	0x00003928: 0x02403021 '!0@.' - move       $a2, $s2
 	0x0000392C: 0x10540012 '..T.' - beq        $v0, $s4, loc_00003978
 	0x00003930: 0x34700074 't.p4' - ori        $s0, $v1, 0x74
-	0x00003934: 0x0C0015F2 '....' - jal        sceUmdMan_driver_1B19A313
+	0x00003934: 0x0C0015F2 '....' - jal        sceUmdExecInquiryCmd
 	0x00003938: 0x00000000 '....' - nop        
 	0x0000393C: 0x00408021 '!.@.' - move       $s0, $v0
 	0x00003940: 0x02202021 '!  .' - move       $a0, $s1
@@ -4683,14 +4683,14 @@ loc_00003958:		; Refs: 0x00003970
 
 loc_00003968:		; Refs: 0x00003950 
 ; Data ref 0x0E45157C
-	0x00003968: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00003968: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x0000396C: 0x00000000 '....' - nop        
 	0x00003970: 0x08000E56 'V...' - j          loc_00003958
 	0x00003974: 0x00000000 '....' - nop        
 
 loc_00003978:		; Refs: 0x0000392C 0x00003948 
 ; Data ref 0x0E5625CB
-	0x00003978: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00003978: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000397C: 0x02A02021 '! ..' - move       $a0, $s5
 	0x00003980: 0x02001021 '!...' - move       $v0, $s0
 	0x00003984: 0x8FBF0028 '(...' - lw         $ra, 40($sp)
@@ -4748,14 +4748,14 @@ loc_00003A10:		; Refs: 0x000039E0
 	0x00003A30: 0x34711020 ' .q4' - ori        $s1, $v1, 0x1020
 	0x00003A34: 0xA7A60004 '....' - sh         $a2, 4($sp)
 	0x00003A38: 0x27B30010 '...'' - addiu      $s3, $sp, 16
-	0x00003A3C: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00003A3C: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00003A40: 0xA3A50000 '....' - sb         $a1, 0($sp)
 	0x00003A44: 0x0040A821 '!.@.' - move       $s5, $v0
 	0x00003A48: 0x02002021 '! ..' - move       $a0, $s0
 
 loc_00003A4C:		; Refs: 0x00003A84 
 	0x00003A4C: 0x03A02821 '!(..' - move       $a1, $sp
-	0x00003A50: 0x0C0018AA '....' - jal        sceUmdMan_driver_EB0841CE
+	0x00003A50: 0x0C0018AA '....' - jal        sceUmdExecModSenseCmd
 	0x00003A54: 0x02603021 '!0`.' - move       $a2, $s3
 	0x00003A58: 0x02002021 '! ..' - move       $a0, $s0
 	0x00003A5C: 0x26050028 '(..&' - addiu      $a1, $s0, 40
@@ -4775,7 +4775,7 @@ loc_00003A7C:		; Refs: 0x00003A94
 
 loc_00003A8C:		; Refs: 0x00003A6C 
 ; Data ref 0x0E93157C
-	0x00003A8C: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00003A8C: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00003A90: 0x00000000 '....' - nop        
 	0x00003A94: 0x08000E9F '....' - j          loc_00003A7C
 	0x00003A98: 0x00000000 '....' - nop        
@@ -4797,7 +4797,7 @@ loc_00003A9C:		; Refs: 0x00003A64
 
 loc_00003AD0:		; Refs: 0x00003B20 
 ; Data ref 0x0E9F2602
-	0x00003AD0: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00003AD0: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00003AD4: 0x00000000 '....' - nop        
 	0x00003AD8: 0x3C0C8001 '...<' - lui        $t4, 0x8001
 	0x00003ADC: 0x02002021 '! ..' - move       $a0, $s0
@@ -4805,7 +4805,7 @@ loc_00003AD0:		; Refs: 0x00003B20
 	0x00003AE4: 0x02603021 '!0`.' - move       $a2, $s3
 	0x00003AE8: 0x1054FFBF '..T.' - beq        $v0, $s4, loc_000039E8
 	0x00003AEC: 0x35830074 't..5' - ori        $v1, $t4, 0x74
-	0x00003AF0: 0x0C0018EE '....' - jal        sceUmdMan_driver_2C5F9A65
+	0x00003AF0: 0x0C0018EE '....' - jal        sceUmdExecModSelectCmd
 	0x00003AF4: 0x00000000 '....' - nop        
 	0x00003AF8: 0x02002021 '! ..' - move       $a0, $s0
 	0x00003AFC: 0x26050028 '(..&' - addiu      $a1, $s0, 40
@@ -4824,14 +4824,14 @@ loc_00003B18:		; Refs: 0x00003B30
 
 loc_00003B28:		; Refs: 0x00003B08 
 ; Data ref 0x0EB4157C
-	0x00003B28: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00003B28: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00003B2C: 0x00000000 '....' - nop        
 	0x00003B30: 0x08000EC6 '....' - j          loc_00003B18
 	0x00003B34: 0x00000000 '....' - nop        
 
 loc_00003B38:		; Refs: 0x00003B00 
 ; Data ref 0x0EC625CB
-	0x00003B38: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00003B38: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00003B3C: 0x02A02021 '! ..' - move       $a0, $s5
 	0x00003B40: 0x08000E7A 'z...' - j          loc_000039E8
 	0x00003B44: 0x00001821 '!...' - move       $v1, $zr
@@ -4882,12 +4882,12 @@ loc_00003BB0:		; Refs: 0x00003B80
 	0x00003BD0: 0x34711020 ' .q4' - ori        $s1, $v1, 0x1020
 	0x00003BD4: 0xA7A60004 '....' - sh         $a2, 4($sp)
 	0x00003BD8: 0x24130001 '...$' - li         $s3, 1
-	0x00003BDC: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00003BDC: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00003BE0: 0xA3A50000 '....' - sb         $a1, 0($sp)
 	0x00003BE4: 0x0040A821 '!.@.' - move       $s5, $v0
 
 loc_00003BE8:		; Refs: 0x00003C3C 
-	0x00003BE8: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00003BE8: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00003BEC: 0x00000000 '....' - nop        
 	0x00003BF0: 0x27B40010 '...'' - addiu      $s4, $sp, 16
 	0x00003BF4: 0x3C088001 '...<' - lui        $t0, 0x8001
@@ -4896,7 +4896,7 @@ loc_00003BE8:		; Refs: 0x00003C3C
 	0x00003C00: 0x02803021 '!0..' - move       $a2, $s4
 	0x00003C04: 0x1053FFE0 '..S.' - beq        $v0, $s3, loc_00003B88
 	0x00003C08: 0x35070074 't..5' - ori        $a3, $t0, 0x74
-	0x00003C0C: 0x0C0018AA '....' - jal        sceUmdMan_driver_EB0841CE
+	0x00003C0C: 0x0C0018AA '....' - jal        sceUmdExecModSenseCmd
 	0x00003C10: 0x00000000 '....' - nop        
 	0x00003C14: 0x02002021 '! ..' - move       $a0, $s0
 	0x00003C18: 0x26050028 '(..&' - addiu      $a1, $s0, 40
@@ -4915,14 +4915,14 @@ loc_00003C34:		; Refs: 0x00003C4C
 
 loc_00003C44:		; Refs: 0x00003C24 
 ; Data ref 0x0EFA157C
-	0x00003C44: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00003C44: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00003C48: 0x00000000 '....' - nop        
 	0x00003C4C: 0x08000F0D '....' - j          loc_00003C34
 	0x00003C50: 0x00000000 '....' - nop        
 
 loc_00003C54:		; Refs: 0x00003C1C 
 ; Data ref 0x0F0D25CB
-	0x00003C54: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00003C54: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00003C58: 0x02A02021 '! ..' - move       $a0, $s5
 	0x00003C5C: 0x93A9001A '....' - lbu        $t1, 26($sp)
 	0x00003C60: 0x31240001 '..$1' - andi       $a0, $t1, 0x1
@@ -4933,7 +4933,7 @@ loc_00003C54:		; Refs: 0x00003C1C
 	0x00003C74: 0x35642D00 '.-d5' - ori        $a0, $t3, 0x2D00
 	0x00003C78: 0x3C128021 '!..<' - lui        $s2, 0x8021
 	0x00003C7C: 0x3C118021 '!..<' - lui        $s1, 0x8021
-	0x00003C80: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00003C80: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00003C84: 0xA3AA0000 '....' - sb         $t2, 0($sp)
 	0x00003C88: 0x0040A821 '!.@.' - move       $s5, $v0
 	0x00003C8C: 0x24130001 '...$' - li         $s3, 1
@@ -4941,7 +4941,7 @@ loc_00003C54:		; Refs: 0x00003C1C
 	0x00003C94: 0x36311020 ' .16' - ori        $s1, $s1, 0x1020
 
 loc_00003C98:		; Refs: 0x00003CE8 
-	0x00003C98: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00003C98: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00003C9C: 0x00000000 '....' - nop        
 	0x00003CA0: 0x3C0C8001 '...<' - lui        $t4, 0x8001
 	0x00003CA4: 0x02002021 '! ..' - move       $a0, $s0
@@ -4949,7 +4949,7 @@ loc_00003C98:		; Refs: 0x00003CE8
 	0x00003CAC: 0x02803021 '!0..' - move       $a2, $s4
 	0x00003CB0: 0x1053FFB5 '..S.' - beq        $v0, $s3, loc_00003B88
 	0x00003CB4: 0x35870074 't..5' - ori        $a3, $t4, 0x74
-	0x00003CB8: 0x0C0018EE '....' - jal        sceUmdMan_driver_2C5F9A65
+	0x00003CB8: 0x0C0018EE '....' - jal        sceUmdExecModSelectCmd
 	0x00003CBC: 0x00000000 '....' - nop        
 	0x00003CC0: 0x02002021 '! ..' - move       $a0, $s0
 	0x00003CC4: 0x26050028 '(..&' - addiu      $a1, $s0, 40
@@ -4968,22 +4968,22 @@ loc_00003CE0:		; Refs: 0x00003CF8
 
 loc_00003CF0:		; Refs: 0x00003CD0 
 ; Data ref 0x0F26157C
-	0x00003CF0: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00003CF0: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00003CF4: 0x00000000 '....' - nop        
 	0x00003CF8: 0x08000F38 '8...' - j          loc_00003CE0
 	0x00003CFC: 0x00000000 '....' - nop        
 
 loc_00003D00:		; Refs: 0x00003CC8 
 ; Data ref 0x0F3825CB
-	0x00003D00: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00003D00: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00003D04: 0x02A02021 '! ..' - move       $a0, $s5
 	0x00003D08: 0x08000EE2 '....' - j          loc_00003B88
 	0x00003D0C: 0x00003821 '!8..' - move       $a3, $zr
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_43894A44 - Address 0x00003D10 
+; Subroutine sceUmdManSetEnableReadAhead - Address 0x00003D10 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_43894A44:
+sceUmdManSetEnableReadAhead:
 	0x00003D10: 0x27BDFFB0 '...'' - addiu      $sp, $sp, -80
 	0x00003D14: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x00003D18: 0xAFB00030 '0...' - sw         $s0, 48($sp)
@@ -5026,12 +5026,12 @@ loc_00003D78:		; Refs: 0x00003D48
 	0x00003D98: 0x34711020 ' .q4' - ori        $s1, $v1, 0x1020
 	0x00003D9C: 0xA7A60004 '....' - sh         $a2, 4($sp)
 	0x00003DA0: 0x24130001 '...$' - li         $s3, 1
-	0x00003DA4: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00003DA4: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00003DA8: 0xA3A50000 '....' - sb         $a1, 0($sp)
 	0x00003DAC: 0x0040A821 '!.@.' - move       $s5, $v0
 
 loc_00003DB0:		; Refs: 0x00003E04 
-	0x00003DB0: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00003DB0: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00003DB4: 0x00000000 '....' - nop        
 	0x00003DB8: 0x27B40010 '...'' - addiu      $s4, $sp, 16
 	0x00003DBC: 0x3C088001 '...<' - lui        $t0, 0x8001
@@ -5040,7 +5040,7 @@ loc_00003DB0:		; Refs: 0x00003E04
 	0x00003DC8: 0x02803021 '!0..' - move       $a2, $s4
 	0x00003DCC: 0x1053FFE0 '..S.' - beq        $v0, $s3, loc_00003D50
 	0x00003DD0: 0x35030074 't..5' - ori        $v1, $t0, 0x74
-	0x00003DD4: 0x0C0018AA '....' - jal        sceUmdMan_driver_EB0841CE
+	0x00003DD4: 0x0C0018AA '....' - jal        sceUmdExecModSenseCmd
 	0x00003DD8: 0x00000000 '....' - nop        
 	0x00003DDC: 0x02002021 '! ..' - move       $a0, $s0
 	0x00003DE0: 0x26050028 '(..&' - addiu      $a1, $s0, 40
@@ -5059,14 +5059,14 @@ loc_00003DFC:		; Refs: 0x00003E14
 
 loc_00003E0C:		; Refs: 0x00003DEC 
 ; Data ref 0x0F6C157C
-	0x00003E0C: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00003E0C: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00003E10: 0x00000000 '....' - nop        
 	0x00003E14: 0x08000F7F '....' - j          loc_00003DFC
 	0x00003E18: 0x00000000 '....' - nop        
 
 loc_00003E1C:		; Refs: 0x00003DE4 
 ; Data ref 0x0F7F25CB
-	0x00003E1C: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00003E1C: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00003E20: 0x02A02021 '! ..' - move       $a0, $s5
 	0x00003E24: 0x93A50024 '$...' - lbu        $a1, 36($sp)
 	0x00003E28: 0x30A40020 ' ..0' - andi       $a0, $a1, 0x20
@@ -5082,13 +5082,13 @@ loc_00003E1C:		; Refs: 0x00003DE4
 	0x00003E50: 0xA3AB0024 '$...' - sb         $t3, 36($sp)
 	0x00003E54: 0x3552100F '..R5' - ori        $s2, $t2, 0x100F
 	0x00003E58: 0x24130001 '...$' - li         $s3, 1
-	0x00003E5C: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00003E5C: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00003E60: 0xA3A90000 '....' - sb         $t1, 0($sp)
 	0x00003E64: 0x0040A821 '!.@.' - move       $s5, $v0
 	0x00003E68: 0x36311020 ' .16' - ori        $s1, $s1, 0x1020
 
 loc_00003E6C:		; Refs: 0x00003EBC 
-	0x00003E6C: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00003E6C: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00003E70: 0x00000000 '....' - nop        
 	0x00003E74: 0x3C0D8001 '...<' - lui        $t5, 0x8001
 	0x00003E78: 0x02002021 '! ..' - move       $a0, $s0
@@ -5096,7 +5096,7 @@ loc_00003E6C:		; Refs: 0x00003EBC
 	0x00003E80: 0x02803021 '!0..' - move       $a2, $s4
 	0x00003E84: 0x1053FFB2 '..S.' - beq        $v0, $s3, loc_00003D50
 	0x00003E88: 0x35A30074 't..5' - ori        $v1, $t5, 0x74
-	0x00003E8C: 0x0C0018EE '....' - jal        sceUmdMan_driver_2C5F9A65
+	0x00003E8C: 0x0C0018EE '....' - jal        sceUmdExecModSelectCmd
 	0x00003E90: 0x00000000 '....' - nop        
 	0x00003E94: 0x02002021 '! ..' - move       $a0, $s0
 	0x00003E98: 0x26050028 '(..&' - addiu      $a1, $s0, 40
@@ -5115,22 +5115,22 @@ loc_00003EB4:		; Refs: 0x00003ECC
 
 loc_00003EC4:		; Refs: 0x00003EA4 
 ; Data ref 0x0F9B157C
-	0x00003EC4: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00003EC4: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00003EC8: 0x00000000 '....' - nop        
 	0x00003ECC: 0x08000FAD '....' - j          loc_00003EB4
 	0x00003ED0: 0x00000000 '....' - nop        
 
 loc_00003ED4:		; Refs: 0x00003E9C 
 ; Data ref 0x0FAD25CB
-	0x00003ED4: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00003ED4: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00003ED8: 0x02A02021 '! ..' - move       $a0, $s5
 	0x00003EDC: 0x08000F54 'T...' - j          loc_00003D50
 	0x00003EE0: 0x00001821 '!...' - move       $v1, $zr
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_F62A8245 - Address 0x00003EE4 
+; Subroutine sceUmdManSetReadAheadSize - Address 0x00003EE4 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_F62A8245:
+sceUmdManSetReadAheadSize:
 	0x00003EE4: 0x27BDFFA0 '...'' - addiu      $sp, $sp, -96
 	0x00003EE8: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x00003EEC: 0xAFBE0050 'P...' - sw         $fp, 80($sp)
@@ -5188,12 +5188,12 @@ loc_00003F70:		; Refs: 0x00003F34
 	0x00003FA8: 0xAFA0001C '....' - sw         $zr, 28($sp)
 	0x00003FAC: 0xAFA00020 ' ...' - sw         $zr, 32($sp)
 	0x00003FB0: 0xA7A00024 '$...' - sh         $zr, 36($sp)
-	0x00003FB4: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00003FB4: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00003FB8: 0xA3A50000 '....' - sb         $a1, 0($sp)
 	0x00003FBC: 0x0040B021 '!.@.' - move       $s6, $v0
 
 loc_00003FC0:		; Refs: 0x00004028 
-	0x00003FC0: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00003FC0: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00003FC4: 0x00000000 '....' - nop        
 	0x00003FC8: 0x27B40010 '...'' - addiu      $s4, $sp, 16
 	0x00003FCC: 0x3C098001 '...<' - lui        $t1, 0x8001
@@ -5202,7 +5202,7 @@ loc_00003FC0:		; Refs: 0x00004028
 	0x00003FD8: 0x02803021 '!0..' - move       $a2, $s4
 	0x00003FDC: 0x1053FFD7 '..S.' - beq        $v0, $s3, loc_00003F3C
 	0x00003FE0: 0x35280074 't.(5' - ori        $t0, $t1, 0x74
-	0x00003FE4: 0x0C0018AA '....' - jal        sceUmdMan_driver_EB0841CE
+	0x00003FE4: 0x0C0018AA '....' - jal        sceUmdExecModSenseCmd
 	0x00003FE8: 0x00000000 '....' - nop        
 	0x00003FEC: 0x00401821 '!.@.' - move       $v1, $v0
 	0x00003FF0: 0x02002021 '! ..' - move       $a0, $s0
@@ -5228,14 +5228,14 @@ loc_00004020:		; Refs: 0x00004038
 
 loc_00004030:		; Refs: 0x00004010 
 ; Data ref 0x0FF0157C
-	0x00004030: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00004030: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00004034: 0x00000000 '....' - nop        
 	0x00004038: 0x08001008 '....' - j          loc_00004020
 	0x0000403C: 0x00000000 '....' - nop        
 
 loc_00004040:		; Refs: 0x00004008 
 ; Data ref 0x100825CB
-	0x00004040: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00004040: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00004044: 0x3C120131 '1..<' - lui        $s2, 0x131
 	0x00004048: 0x00158A02 '....' - srl        $s1, $s5, 8
 	0x0000404C: 0x00176A02 '.j..' - srl        $t5, $s7, 8
@@ -5253,19 +5253,19 @@ loc_00004040:		; Refs: 0x00004008
 	0x0000407C: 0xA3B7001F '....' - sb         $s7, 31($sp)
 	0x00004080: 0xA3AC0020 ' ...' - sb         $t4, 32($sp)
 	0x00004084: 0xA3BE0021 '!...' - sb         $fp, 33($sp)
-	0x00004088: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00004088: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000408C: 0xA3AB0000 '....' - sb         $t3, 0($sp)
 	0x00004090: 0x0040B021 '!.@.' - move       $s6, $v0
 
 loc_00004094:		; Refs: 0x000040E0 
-	0x00004094: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00004094: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00004098: 0x3C158001 '...<' - lui        $s5, 0x8001
 	0x0000409C: 0x02002021 '! ..' - move       $a0, $s0
 	0x000040A0: 0x03A02821 '!(..' - move       $a1, $sp
 	0x000040A4: 0x02803021 '!0..' - move       $a2, $s4
 	0x000040A8: 0x1053FFA4 '..S.' - beq        $v0, $s3, loc_00003F3C
 	0x000040AC: 0x36A80074 't..6' - ori        $t0, $s5, 0x74
-	0x000040B0: 0x0C0018EE '....' - jal        sceUmdMan_driver_2C5F9A65
+	0x000040B0: 0x0C0018EE '....' - jal        sceUmdExecModSelectCmd
 	0x000040B4: 0x00000000 '....' - nop        
 	0x000040B8: 0x02002021 '! ..' - move       $a0, $s0
 	0x000040BC: 0x26050028 '(..&' - addiu      $a1, $s0, 40
@@ -5284,22 +5284,22 @@ loc_000040D8:		; Refs: 0x000040F0
 
 loc_000040E8:		; Refs: 0x000040C8 
 ; Data ref 0x1025157C
-	0x000040E8: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x000040E8: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x000040EC: 0x00000000 '....' - nop        
 	0x000040F0: 0x08001036 '6...' - j          loc_000040D8
 	0x000040F4: 0x00000000 '....' - nop        
 
 loc_000040F8:		; Refs: 0x000040C0 
 ; Data ref 0x103625CB
-	0x000040F8: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x000040F8: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x000040FC: 0x02C02021 '! ..' - move       $a0, $s6
 	0x00004100: 0x08000FCF '....' - j          loc_00003F3C
 	0x00004104: 0x00004021 '!@..' - move       $t0, $zr
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_CADCF4E0 - Address 0x00004108 
+; Subroutine sceUmdManSetDisableReadAhead - Address 0x00004108 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_CADCF4E0:
+sceUmdManSetDisableReadAhead:
 	0x00004108: 0x27BDFFB0 '...'' - addiu      $sp, $sp, -80
 	0x0000410C: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x00004110: 0xAFB00030 '0...' - sw         $s0, 48($sp)
@@ -5346,12 +5346,12 @@ loc_00004178:		; Refs: 0x00004144
 	0x000041A0: 0xA7A70004 '....' - sh         $a3, 4($sp)
 	0x000041A4: 0x34711020 ' .q4' - ori        $s1, $v1, 0x1020
 	0x000041A8: 0x24140001 '...$' - li         $s4, 1
-	0x000041AC: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x000041AC: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x000041B0: 0xA3A50000 '....' - sb         $a1, 0($sp)
 	0x000041B4: 0x0040B021 '!.@.' - move       $s6, $v0
 
 loc_000041B8:		; Refs: 0x00004224 
-	0x000041B8: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x000041B8: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x000041BC: 0x00000000 '....' - nop        
 	0x000041C0: 0x27B50010 '...'' - addiu      $s5, $sp, 16
 	0x000041C4: 0x3C098001 '...<' - lui        $t1, 0x8001
@@ -5360,7 +5360,7 @@ loc_000041B8:		; Refs: 0x00004224
 	0x000041D0: 0x02A03021 '!0..' - move       $a2, $s5
 	0x000041D4: 0x1054FFDD '..T.' - beq        $v0, $s4, loc_0000414C
 	0x000041D8: 0x35280074 't.(5' - ori        $t0, $t1, 0x74
-	0x000041DC: 0x0C0018AA '....' - jal        sceUmdMan_driver_EB0841CE
+	0x000041DC: 0x0C0018AA '....' - jal        sceUmdExecModSenseCmd
 	0x000041E0: 0x00000000 '....' - nop        
 	0x000041E4: 0x00522026 '& R.' - xor        $a0, $v0, $s2
 	0x000041E8: 0x00536026 '&`S.' - xor        $t4, $v0, $s3
@@ -5385,14 +5385,14 @@ loc_0000421C:		; Refs: 0x00004234
 
 loc_0000422C:		; Refs: 0x0000420C 
 ; Data ref 0x106E157C
-	0x0000422C: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x0000422C: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00004230: 0x00000000 '....' - nop        
 	0x00004234: 0x08001087 '....' - j          loc_0000421C
 	0x00004238: 0x00000000 '....' - nop        
 
 loc_0000423C:		; Refs: 0x00004204 
 ; Data ref 0x108725CB
-	0x0000423C: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000423C: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00004240: 0x02C02021 '! ..' - move       $a0, $s6
 	0x00004244: 0x93A30024 '$...' - lbu        $v1, 36($sp)
 	0x00004248: 0x306D0020 ' .m0' - andi       $t5, $v1, 0x20
@@ -5406,14 +5406,14 @@ loc_0000423C:		; Refs: 0x00004204
 	0x00004268: 0xA3B10024 '$...' - sb         $s1, 36($sp)
 	0x0000426C: 0x3C148021 '!..<' - lui        $s4, 0x8021
 	0x00004270: 0x35F2100F '...5' - ori        $s2, $t7, 0x100F
-	0x00004274: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00004274: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00004278: 0xA3AE0000 '....' - sb         $t6, 0($sp)
 	0x0000427C: 0x24130001 '...$' - li         $s3, 1
 	0x00004280: 0x0040B021 '!.@.' - move       $s6, $v0
 	0x00004284: 0x36911020 ' ..6' - ori        $s1, $s4, 0x1020
 
 loc_00004288:		; Refs: 0x000042D8 
-	0x00004288: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00004288: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000428C: 0x00000000 '....' - nop        
 	0x00004290: 0x3C188001 '...<' - lui        $t8, 0x8001
 	0x00004294: 0x02002021 '! ..' - move       $a0, $s0
@@ -5421,7 +5421,7 @@ loc_00004288:		; Refs: 0x000042D8
 	0x0000429C: 0x02A03021 '!0..' - move       $a2, $s5
 	0x000042A0: 0x1053FFAA '..S.' - beq        $v0, $s3, loc_0000414C
 	0x000042A4: 0x37080074 't..7' - ori        $t0, $t8, 0x74
-	0x000042A8: 0x0C0018EE '....' - jal        sceUmdMan_driver_2C5F9A65
+	0x000042A8: 0x0C0018EE '....' - jal        sceUmdExecModSelectCmd
 	0x000042AC: 0x00000000 '....' - nop        
 	0x000042B0: 0x02002021 '! ..' - move       $a0, $s0
 	0x000042B4: 0x26050028 '(..&' - addiu      $a1, $s0, 40
@@ -5440,14 +5440,14 @@ loc_000042D0:		; Refs: 0x000042E8
 
 loc_000042E0:		; Refs: 0x000042C0 
 ; Data ref 0x10A2157C
-	0x000042E0: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x000042E0: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x000042E4: 0x00000000 '....' - nop        
 	0x000042E8: 0x080010B4 '....' - j          loc_000042D0
 	0x000042EC: 0x00000000 '....' - nop        
 
 loc_000042F0:		; Refs: 0x000042B8 
 ; Data ref 0x10B425CB
-	0x000042F0: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x000042F0: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x000042F4: 0x02C02021 '! ..' - move       $a0, $s6
 	0x000042F8: 0x08001053 'S...' - j          loc_0000414C
 	0x000042FC: 0x00004021 '!@..' - move       $t0, $zr
@@ -5768,23 +5768,23 @@ loc_00004670:		; Refs: 0x0000463C
 	0x0000469C: 0xA7A60002 '....' - sh         $a2, 2($sp)
 	0x000046A0: 0x34B4100F '...4' - ori        $s4, $a1, 0x100F
 	0x000046A4: 0x24150001 '...$' - li         $s5, 1
-	0x000046A8: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x000046A8: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x000046AC: 0xA7A00000 '....' - sh         $zr, 0($sp)
 	0x000046B0: 0x0040B021 '!.@.' - move       $s6, $v0
 
 loc_000046B4:		; Refs: 0x0000470C 
-	0x000046B4: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x000046B4: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x000046B8: 0x00002021 '! ..' - move       $a0, $zr
 	0x000046BC: 0x1040001D '..@.' - beqz       $v0, loc_00004734
 	0x000046C0: 0x3C108001 '...<' - lui        $s0, 0x8001
-	0x000046C4: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x000046C4: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x000046C8: 0x36100074 't..6' - ori        $s0, $s0, 0x74
 	0x000046CC: 0x02602021 '! `.' - move       $a0, $s3
 	0x000046D0: 0x02202821 '!( .' - move       $a1, $s1
 	0x000046D4: 0x03A03021 '!0..' - move       $a2, $sp
 	0x000046D8: 0x10550012 '..U.' - beq        $v0, $s5, loc_00004724
 	0x000046DC: 0x02403821 '!8@.' - move       $a3, $s2
-	0x000046E0: 0x0C001B71 'q...' - jal        sceUmdMan_driver_4D3F98AF
+	0x000046E0: 0x0C001B71 'q...' - jal        sceUmdExecAdjustDataCmd
 	0x000046E4: 0x00000000 '....' - nop        
 	0x000046E8: 0x00408021 '!.@.' - move       $s0, $v0
 	0x000046EC: 0x02202021 '!  .' - move       $a0, $s1
@@ -5802,14 +5802,14 @@ loc_00004704:		; Refs: 0x0000471C
 
 loc_00004714:		; Refs: 0x000046FC 
 ; Data ref 0x11AD157C
-	0x00004714: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00004714: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00004718: 0x00000000 '....' - nop        
 	0x0000471C: 0x080011C1 '....' - j          loc_00004704
 	0x00004720: 0x00000000 '....' - nop        
 
 loc_00004724:		; Refs: 0x000046D8 0x000046F4 0x00004750 
 ; Data ref 0x11C125CB
-	0x00004724: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00004724: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00004728: 0x02C02021 '! ..' - move       $a0, $s6
 	0x0000472C: 0x08001191 '....' - j          loc_00004644
 	0x00004730: 0x02001821 '!...' - move       $v1, $s0
@@ -5849,29 +5849,29 @@ sub_00004758:		; Refs: 0x0000BB1C
 	0x0000479C: 0x24120001 '...$' - li         $s2, 1
 	0x000047A0: 0xA7A30004 '....' - sh         $v1, 4($sp)
 ; Data ref 0x11C925E2
-	0x000047A4: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x000047A4: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x000047A8: 0xA3A50001 '....' - sb         $a1, 1($sp)
 	0x000047AC: 0x00409821 '!.@.' - move       $s3, $v0
 
 loc_000047B0:		; Refs: 0x00004804 
-	0x000047B0: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x000047B0: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x000047B4: 0x00002021 '! ..' - move       $a0, $zr
 	0x000047B8: 0x10400085 '..@.' - beqz       $v0, loc_000049D0
 	0x000047BC: 0x3C108001 '...<' - lui        $s0, 0x8001
-	0x000047C0: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x000047C0: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x000047C4: 0x36100074 't..6' - ori        $s0, $s0, 0x74
 	0x000047C8: 0x02202021 '!  .' - move       $a0, $s1
 	0x000047CC: 0x03A02821 '!(..' - move       $a1, $sp
 	0x000047D0: 0x1052000E '..R.' - beq        $v0, $s2, loc_0000480C
 	0x000047D4: 0x27A60010 '...'' - addiu      $a2, $sp, 16
-	0x000047D8: 0x0C0018AA '....' - jal        sceUmdMan_driver_EB0841CE
+	0x000047D8: 0x0C0018AA '....' - jal        sceUmdExecModSenseCmd
 	0x000047DC: 0x00000000 '....' - nop        
 	0x000047E0: 0x00408021 '!.@.' - move       $s0, $v0
 	0x000047E4: 0x02202021 '!  .' - move       $a0, $s1
 	0x000047E8: 0x26250028 '(.%&' - addiu      $a1, $s1, 40
 	0x000047EC: 0x10400007 '..@.' - beqz       $v0, loc_0000480C
 	0x000047F0: 0x24060012 '...$' - li         $a2, 18
-	0x000047F4: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x000047F4: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x000047F8: 0x00000000 '....' - nop        
 	0x000047FC: 0x0C00396E 'n9..' - jal        ThreadManForKernel_CEADEB47
 	0x00004800: 0x24040BB8 '...$' - li         $a0, 3000
@@ -5880,7 +5880,7 @@ loc_000047B0:		; Refs: 0x00004804
 
 loc_0000480C:		; Refs: 0x000047D0 0x000047EC 0x000049E4 
 ; Data ref 0x11EC25CB
-	0x0000480C: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000480C: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00004810: 0x02602021 '! `.' - move       $a0, $s3
 	0x00004814: 0x12000009 '....' - beqz       $s0, loc_0000483C
 	0x00004818: 0x02001021 '!...' - move       $v0, $s0
@@ -5908,29 +5908,29 @@ loc_0000483C:		; Refs: 0x00004814
 	0x00004860: 0xA3A90000 '....' - sb         $t1, 0($sp)
 	0x00004864: 0x24120001 '...$' - li         $s2, 1
 	0x00004868: 0xA3A80001 '....' - sb         $t0, 1($sp)
-	0x0000486C: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000486C: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00004870: 0xA7B40004 '....' - sh         $s4, 4($sp)
 	0x00004874: 0x00409821 '!.@.' - move       $s3, $v0
 
 loc_00004878:		; Refs: 0x000048CC 
-	0x00004878: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x00004878: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000487C: 0x00002021 '! ..' - move       $a0, $zr
 	0x00004880: 0x1040004A 'J.@.' - beqz       $v0, loc_000049AC
 	0x00004884: 0x3C108001 '...<' - lui        $s0, 0x8001
-	0x00004888: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00004888: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000488C: 0x36100074 't..6' - ori        $s0, $s0, 0x74
 	0x00004890: 0x02202021 '!  .' - move       $a0, $s1
 	0x00004894: 0x03A02821 '!(..' - move       $a1, $sp
 	0x00004898: 0x1052000E '..R.' - beq        $v0, $s2, loc_000048D4
 	0x0000489C: 0x27A60010 '...'' - addiu      $a2, $sp, 16
-	0x000048A0: 0x0C0018AA '....' - jal        sceUmdMan_driver_EB0841CE
+	0x000048A0: 0x0C0018AA '....' - jal        sceUmdExecModSenseCmd
 	0x000048A4: 0x00000000 '....' - nop        
 	0x000048A8: 0x00408021 '!.@.' - move       $s0, $v0
 	0x000048AC: 0x02202021 '!  .' - move       $a0, $s1
 	0x000048B0: 0x26250028 '(.%&' - addiu      $a1, $s1, 40
 	0x000048B4: 0x10400007 '..@.' - beqz       $v0, loc_000048D4
 	0x000048B8: 0x24060012 '...$' - li         $a2, 18
-	0x000048BC: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x000048BC: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x000048C0: 0x00000000 '....' - nop        
 	0x000048C4: 0x0C00396E 'n9..' - jal        ThreadManForKernel_CEADEB47
 	0x000048C8: 0x24040BB8 '...$' - li         $a0, 3000
@@ -5939,7 +5939,7 @@ loc_00004878:		; Refs: 0x000048CC
 
 loc_000048D4:		; Refs: 0x00004898 0x000048B4 0x000049C8 
 ; Data ref 0x121E25CB
-	0x000048D4: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x000048D4: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x000048D8: 0x02602021 '! `.' - move       $a0, $s3
 	0x000048DC: 0x1600FFCF '....' - bnez       $s0, loc_0000481C
 	0x000048E0: 0x02001021 '!...' - move       $v0, $s0
@@ -5954,22 +5954,22 @@ loc_000048D4:		; Refs: 0x00004898 0x000048B4 0x000049C8
 	0x00004904: 0xA3B0002B '+...' - sb         $s0, 43($sp)
 	0x00004908: 0xA7B40004 '....' - sh         $s4, 4($sp)
 	0x0000490C: 0xA3B00027 ''...' - sb         $s0, 39($sp)
-	0x00004910: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00004910: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00004914: 0xA3A00001 '....' - sb         $zr, 1($sp)
 	0x00004918: 0x00409821 '!.@.' - move       $s3, $v0
 
 loc_0000491C:		; Refs: 0x00004970 
-	0x0000491C: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000491C: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x00004920: 0x00002021 '! ..' - move       $a0, $zr
 	0x00004924: 0x10400018 '..@.' - beqz       $v0, loc_00004988
 	0x00004928: 0x3C108001 '...<' - lui        $s0, 0x8001
-	0x0000492C: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000492C: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00004930: 0x36100074 't..6' - ori        $s0, $s0, 0x74
 	0x00004934: 0x03A02821 '!(..' - move       $a1, $sp
 	0x00004938: 0x27A60010 '...'' - addiu      $a2, $sp, 16
 	0x0000493C: 0x1052000E '..R.' - beq        $v0, $s2, loc_00004978
 	0x00004940: 0x02202021 '!  .' - move       $a0, $s1
-	0x00004944: 0x0C0018EE '....' - jal        sceUmdMan_driver_2C5F9A65
+	0x00004944: 0x0C0018EE '....' - jal        sceUmdExecModSelectCmd
 	0x00004948: 0x00000000 '....' - nop        
 	0x0000494C: 0x00408021 '!.@.' - move       $s0, $v0
 	0x00004950: 0x10400009 '..@.' - beqz       $v0, loc_00004978
@@ -5978,14 +5978,14 @@ loc_0000491C:		; Refs: 0x00004970
 	0x0000495C: 0x00000000 '....' - nop        
 	0x00004960: 0x02202021 '!  .' - move       $a0, $s1
 	0x00004964: 0x26250028 '(.%&' - addiu      $a1, $s1, 40
-	0x00004968: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00004968: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x0000496C: 0x24060012 '...$' - li         $a2, 18
 	0x00004970: 0x08001247 'G...' - j          loc_0000491C
 	0x00004974: 0x00000000 '....' - nop        
 
 loc_00004978:		; Refs: 0x0000493C 0x00004950 0x000049A4 
 ; Data ref 0x124725CB
-	0x00004978: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00004978: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000497C: 0x02602021 '! `.' - move       $a0, $s3
 	0x00004980: 0x08001207 '....' - j          loc_0000481C
 	0x00004984: 0x02001021 '!...' - move       $v0, $s0
@@ -6025,9 +6025,9 @@ loc_000049D0:		; Refs: 0x000047B8
 	0x000049E8: 0x345010A0 '..P4' - ori        $s0, $v0, 0x10A0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_32FB5BB9 - Address 0x000049EC 
+; Subroutine sceUmdManValidateUMD - Address 0x000049EC 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_32FB5BB9:
+sceUmdManValidateUMD:
 	0x000049EC: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x000049F0: 0x3C038001 '...<' - lui        $v1, 0x8001
 	0x000049F4: 0xAFB00000 '....' - sw         $s0, 0($sp)
@@ -6052,7 +6052,7 @@ loc_00004A20:		; Refs: 0x00004A00
 	0x00004A2C: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 loc_00004A30:		; Refs: 0x00004A14 
-	0x00004A30: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x00004A30: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x00004A34: 0x00000000 '....' - nop        
 	0x00004A38: 0x1040FFF8 '..@.' - beqz       $v0, loc_00004A1C
 	0x00004A3C: 0x00001821 '!...' - move       $v1, $zr
@@ -6138,9 +6138,9 @@ sub_00004B14:		; Refs: 0x00008E6C 0x00009DF0 0x0000A8E8 0x0000ABB4 0x0000AD30 0x
 	0x00004B1C: 0x8C838540 '@...' - lw         $v1, -31424($a0)
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_40BE225B - Address 0x00004B20 
+; Subroutine sceUmdManGetErrorStatus - Address 0x00004B20 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_40BE225B:
+sceUmdManGetErrorStatus:
 ; Data ref 0x00018548 ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x00004B20: 0x3C040002 '...<' - lui        $a0, 0x2
 	0x00004B24: 0x03E00008 '....' - jr         $ra
@@ -6229,9 +6229,9 @@ sub_00004BBC:		; Refs: 0x000023D4 0x000023F4 0x0000BCF8 0x0000BD30 0x0000CC88 0x
 	0x00004BC4: 0xAC6595E0 '..e.' - sw         $a1, -27168($v1)
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_0D3EA203 - Address 0x00004BC8 
+; Subroutine sceUmdManTerm - Address 0x00004BC8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_0D3EA203:
+sceUmdManTerm:
 	0x00004BC8: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x00004BCC: 0xAFBF0000 '....' - sw         $ra, 0($sp)
 ; Data ref 0x12E839BC
@@ -6260,9 +6260,9 @@ sceUmdMan_driver_0D3EA203:
 	0x00004C28: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_81E5E7BE - Address 0x00004C2C 
+; Subroutine sceUmdManGetBootFrom - Address 0x00004C2C 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_81E5E7BE:
+sceUmdManGetBootFrom:
 ; Data ref 0x000195DC ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x00004C2C: 0x3C040002 '...<' - lui        $a0, 0x2
 	0x00004C30: 0x03E00008 '....' - jr         $ra
@@ -7127,9 +7127,9 @@ loc_000055B8:		; Refs: 0x00005404
 	0x000055EC: 0xA1190004 '....' - sb         $t9, 4($t0)
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_2CBE959B - Address 0x000055F0 
+; Subroutine sceUmdExecReqSenseCmd - Address 0x000055F0 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_2CBE959B:		; Refs: 0x00001600 0x000022D4 0x000022EC 0x00003968 0x00003A8C 0x00003B28 0x00003C44 0x00003CF0 0x00003E0C 0x00003EC4 0x00004030 0x000040E8 0x0000422C 0x000042E0 0x00004714 0x000047F4 0x000048BC 0x00004968 0x00007FF4 0x00008220 0x000083C4 0x00008504 0x00008630 0x00008724 0x000088E4 0x000089C4 0x0000A484 0x0000AF10 0x0000B630 0x0000C6FC 0x0000C7D0 0x0000CB74 0x0000CEBC 
+sceUmdExecReqSenseCmd:		; Refs: 0x00001600 0x000022D4 0x000022EC 0x00003968 0x00003A8C 0x00003B28 0x00003C44 0x00003CF0 0x00003E0C 0x00003EC4 0x00004030 0x000040E8 0x0000422C 0x000042E0 0x00004714 0x000047F4 0x000048BC 0x00004968 0x00007FF4 0x00008220 0x000083C4 0x00008504 0x00008630 0x00008724 0x000088E4 0x000089C4 0x0000A484 0x0000AF10 0x0000B630 0x0000C6FC 0x0000C7D0 0x0000CB74 0x0000CEBC 
 	0x000055F0: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x000055F4: 0xAFB20028 '(...' - sw         $s2, 40($sp)
 	0x000055F8: 0x00A09021 '!...' - move       $s2, $a1
@@ -7210,9 +7210,9 @@ loc_00005694:		; Refs: 0x00005678
 	0x000056EC: 0x00408021 '!.@.' - move       $s0, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_5219AF31 - Address 0x000056F0 
+; Subroutine sceUmdExecStartStopUnitCmd - Address 0x000056F0 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_5219AF31:		; Refs: 0x000081E4 0x0000838C 0x000085F8 
+sceUmdExecStartStopUnitCmd:		; Refs: 0x000081E4 0x0000838C 0x000085F8 
 	0x000056F0: 0x27BDFFE0 '...'' - addiu      $sp, $sp, -32
 	0x000056F4: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x000056F8: 0xAFB20018 '....' - sw         $s2, 24($sp)
@@ -7279,9 +7279,9 @@ loc_000057B4:		; Refs: 0x00005798
 	0x000057C4: 0x00408821 '!.@.' - move       $s1, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_1B19A313 - Address 0x000057C8 
+; Subroutine sceUmdExecInquiryCmd - Address 0x000057C8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_1B19A313:		; Refs: 0x00003934 
+sceUmdExecInquiryCmd:		; Refs: 0x00003934 
 	0x000057C8: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x000057CC: 0xAFB3001C '....' - sw         $s3, 28($sp)
 	0x000057D0: 0x00A09821 '!...' - move       $s3, $a1
@@ -7364,9 +7364,9 @@ loc_00005874:		; Refs: 0x00005858
 	0x000058CC: 0x00408021 '!.@.' - move       $s0, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_E3716915 - Address 0x000058D0 
+; Subroutine sceUmdExecRead10Cmd - Address 0x000058D0 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_E3716915:
+sceUmdExecRead10Cmd:
 	0x000058D0: 0x27BDFF90 '...'' - addiu      $sp, $sp, -112
 	0x000058D4: 0xAFB7005C '\...' - sw         $s7, 92($sp)
 	0x000058D8: 0x0140B821 '!.@.' - move       $s7, $t2
@@ -7489,7 +7489,7 @@ loc_00005A38:		; Refs: 0x00005A18
 	0x00005A48: 0x15EEFFD8 '....' - bne        $t7, $t6, loc_000059AC
 	0x00005A4C: 0x02402021 '! @.' - move       $a0, $s2
 ; Data ref 0x166A29C6
-	0x00005A50: 0x0C0029C6 '.)..' - jal        sceUmdMan_driver_921E7B7D
+	0x00005A50: 0x0C0029C6 '.)..' - jal        sceUmdManGetReadyFlag
 	0x00005A54: 0x00000000 '....' - nop        
 	0x00005A58: 0x1040FFD4 '..@.' - beqz       $v0, loc_000059AC
 	0x00005A5C: 0x02402021 '! @.' - move       $a0, $s2
@@ -7636,9 +7636,9 @@ loc_00005C24:		; Refs: 0x00005A9C
 	0x00005C30: 0x02748021 '!.t.' - addu       $s0, $s3, $s4
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_6D17FD57 - Address 0x00005C34 
+; Subroutine sceUmdExecReadMKICmd - Address 0x00005C34 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_6D17FD57:		; Refs: 0x000015E4 
+sceUmdExecReadMKICmd:		; Refs: 0x000015E4 
 	0x00005C34: 0x27BDFFA0 '...'' - addiu      $sp, $sp, -96
 	0x00005C38: 0xAFB3004C 'L...' - sw         $s3, 76($sp)
 	0x00005C3C: 0x00A09821 '!...' - move       $s3, $a1
@@ -7867,9 +7867,9 @@ loc_00005EFC:		; Refs: 0x00005E60
 	0x00005F18: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_14D3381C - Address 0x00005F1C 
+; Subroutine sceUmdExecTestCmd - Address 0x00005F1C 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_14D3381C:
+sceUmdExecTestCmd:
 	0x00005F1C: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x00005F20: 0xAFB40020 ' ...' - sw         $s4, 32($sp)
 	0x00005F24: 0x00E0A021 '!...' - move       $s4, $a3
@@ -7965,9 +7965,9 @@ loc_00005FF8:		; Refs: 0x00005FDC
 	0x00006054: 0x00408021 '!.@.' - move       $s0, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_8DA33BBD - Address 0x00006058 
+; Subroutine sceUmdExecAllocateFromReadCmd - Address 0x00006058 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_8DA33BBD:		; Refs: 0x000022B0 0x0000CB40 
+sceUmdExecAllocateFromReadCmd:		; Refs: 0x000022B0 0x0000CB40 
 	0x00006058: 0x27BDFFC0 '...'' - addiu      $sp, $sp, -64
 	0x0000605C: 0xAFB3002C ',...' - sw         $s3, 44($sp)
 	0x00006060: 0x00C09821 '!...' - move       $s3, $a2
@@ -8068,9 +8068,9 @@ loc_000060E8:		; Refs: 0x000060CC
 	0x000061A4: 0x000C800A '....' - movz       $s0, $zr, $t4
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_CC40BED8 - Address 0x000061A8 
+; Subroutine sceUmdExecReadCapacityCmd - Address 0x000061A8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_CC40BED8:
+sceUmdExecReadCapacityCmd:
 	0x000061A8: 0x27BDFFC0 '...'' - addiu      $sp, $sp, -64
 	0x000061AC: 0xAFB3002C ',...' - sw         $s3, 44($sp)
 	0x000061B0: 0x00E09821 '!...' - move       $s3, $a3
@@ -8151,9 +8151,9 @@ loc_0000624C:		; Refs: 0x00006230
 	0x000062A4: 0x00408021 '!.@.' - move       $s0, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_EB0841CE - Address 0x000062A8 
+; Subroutine sceUmdExecModSenseCmd - Address 0x000062A8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_EB0841CE:		; Refs: 0x00003A50 0x00003C0C 0x00003DD4 0x00003FE4 0x000041DC 0x000047D8 0x000048A0 0x0000887C 0x0000C6E0 
+sceUmdExecModSenseCmd:		; Refs: 0x00003A50 0x00003C0C 0x00003DD4 0x00003FE4 0x000041DC 0x000047D8 0x000048A0 0x0000887C 0x0000C6E0 
 	0x000062A8: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x000062AC: 0xAFB3001C '....' - sw         $s3, 28($sp)
 	0x000062B0: 0x00C09821 '!...' - move       $s3, $a2
@@ -8238,9 +8238,9 @@ loc_000063B0:		; Refs: 0x000062E0 0x000062E8
 	0x000063B4: 0x34820016 '...4' - ori        $v0, $a0, 0x16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_2C5F9A65 - Address 0x000063B8 
+; Subroutine sceUmdExecModSelectCmd - Address 0x000063B8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_2C5F9A65:		; Refs: 0x00003AF0 0x00003CB8 0x00003E8C 0x000040B0 0x000042A8 0x00004944 0x0000898C 0x0000C7B4 
+sceUmdExecModSelectCmd:		; Refs: 0x00003AF0 0x00003CB8 0x00003E8C 0x000040B0 0x000042A8 0x00004944 0x0000898C 0x0000C7B4 
 	0x000063B8: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x000063BC: 0xAFB3001C '....' - sw         $s3, 28($sp)
 	0x000063C0: 0x00C09821 '!...' - move       $s3, $a2
@@ -8325,9 +8325,9 @@ loc_000064C0:		; Refs: 0x000063F0 0x000063F8
 	0x000064C4: 0x34820016 '...4' - ori        $v0, $a0, 0x16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_BD974D70 - Address 0x000064C8 
+; Subroutine sceUmdExecGetEventStatusCmd - Address 0x000064C8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_BD974D70:		; Refs: 0x00007FBC 0x00008438 0x000086A0 0x0000B5E8 
+sceUmdExecGetEventStatusCmd:		; Refs: 0x00007FBC 0x00008438 0x000086A0 0x0000B5E8 
 	0x000064C8: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x000064CC: 0xAFB3001C '....' - sw         $s3, 28($sp)
 	0x000064D0: 0x00C09821 '!...' - move       $s3, $a2
@@ -8407,9 +8407,9 @@ loc_000065BC:		; Refs: 0x00006500 0x00006508
 	0x000065C0: 0x34820016 '...4' - ori        $v0, $a0, 0x16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_5AC94A3C - Address 0x000065C4 
+; Subroutine sceUmdExecPreventAllowMediaCmd - Address 0x000065C4 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_5AC94A3C:
+sceUmdExecPreventAllowMediaCmd:
 	0x000065C4: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x000065C8: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x000065CC: 0xAFB10024 '$...' - sw         $s1, 36($sp)
@@ -8476,9 +8476,9 @@ loc_00006674:		; Refs: 0x00006658
 	0x00006698: 0x00408021 '!.@.' - move       $s0, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_C615D6C9 - Address 0x0000669C 
+; Subroutine sceUmdExecPrefetch10Cmd - Address 0x0000669C 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_C615D6C9:
+sceUmdExecPrefetch10Cmd:
 	0x0000669C: 0x27BDFFE0 '...'' - addiu      $sp, $sp, -32
 	0x000066A0: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x000066A4: 0xAFB20018 '....' - sw         $s2, 24($sp)
@@ -8550,9 +8550,9 @@ loc_00006760:		; Refs: 0x00006744
 	0x00006784: 0x00408021 '!.@.' - move       $s0, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_406E8F99 - Address 0x00006788 
+; Subroutine sceUmdExecReadUMDStructureCmd - Address 0x00006788 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_406E8F99:		; Refs: 0x0000C9EC 
+sceUmdExecReadUMDStructureCmd:		; Refs: 0x0000C9EC 
 	0x00006788: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x0000678C: 0xAFB40020 ' ...' - sw         $s4, 32($sp)
 	0x00006790: 0x00C0A021 '!...' - move       $s4, $a2
@@ -8657,9 +8657,9 @@ loc_000068E0:		; Refs: 0x000067B8 0x000067D0 0x000067D8
 	0x000068E4: 0x34820016 '...4' - ori        $v0, $a0, 0x16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_27C1869A - Address 0x000068E8 
+; Subroutine sceUmdExecReportCacheCmd - Address 0x000068E8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_27C1869A:
+sceUmdExecReportCacheCmd:
 	0x000068E8: 0x27BDFFC0 '...'' - addiu      $sp, $sp, -64
 	0x000068EC: 0xAFB3002C ',...' - sw         $s3, 44($sp)
 	0x000068F0: 0x00C09821 '!...' - move       $s3, $a2
@@ -8750,9 +8750,9 @@ loc_00006A14:		; Refs: 0x00006924 0x0000692C
 	0x00006A18: 0x34820016 '...4' - ori        $v0, $a0, 0x16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_EEBF3121 - Address 0x00006A1C 
+; Subroutine sceUmdExecSetLockLengthCmd - Address 0x00006A1C 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_EEBF3121:		; Refs: 0x0000CEA0 
+sceUmdExecSetLockLengthCmd:		; Refs: 0x0000CEA0 
 	0x00006A1C: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x00006A20: 0xAFB00020 ' ...' - sw         $s0, 32($sp)
 	0x00006A24: 0x00808021 '!...' - move       $s0, $a0
@@ -8822,9 +8822,9 @@ loc_00006A98:		; Refs: 0x00006A7C
 	0x00006AF4: 0x00408821 '!.@.' - move       $s1, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_77E81350 - Address 0x00006AF8 
+; Subroutine sceUmdExecSetAreaLimitCmd - Address 0x00006AF8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_77E81350:
+sceUmdExecSetAreaLimitCmd:
 	0x00006AF8: 0x27BDFFE0 '...'' - addiu      $sp, $sp, -32
 	0x00006AFC: 0xAFB20018 '....' - sw         $s2, 24($sp)
 	0x00006B00: 0x00A09021 '!...' - move       $s2, $a1
@@ -8899,9 +8899,9 @@ loc_00006B88:		; Refs: 0x00006B6C
 	0x00006BE4: 0x00408821 '!.@.' - move       $s1, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_B01F65CE - Address 0x00006BE8 
+; Subroutine sceUmdExecSeekCmd - Address 0x00006BE8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_B01F65CE:
+sceUmdExecSeekCmd:
 	0x00006BE8: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x00006BEC: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x00006BF0: 0x34430016 '..C4' - ori        $v1, $v0, 0x16
@@ -8971,9 +8971,9 @@ loc_00006CA4:		; Refs: 0x00006C88
 	0x00006CC8: 0x00408021 '!.@.' - move       $s0, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_50A22288 - Address 0x00006CCC 
+; Subroutine sceUmdExecSetCDSpeedCmd - Address 0x00006CCC 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_50A22288:		; Refs: 0x0000AEF4 
+sceUmdExecSetCDSpeedCmd:		; Refs: 0x0000AEF4 
 	0x00006CCC: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x00006CD0: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x00006CD4: 0xAFB3001C '....' - sw         $s3, 28($sp)
@@ -9048,9 +9048,9 @@ loc_00006D78:		; Refs: 0x00006D5C
 	0x00006DC0: 0x00408021 '!.@.' - move       $s0, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_4D3F98AF - Address 0x00006DC4 
+; Subroutine sceUmdExecAdjustDataCmd - Address 0x00006DC4 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_4D3F98AF:		; Refs: 0x000046E0 
+sceUmdExecAdjustDataCmd:		; Refs: 0x000046E0 
 	0x00006DC4: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x00006DC8: 0xAFB40020 ' ...' - sw         $s4, 32($sp)
 	0x00006DCC: 0x00E0A021 '!...' - move       $s4, $a3
@@ -9150,7 +9150,7 @@ sub_00006EF4:		; Refs: 0x00003854 0x00004A98 0x0000564C 0x0000574C 0x0000582C 0x
 	0x00006F00: 0x10800004 '....' - beqz       $a0, loc_00006F14
 	0x00006F04: 0x34620016 '..b4' - ori        $v0, $v1, 0x16
 ; Data ref 0x1B9E39F4
-	0x00006F08: 0x0C0039F4 '.9..' - jal        sceSysreg_driver_16909002
+	0x00006F08: 0x0C0039F4 '.9..' - jal        sceSysregAtaBusClockEnable
 	0x00006F0C: 0x00000000 '....' - nop        
 	0x00006F10: 0x00001021 '!...' - move       $v0, $zr
 
@@ -9313,9 +9313,9 @@ loc_0000709C:		; Refs: 0x00007080
 	0x000070F4: 0x00408021 '!.@.' - move       $s0, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_F861E69B - Address 0x000070F8 
+; Subroutine sceUmdExecReadDiscInfoCmd - Address 0x000070F8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_F861E69B:
+sceUmdExecReadDiscInfoCmd:
 	0x000070F8: 0x27BDFFC0 '...'' - addiu      $sp, $sp, -64
 	0x000070FC: 0xAFB3002C ',...' - sw         $s3, 44($sp)
 	0x00007100: 0x00C09821 '!...' - move       $s3, $a2
@@ -9408,9 +9408,9 @@ loc_00007220:		; Refs: 0x00007124 0x0000713C 0x00007144
 	0x00007224: 0x34820016 '...4' - ori        $v0, $a0, 0x16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_BEEE1B85 - Address 0x00007228 
+; Subroutine sceUmdManExecAtaCmd - Address 0x00007228 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_BEEE1B85:
+sceUmdManExecAtaCmd:
 	0x00007228: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x0000722C: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x00007230: 0x00C04821 '!H..' - move       $t1, $a2
@@ -9540,11 +9540,11 @@ loc_00007380:		; Refs: 0x000073E0
 
 loc_00007394:		; Refs: 0x00007374 
 ; Data ref 0x1CBF091E
-	0x00007394: 0x0C00091E '....' - jal        sceUmdMan_driver_FB74B6E9
+	0x00007394: 0x0C00091E '....' - jal        sceUmdManSPKGetMKI
 	0x00007398: 0x00000000 '....' - nop        
 	0x0000739C: 0x00408021 '!.@.' - move       $s0, $v0
 	0x000073A0: 0x00402021 '! @.' - move       $a0, $v0
-	0x000073A4: 0x0C00397A 'z9..' - jal        UtilsForKernel_34B9FA9E
+	0x000073A4: 0x0C00397A 'z9..' - jal        sceKernelDcacheWritebackInvalidateRange
 	0x000073A8: 0x02402821 '!(@.' - move       $a1, $s2
 	0x000073AC: 0x26190004 '...&' - addiu      $t9, $s0, 4
 	0x000073B0: 0x27380004 '..8'' - addiu      $t8, $t9, 4
@@ -10146,7 +10146,7 @@ sub_00007B10:		; Refs: 0x000033C0 0x0000B8D4 0x0000BE90 0x0000C150
 	0x00007B24: 0x1080001C '....' - beqz       $a0, loc_00007B98
 	0x00007B28: 0x34430016 '..C4' - ori        $v1, $v0, 0x16
 ; Data ref 0x1EBB0E31
-	0x00007B2C: 0x0C000E31 '1...' - jal        sceUmdMan_driver_E779ECEF
+	0x00007B2C: 0x0C000E31 '1...' - jal        sceUmdManGetInquiry
 	0x00007B30: 0x00000000 '....' - nop        
 	0x00007B34: 0x14400018 '..@.' - bnez       $v0, loc_00007B98
 	0x00007B38: 0x00401821 '!.@.' - move       $v1, $v0
@@ -10211,7 +10211,7 @@ sub_00007BC0:		; Refs: 0x00003114 0x00003150 0x00004544 0x00004C14 0x00009F60 0x
 	0x00007BD4: 0xAFBF0024 '$...' - sw         $ra, 36($sp)
 	0x00007BD8: 0xAFB40020 ' ...' - sw         $s4, 32($sp)
 	0x00007BDC: 0xAFB3001C '....' - sw         $s3, 28($sp)
-	0x00007BE0: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x00007BE0: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x00007BE4: 0xAFB10014 '....' - sw         $s1, 20($sp)
 	0x00007BE8: 0x00409021 '!.@.' - move       $s2, $v0
 	0x00007BEC: 0x3C038001 '...<' - lui        $v1, 0x8001
@@ -10310,7 +10310,7 @@ loc_00007CF8:		; Refs: 0x00007C50
 	0x00007D08: 0x02402021 '! @.' - move       $a0, $s2
 
 loc_00007D0C:		; Refs: 0x00007D54 
-	0x00007D0C: 0x0C00203E '> ..' - jal        sceUmdMan_driver_A684063D
+	0x00007D0C: 0x0C00203E '> ..' - jal        sceUmdManChangePowerMode
 	0x00007D10: 0x24050100 '...$' - li         $a1, 256
 	0x00007D14: 0x0C0039D4 '.9..' - jal        sceAta_driver_E0851D1A
 	0x00007D18: 0x00000000 '....' - nop        
@@ -10487,9 +10487,9 @@ loc_00007EFC:		; Refs: 0x00007E94 0x00007F1C
 	0x00007F28: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_7BD87F0C - Address 0x00007F2C 
+; Subroutine sceUmdManGetPowerStat - Address 0x00007F2C 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_7BD87F0C:		; Refs: 0x0000812C 
+sceUmdManGetPowerStat:		; Refs: 0x0000812C 
 	0x00007F2C: 0x27BDFFC0 '...'' - addiu      $sp, $sp, -64
 	0x00007F30: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x00007F34: 0xAFBF0034 '4...' - sw         $ra, 52($sp)
@@ -10501,7 +10501,7 @@ sceUmdMan_driver_7BD87F0C:		; Refs: 0x0000812C
 	0x00007F4C: 0x1480003D '=...' - bnez       $a0, loc_00008044
 	0x00007F50: 0xAFB00020 ' ...' - sw         $s0, 32($sp)
 ; Data ref 0x1FAA0DEA
-	0x00007F54: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x00007F54: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x00007F58: 0x00000000 '....' - nop        
 	0x00007F5C: 0x3C048001 '...<' - lui        $a0, 0x8001
 	0x00007F60: 0x00408021 '!.@.' - move       $s0, $v0
@@ -10518,12 +10518,12 @@ sceUmdMan_driver_7BD87F0C:		; Refs: 0x0000812C
 	0x00007F8C: 0x27B40010 '...'' - addiu      $s4, $sp, 16
 	0x00007F90: 0xA3A60002 '....' - sb         $a2, 2($sp)
 	0x00007F94: 0x24130001 '...$' - li         $s3, 1
-	0x00007F98: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00007F98: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00007F9C: 0xA7A30000 '....' - sh         $v1, 0($sp)
 	0x00007FA0: 0x00409021 '!.@.' - move       $s2, $v0
 
 loc_00007FA4:		; Refs: 0x00007FDC 
-	0x00007FA4: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00007FA4: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00007FA8: 0x00000000 '....' - nop        
 	0x00007FAC: 0x1053004B 'K.S.' - beq        $v0, $s3, loc_000080DC
 	0x00007FB0: 0x00000000 '....' - nop        
@@ -10531,7 +10531,7 @@ loc_00007FA4:		; Refs: 0x00007FDC
 loc_00007FB4:		; Refs: 0x000080F0 
 	0x00007FB4: 0x02002021 '! ..' - move       $a0, $s0
 	0x00007FB8: 0x03A02821 '!(..' - move       $a1, $sp
-	0x00007FBC: 0x0C001932 '2...' - jal        sceUmdMan_driver_BD974D70
+	0x00007FBC: 0x0C001932 '2...' - jal        sceUmdExecGetEventStatusCmd
 	0x00007FC0: 0x02803021 '!0..' - move       $a2, $s4
 	0x00007FC4: 0x1040000F '..@.' - beqz       $v0, loc_00008004
 	0x00007FC8: 0x00000000 '....' - nop        
@@ -10550,14 +10550,14 @@ loc_00007FE4:		; Refs: 0x00007FCC
 	0x00007FE8: 0x24041388 '...$' - li         $a0, 5000
 	0x00007FEC: 0x02002021 '! ..' - move       $a0, $s0
 	0x00007FF0: 0x26050028 '(..&' - addiu      $a1, $s0, 40
-	0x00007FF4: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00007FF4: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00007FF8: 0x24060012 '...$' - li         $a2, 18
 	0x00007FFC: 0x08001FF5 '....' - j          loc_00007FD4
 	0x00008000: 0x00000000 '....' - nop        
 
 loc_00008004:		; Refs: 0x00007FC4 
 ; Data ref 0x1FF525CB
-	0x00008004: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00008004: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00008008: 0x02402021 '! @.' - move       $a0, $s2
 	0x0000800C: 0x0C0039B2 '.9..' - jal        sceAta_driver_8B32C14C
 	0x00008010: 0x93B10015 '....' - lbu        $s1, 21($sp)
@@ -10637,15 +10637,15 @@ loc_000080DC:		; Refs: 0x00007FAC
 	0x000080DC: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
 	0x000080E0: 0x00000000 '....' - nop        
 	0x000080E4: 0x3C090098 '...<' - lui        $t1, 0x98
-	0x000080E8: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x000080E8: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x000080EC: 0x35249680 '..$5' - ori        $a0, $t1, 0x9680
 	0x000080F0: 0x08001FED '....' - j          loc_00007FB4
 	0x000080F4: 0x00409021 '!.@.' - move       $s2, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_A684063D - Address 0x000080F8 
+; Subroutine sceUmdManChangePowerMode - Address 0x000080F8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_A684063D:		; Refs: 0x00007D0C 
+sceUmdManChangePowerMode:		; Refs: 0x00007D0C 
 	0x000080F8: 0x27BDFFD0 '...'' - addiu      $sp, $sp, -48
 	0x000080FC: 0x3C028001 '...<' - lui        $v0, 0x8001
 	0x00008100: 0xAFB20018 '....' - sw         $s2, 24($sp)
@@ -10660,7 +10660,7 @@ sceUmdMan_driver_A684063D:		; Refs: 0x00007D0C
 	0x00008124: 0x10800018 '....' - beqz       $a0, loc_00008188
 	0x00008128: 0xAFB00010 '....' - sw         $s0, 16($sp)
 ; Data ref 0x1FED1FCB
-	0x0000812C: 0x0C001FCB '....' - jal        sceUmdMan_driver_7BD87F0C
+	0x0000812C: 0x0C001FCB '....' - jal        sceUmdManGetPowerStat
 	0x00008130: 0x00002021 '! ..' - move       $a0, $zr
 	0x00008134: 0x14400014 '..@.' - bnez       $v0, loc_00008188
 	0x00008138: 0x00401821 '!.@.' - move       $v1, $v0
@@ -10702,21 +10702,21 @@ loc_000081B0:		; Refs: 0x00008178 0x00008284
 	0x000081B0: 0xA3A20001 '....' - sb         $v0, 1($sp)
 	0x000081B4: 0x3C02004C 'L..<' - lui        $v0, 0x4C
 	0x000081B8: 0x34444B40 '@KD4' - ori        $a0, $v0, 0x4B40
-	0x000081BC: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x000081BC: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x000081C0: 0x3C108021 '!..<' - lui        $s0, 0x8021
 	0x000081C4: 0x0040A821 '!.@.' - move       $s5, $v0
 	0x000081C8: 0x24140001 '...$' - li         $s4, 1
 	0x000081CC: 0x3613100F '...6' - ori        $s3, $s0, 0x100F
 
 loc_000081D0:		; Refs: 0x00008208 
-	0x000081D0: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x000081D0: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x000081D4: 0x00000000 '....' - nop        
 	0x000081D8: 0x1054001C '..T.' - beq        $v0, $s4, loc_0000824C
 	0x000081DC: 0x00000000 '....' - nop        
 
 loc_000081E0:		; Refs: 0x00008264 
 	0x000081E0: 0x02202021 '!  .' - move       $a0, $s1
-	0x000081E4: 0x0C0015BC '....' - jal        sceUmdMan_driver_5219AF31
+	0x000081E4: 0x0C0015BC '....' - jal        sceUmdExecStartStopUnitCmd
 	0x000081E8: 0x03A02821 '!(..' - move       $a1, $sp
 	0x000081EC: 0x00408021 '!.@.' - move       $s0, $v0
 	0x000081F0: 0x1040000F '..@.' - beqz       $v0, loc_00008230
@@ -10736,7 +10736,7 @@ loc_00008210:		; Refs: 0x000081F8
 	0x00008214: 0x00000000 '....' - nop        
 	0x00008218: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000821C: 0x26250028 '(.%&' - addiu      $a1, $s1, 40
-	0x00008220: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00008220: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00008224: 0x24060012 '...$' - li         $a2, 18
 	0x00008228: 0x08002080 '. ..' - j          loc_00008200
 	0x0000822C: 0x00000000 '....' - nop        
@@ -10744,7 +10744,7 @@ loc_00008210:		; Refs: 0x000081F8
 loc_00008230:		; Refs: 0x000081F0 
 	0x00008230: 0xAE320004 '..2.' - sw         $s2, 4($s1)
 ; Data ref 0x208025CB
-	0x00008234: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00008234: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00008238: 0x02A02021 '! ..' - move       $a0, $s5
 
 loc_0000823C:		; Refs: 0x000082C0 0x000082EC 
@@ -10761,7 +10761,7 @@ loc_0000824C:		; Refs: 0x000081D8
 	0x00008250: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
 	0x00008254: 0x9042000E '..B.' - lbu        $v0, 14($v0)
 	0x00008258: 0x3C0B004C 'L..<' - lui        $t3, 0x4C
-	0x0000825C: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000825C: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00008260: 0x35644B40 '@Kd5' - ori        $a0, $t3, 0x4B40
 	0x00008264: 0x08002078 'x ..' - j          loc_000081E0
 	0x00008268: 0x0040A821 '!.@.' - move       $s5, $v0
@@ -10848,21 +10848,21 @@ sub_0000831C:		; Refs: 0x000082E4
 	0x0000835C: 0x3C02004C 'L..<' - lui        $v0, 0x4C
 	0x00008360: 0x34444B40 '@KD4' - ori        $a0, $v0, 0x4B40
 ; Data ref 0x20AE25E2
-	0x00008364: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00008364: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00008368: 0x3C158021 '!..<' - lui        $s5, 0x8021
 	0x0000836C: 0x00408821 '!.@.' - move       $s1, $v0
 	0x00008370: 0x24140001 '...$' - li         $s4, 1
 	0x00008374: 0x36B2100F '...6' - ori        $s2, $s5, 0x100F
 
 loc_00008378:		; Refs: 0x000083AC 
-	0x00008378: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00008378: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000837C: 0x00000000 '....' - nop        
 	0x00008380: 0x10540073 's.T.' - beq        $v0, $s4, loc_00008550
 	0x00008384: 0x00000000 '....' - nop        
 
 loc_00008388:		; Refs: 0x00008568 
 	0x00008388: 0x02002021 '! ..' - move       $a0, $s0
-	0x0000838C: 0x0C0015BC '....' - jal        sceUmdMan_driver_5219AF31
+	0x0000838C: 0x0C0015BC '....' - jal        sceUmdExecStartStopUnitCmd
 	0x00008390: 0x02602821 '!(`.' - move       $a1, $s3
 	0x00008394: 0x1040000F '..@.' - beqz       $v0, loc_000083D4
 	0x00008398: 0x24041388 '...$' - li         $a0, 5000
@@ -10881,14 +10881,14 @@ loc_000083B4:		; Refs: 0x0000839C
 	0x000083B8: 0x00000000 '....' - nop        
 	0x000083BC: 0x02002021 '! ..' - move       $a0, $s0
 	0x000083C0: 0x26050028 '(..&' - addiu      $a1, $s0, 40
-	0x000083C4: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x000083C4: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x000083C8: 0x24060012 '...$' - li         $a2, 18
 	0x000083CC: 0x080020E9 '. ..' - j          loc_000083A4
 	0x000083D0: 0x00000000 '....' - nop        
 
 loc_000083D4:		; Refs: 0x00008394 
 ; Data ref 0x20E925CB
-	0x000083D4: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x000083D4: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x000083D8: 0x02202021 '!  .' - move       $a0, $s1
 	0x000083DC: 0x0C00396E 'n9..' - jal        ThreadManForKernel_CEADEB47
 	0x000083E0: 0x3404C350 'P..4' - li         $a0, 0xC350
@@ -10904,12 +10904,12 @@ loc_000083D4:		; Refs: 0x00008394
 	0x00008408: 0xA7AA0000 '....' - sh         $t2, 0($sp)
 	0x0000840C: 0x24150004 '...$' - li         $s5, 4
 	0x00008410: 0x24140005 '...$' - li         $s4, 5
-	0x00008414: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00008414: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00008418: 0xA3A80002 '....' - sb         $t0, 2($sp)
 	0x0000841C: 0x00408821 '!.@.' - move       $s1, $v0
 
 loc_00008420:		; Refs: 0x0000845C 
-	0x00008420: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00008420: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00008424: 0x00000000 '....' - nop        
 	0x00008428: 0x1052003A ':.R.' - beq        $v0, $s2, loc_00008514
 	0x0000842C: 0x93A20015 '....' - lbu        $v0, 21($sp)
@@ -10917,7 +10917,7 @@ loc_00008420:		; Refs: 0x0000845C
 loc_00008430:		; Refs: 0x0000853C 
 	0x00008430: 0x02002021 '! ..' - move       $a0, $s0
 	0x00008434: 0x03A02821 '!(..' - move       $a1, $sp
-	0x00008438: 0x0C001932 '2...' - jal        sceUmdMan_driver_BD974D70
+	0x00008438: 0x0C001932 '2...' - jal        sceUmdExecGetEventStatusCmd
 	0x0000843C: 0x27A60010 '...'' - addiu      $a2, $sp, 16
 	0x00008440: 0x1440002A '*.@.' - bnez       $v0, loc_000084EC
 	0x00008444: 0x93AE0014 '....' - lbu        $t6, 20($sp)
@@ -10947,7 +10947,7 @@ loc_0000847C:		; Refs: 0x00008484
 	0x00008488: 0x00000000 '....' - nop        
 
 loc_0000848C:		; Refs: 0x000084E4 0x00008548 
-	0x0000848C: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000848C: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00008490: 0x02202021 '!  .' - move       $a0, $s1
 	0x00008494: 0x0C002662 'b&..' - jal        sub_00009988
 	0x00008498: 0x00000000 '....' - nop        
@@ -10986,7 +10986,7 @@ loc_000084EC:		; Refs: 0x00008440
 	0x000084F8: 0x24041388 '...$' - li         $a0, 5000
 	0x000084FC: 0x02002021 '! ..' - move       $a0, $s0
 	0x00008500: 0x26050028 '(..&' - addiu      $a1, $s0, 40
-	0x00008504: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00008504: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00008508: 0x24060012 '...$' - li         $a2, 18
 	0x0000850C: 0x08002115 '.!..' - j          loc_00008454
 	0x00008510: 0x00000000 '....' - nop        
@@ -11001,7 +11001,7 @@ loc_00008514:		; Refs: 0x00008428
 	0x00008528: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
 	0x0000852C: 0x9042000E '..B.' - lbu        $v0, 14($v0)
 	0x00008530: 0x3C0D0098 '...<' - lui        $t5, 0x98
-	0x00008534: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00008534: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00008538: 0x35A49680 '...5' - ori        $a0, $t5, 0x9680
 	0x0000853C: 0x0800210C '.!..' - j          loc_00008430
 	0x00008540: 0x00408821 '!.@.' - move       $s1, $v0
@@ -11017,7 +11017,7 @@ loc_00008550:		; Refs: 0x00008380
 	0x00008554: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
 	0x00008558: 0x9042000E '..B.' - lbu        $v0, 14($v0)
 	0x0000855C: 0x3C07004C 'L..<' - lui        $a3, 0x4C
-	0x00008560: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00008560: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00008564: 0x34E44B40 '@K.4' - ori        $a0, $a3, 0x4B40
 	0x00008568: 0x080020E2 '. ..' - j          loc_00008388
 	0x0000856C: 0x00408821 '!.@.' - move       $s1, $v0
@@ -11046,25 +11046,25 @@ sub_00008570:		; Refs: 0x000082B8
 	0x000085B8: 0x3C06004C 'L..<' - lui        $a2, 0x4C
 	0x000085BC: 0x34C44B40 '@K.4' - ori        $a0, $a2, 0x4B40
 ; Data ref 0x20E225E2
-	0x000085C0: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x000085C0: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x000085C4: 0x3C108021 '!..<' - lui        $s0, 0x8021
 	0x000085C8: 0x0040A021 '!.@.' - move       $s4, $v0
 	0x000085CC: 0x24150001 '...$' - li         $s5, 1
 	0x000085D0: 0x3612100F '...6' - ori        $s2, $s0, 0x100F
 
 loc_000085D4:		; Refs: 0x00008618 
-	0x000085D4: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x000085D4: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x000085D8: 0x00002021 '! ..' - move       $a0, $zr
 	0x000085DC: 0x1040006E 'n.@.' - beqz       $v0, loc_00008798
 	0x000085E0: 0x00000000 '....' - nop        
-	0x000085E4: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x000085E4: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x000085E8: 0x00000000 '....' - nop        
 	0x000085EC: 0x10550062 'b.U.' - beq        $v0, $s5, loc_00008778
 	0x000085F0: 0x00000000 '....' - nop        
 
 loc_000085F4:		; Refs: 0x00008790 
 	0x000085F4: 0x02202021 '!  .' - move       $a0, $s1
-	0x000085F8: 0x0C0015BC '....' - jal        sceUmdMan_driver_5219AF31
+	0x000085F8: 0x0C0015BC '....' - jal        sceUmdExecStartStopUnitCmd
 	0x000085FC: 0x02602821 '!(`.' - move       $a1, $s3
 	0x00008600: 0x1040000F '..@.' - beqz       $v0, loc_00008640
 	0x00008604: 0x24041388 '...$' - li         $a0, 5000
@@ -11083,14 +11083,14 @@ loc_00008620:		; Refs: 0x00008608
 	0x00008624: 0x00000000 '....' - nop        
 	0x00008628: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000862C: 0x26250028 '(.%&' - addiu      $a1, $s1, 40
-	0x00008630: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00008630: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00008634: 0x24060012 '...$' - li         $a2, 18
 	0x00008638: 0x08002184 '.!..' - j          loc_00008610
 	0x0000863C: 0x00000000 '....' - nop        
 
 loc_00008640:		; Refs: 0x00008600 
 ; Data ref 0x218425CB
-	0x00008640: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x00008640: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x00008644: 0x02802021 '! ..' - move       $a0, $s4
 	0x00008648: 0x3C0D0098 '...<' - lui        $t5, 0x98
 	0x0000864C: 0x3C0B8021 '!..<' - lui        $t3, 0x8021
@@ -11101,16 +11101,16 @@ loc_00008640:		; Refs: 0x00008600
 	0x00008660: 0xA3AC0003 '....' - sb         $t4, 3($sp)
 	0x00008664: 0x3573100F '..s5' - ori        $s3, $t3, 0x100F
 	0x00008668: 0xA7AA0000 '....' - sh         $t2, 0($sp)
-	0x0000866C: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000866C: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00008670: 0xA3A90002 '....' - sb         $t1, 2($sp)
 	0x00008674: 0x0040A021 '!.@.' - move       $s4, $v0
 
 loc_00008678:		; Refs: 0x000086C8 
-	0x00008678: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x00008678: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000867C: 0x00002021 '! ..' - move       $a0, $zr
 	0x00008680: 0x10400034 '4.@.' - beqz       $v0, loc_00008754
 	0x00008684: 0x24120001 '...$' - li         $s2, 1
-	0x00008688: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00008688: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000868C: 0x00000000 '....' - nop        
 	0x00008690: 0x10520028 '(.R.' - beq        $v0, $s2, loc_00008734
 	0x00008694: 0x00000000 '....' - nop        
@@ -11118,7 +11118,7 @@ loc_00008678:		; Refs: 0x000086C8
 loc_00008698:		; Refs: 0x0000874C 
 	0x00008698: 0x03A02821 '!(..' - move       $a1, $sp
 	0x0000869C: 0x27A60010 '...'' - addiu      $a2, $sp, 16
-	0x000086A0: 0x0C001932 '2...' - jal        sceUmdMan_driver_BD974D70
+	0x000086A0: 0x0C001932 '2...' - jal        sceUmdExecGetEventStatusCmd
 	0x000086A4: 0x02202021 '!  .' - move       $a0, $s1
 	0x000086A8: 0x14400018 '..@.' - bnez       $v0, loc_0000870C
 	0x000086AC: 0x00408021 '!.@.' - move       $s0, $v0
@@ -11139,7 +11139,7 @@ loc_000086D0:		; Refs: 0x000086B8
 
 loc_000086D8:		; Refs: 0x00008770 
 ; Data ref 0x219E25CB
-	0x000086D8: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x000086D8: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x000086DC: 0x02802021 '! ..' - move       $a0, $s4
 	0x000086E0: 0x02001021 '!...' - move       $v0, $s0
 
@@ -11162,7 +11162,7 @@ loc_0000870C:		; Refs: 0x000086A8
 	0x00008718: 0x00000000 '....' - nop        
 	0x0000871C: 0x02202021 '!  .' - move       $a0, $s1
 	0x00008720: 0x26250028 '(.%&' - addiu      $a1, $s1, 40
-	0x00008724: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x00008724: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x00008728: 0x24060012 '...$' - li         $a2, 18
 	0x0000872C: 0x080021B0 '.!..' - j          loc_000086C0
 	0x00008730: 0x00000000 '....' - nop        
@@ -11173,7 +11173,7 @@ loc_00008734:		; Refs: 0x00008690
 	0x00008738: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
 	0x0000873C: 0x9042000E '..B.' - lbu        $v0, 14($v0)
 	0x00008740: 0x3C0E0098 '...<' - lui        $t6, 0x98
-	0x00008744: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00008744: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00008748: 0x35C49680 '...5' - ori        $a0, $t6, 0x9680
 	0x0000874C: 0x080021A6 '.!..' - j          loc_00008698
 	0x00008750: 0x0040A021 '!.@.' - move       $s4, $v0
@@ -11196,7 +11196,7 @@ loc_00008778:		; Refs: 0x000085EC
 	0x0000877C: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
 	0x00008780: 0x9042000E '..B.' - lbu        $v0, 14($v0)
 	0x00008784: 0x3C08004C 'L..<' - lui        $t0, 0x4C
-	0x00008788: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00008788: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000878C: 0x35044B40 '@K.5' - ori        $a0, $t0, 0x4B40
 	0x00008790: 0x0800217D '}!..' - j          loc_000085F4
 	0x00008794: 0x0040A021 '!.@.' - move       $s4, $v0
@@ -11208,7 +11208,7 @@ loc_00008798:		; Refs: 0x000085DC
 	0x000087A0: 0x3C03BD70 'p..<' - lui        $v1, 0xBD70
 	0x000087A4: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
 	0x000087A8: 0x9063000E '..c.' - lbu        $v1, 14($v1)
-	0x000087AC: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x000087AC: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x000087B0: 0x02802021 '! ..' - move       $a0, $s4
 	0x000087B4: 0x3C048021 '!..<' - lui        $a0, 0x8021
 	0x000087B8: 0x080021B9 '.!..' - j          loc_000086E4
@@ -11255,7 +11255,7 @@ loc_00008838:		; Refs: 0x0000882C
 	0x00008840: 0xA7A20004 '....' - sh         $v0, 4($sp)
 	0x00008844: 0x3C118021 '!..<' - lui        $s1, 0x8021
 ; Data ref 0x21B925E2
-	0x00008848: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00008848: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000884C: 0x3C128021 '!..<' - lui        $s2, 0x8021
 	0x00008850: 0x00409821 '!.@.' - move       $s3, $v0
 	0x00008854: 0x27B50010 '...'' - addiu      $s5, $sp, 16
@@ -11264,7 +11264,7 @@ loc_00008838:		; Refs: 0x0000882C
 	0x00008860: 0x36521020 ' .R6' - ori        $s2, $s2, 0x1020
 
 loc_00008864:		; Refs: 0x0000889C 0x000088EC 
-	0x00008864: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00008864: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00008868: 0x00000000 '....' - nop        
 	0x0000886C: 0x10540063 'c.T.' - beq        $v0, $s4, loc_000089FC
 	0x00008870: 0x00000000 '....' - nop        
@@ -11272,7 +11272,7 @@ loc_00008864:		; Refs: 0x0000889C 0x000088EC
 loc_00008874:		; Refs: 0x00008A10 
 	0x00008874: 0x02002021 '! ..' - move       $a0, $s0
 	0x00008878: 0x03A02821 '!(..' - move       $a1, $sp
-	0x0000887C: 0x0C0018AA '....' - jal        sceUmdMan_driver_EB0841CE
+	0x0000887C: 0x0C0018AA '....' - jal        sceUmdExecModSenseCmd
 	0x00008880: 0x02A03021 '!0..' - move       $a2, $s5
 	0x00008884: 0x02002021 '! ..' - move       $a0, $s0
 	0x00008888: 0x26050028 '(..&' - addiu      $a1, $s0, 40
@@ -11284,7 +11284,7 @@ loc_00008874:		; Refs: 0x00008A10
 	0x000088A0: 0x02602021 '! `.' - move       $a0, $s3
 
 loc_000088A4:		; Refs: 0x000089AC 
-	0x000088A4: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x000088A4: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x000088A8: 0x3C108021 '!..<' - lui        $s0, 0x8021
 	0x000088AC: 0x36030001 '...6' - ori        $v1, $s0, 0x1
 
@@ -11304,14 +11304,14 @@ loc_000088B0:		; Refs: 0x00008808 0x0000891C 0x000089DC
 	0x000088E0: 0x27BD0070 'p..'' - addiu      $sp, $sp, 112
 
 loc_000088E4:		; Refs: 0x00008894 
-	0x000088E4: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x000088E4: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x000088E8: 0x00000000 '....' - nop        
 	0x000088EC: 0x08002219 '."..' - j          loc_00008864
 	0x000088F0: 0x00000000 '....' - nop        
 
 loc_000088F4:		; Refs: 0x0000888C 
 ; Data ref 0x221925CB
-	0x000088F4: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x000088F4: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x000088F8: 0x02602021 '! `.' - move       $a0, $s3
 	0x000088FC: 0x8E090000 '....' - lw         $t1, 0($s0)
 	0x00008900: 0x8FA80030 '0...' - lw         $t0, 48($sp)
@@ -11339,7 +11339,7 @@ loc_0000894C:		; Refs: 0x00008940
 	0x00008950: 0x36244B40 '@K$6' - ori        $a0, $s1, 0x4B40
 	0x00008954: 0x3C128021 '!..<' - lui        $s2, 0x8021
 	0x00008958: 0xA7A20004 '....' - sh         $v0, 4($sp)
-	0x0000895C: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000895C: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00008960: 0x3C168021 '!..<' - lui        $s6, 0x8021
 	0x00008964: 0x3651100F '..Q6' - ori        $s1, $s2, 0x100F
 	0x00008968: 0x00409821 '!.@.' - move       $s3, $v0
@@ -11347,7 +11347,7 @@ loc_0000894C:		; Refs: 0x00008940
 	0x00008970: 0x36D21020 ' ..6' - ori        $s2, $s6, 0x1020
 
 loc_00008974:		; Refs: 0x000089BC 
-	0x00008974: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x00008974: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x00008978: 0x00000000 '....' - nop        
 	0x0000897C: 0x10540019 '..T.' - beq        $v0, $s4, loc_000089E4
 	0x00008980: 0x00000000 '....' - nop        
@@ -11355,7 +11355,7 @@ loc_00008974:		; Refs: 0x000089BC
 loc_00008984:		; Refs: 0x000089F4 
 	0x00008984: 0x02002021 '! ..' - move       $a0, $s0
 	0x00008988: 0x03A02821 '!(..' - move       $a1, $sp
-	0x0000898C: 0x0C0018EE '....' - jal        sceUmdMan_driver_2C5F9A65
+	0x0000898C: 0x0C0018EE '....' - jal        sceUmdExecModSelectCmd
 	0x00008990: 0x02A03021 '!0..' - move       $a2, $s5
 	0x00008994: 0x02002021 '! ..' - move       $a0, $s0
 	0x00008998: 0x26050028 '(..&' - addiu      $a1, $s0, 40
@@ -11374,14 +11374,14 @@ loc_000089B4:		; Refs: 0x000089CC
 
 loc_000089C4:		; Refs: 0x000089A4 
 ; Data ref 0x225D157C
-	0x000089C4: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x000089C4: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x000089C8: 0x00000000 '....' - nop        
 	0x000089CC: 0x0800226D 'm"..' - j          loc_000089B4
 	0x000089D0: 0x00000000 '....' - nop        
 
 loc_000089D4:		; Refs: 0x0000899C 
 ; Data ref 0x226D25CB
-	0x000089D4: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x000089D4: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x000089D8: 0x02602021 '! `.' - move       $a0, $s3
 	0x000089DC: 0x0800222C ',"..' - j          loc_000088B0
 	0x000089E0: 0x00001821 '!...' - move       $v1, $zr
@@ -11390,7 +11390,7 @@ loc_000089E4:		; Refs: 0x0000897C
 ; Data ref 0x222C39D6
 	0x000089E4: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
 	0x000089E8: 0x3C13000F '...<' - lui        $s3, 0xF
-	0x000089EC: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x000089EC: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x000089F0: 0x36644240 '@Bd6' - ori        $a0, $s3, 0x4240
 	0x000089F4: 0x08002261 'a"..' - j          loc_00008984
 	0x000089F8: 0x00409821 '!.@.' - move       $s3, $v0
@@ -11400,7 +11400,7 @@ loc_000089FC:		; Refs: 0x0000886C
 	0x000089FC: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
 	0x00008A00: 0x00000000 '....' - nop        
 	0x00008A04: 0x3C08000F '...<' - lui        $t0, 0xF
-	0x00008A08: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x00008A08: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x00008A0C: 0x35044240 '@B.5' - ori        $a0, $t0, 0x4240
 	0x00008A10: 0x0800221D '."..' - j          loc_00008874
 	0x00008A14: 0x00409821 '!.@.' - move       $s3, $v0
@@ -11426,9 +11426,9 @@ sub_00008A18:		; Refs: 0x00003014 0x000045A8 0x00007C80 0x00007D6C 0x00007EB0 0x
 	0x00008A48: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_D29D7FF4 - Address 0x00008A4C 
+; Subroutine sceUmdManLeptonReset - Address 0x00008A4C 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_D29D7FF4:
+sceUmdManLeptonReset:
 	0x00008A4C: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x00008A50: 0x24050001 '...$' - li         $a1, 1
 	0x00008A54: 0x24040002 '...$' - li         $a0, 2
@@ -12110,9 +12110,9 @@ sub_00009230:		; Refs: 0x00007DFC 0x00008CF0
 	0x00009274: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_3C8C523D - Address 0x00009278 
+; Subroutine sceUmdManRegisterInsertEjectUMDCallBack - Address 0x00009278 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_3C8C523D:
+sceUmdManRegisterInsertEjectUMDCallBack:
 	0x00009278: 0x27BDFFE0 '...'' - addiu      $sp, $sp, -32
 	0x0000927C: 0xAFB3000C '....' - sw         $s3, 12($sp)
 	0x00009280: 0x00C09821 '!...' - move       $s3, $a2
@@ -12186,9 +12186,9 @@ loc_00009340:		; Refs: 0x000092C0
 	0x00009358: 0xACD30008 '....' - sw         $s3, 8($a2)
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_A7536109 - Address 0x0000935C 
+; Subroutine sceUmdManUnRegisterInsertEjectUMDCallBack - Address 0x0000935C 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_A7536109:
+sceUmdManUnRegisterInsertEjectUMDCallBack:
 	0x0000935C: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x00009360: 0xAFB10004 '....' - sw         $s1, 4($sp)
 	0x00009364: 0xAFB00000 '....' - sw         $s0, 0($sp)
@@ -12306,7 +12306,7 @@ loc_00009470:		; Refs: 0x00009444
 	0x000094A0: 0x5220FFEE '.. R' - beqzl      $s1, loc_0000945C
 	0x000094A4: 0x8FB20008 '....' - lw         $s2, 8($sp)
 ; Data ref 0x24E90DEA
-	0x000094A8: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x000094A8: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x000094AC: 0x00002021 '! ..' - move       $a0, $zr
 	0x000094B0: 0x8C440040 '@.D.' - lw         $a0, 64($v0)
 	0x000094B4: 0x0C002534 '4%..' - jal        sub_000094D0
@@ -12496,9 +12496,9 @@ loc_000096B8:		; Refs: 0x00009678
 	0x000096D4: 0x3C0D0001 '...<' - lui        $t5, 0x1
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_4FB913A3 - Address 0x000096D8 
+; Subroutine sceUmdManGetIntrStateFlag - Address 0x000096D8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_4FB913A3:		; Refs: 0x00001300 0x00001384 0x00001434 0x00001554 0x000016E0 0x00002344 0x00003340 0x00003550 0x0000A0BC 0x0000A154 0x0000A248 0x0000A548 0x0000AD78 0x0000B6C8 0x0000B704 0x0000BCCC 0x0000BCE0 0x0000BD68 0x0000CBF8 0x0000D7E0 0x0000D7F4 0x0000D808 0x0000DA8C 0x0000DFEC 0x0000E034 0x0000E0B8 
+sceUmdManGetIntrStateFlag:		; Refs: 0x00001300 0x00001384 0x00001434 0x00001554 0x000016E0 0x00002344 0x00003340 0x00003550 0x0000A0BC 0x0000A154 0x0000A248 0x0000A548 0x0000AD78 0x0000B6C8 0x0000B704 0x0000BCCC 0x0000BCE0 0x0000BD68 0x0000CBF8 0x0000D7E0 0x0000D7F4 0x0000D808 0x0000DA8C 0x0000DFEC 0x0000E034 0x0000E0B8 
 	0x000096D8: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x000096DC: 0xAFBF0000 '....' - sw         $ra, 0($sp)
 ; Data ref 0x25633996
@@ -12531,9 +12531,9 @@ sub_00009710:		; Refs: 0x0000A8C4 0x0000A9E0 0x0000AC64 0x0000ACF8 0x0000B01C 0x
 	0x00009728: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_709E7035 - Address 0x0000972C 
+; Subroutine sceUmdManCancelAlarm - Address 0x0000972C 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_709E7035:		; Refs: 0x00002314 0x00003978 0x00003B38 0x00003C54 0x00003D00 0x00003E1C 0x00003ED4 0x00004040 0x000040F8 0x0000423C 0x000042F0 0x00004724 0x0000480C 0x000048D4 0x00004978 0x00008004 0x00008234 0x000083D4 0x0000848C 0x00008640 0x000086D8 0x000087AC 0x000088A4 0x000088F4 0x000089D4 0x0000A4C4 0x0000AB04 0x0000AF30 0x0000B640 0x0000BE50 0x0000C110 0x0000C714 0x0000C7E8 0x0000CA14 0x0000CB9C 0x0000CDA0 0x0000CDE8 0x0000CED4 
+sceUmdManCancelAlarm:		; Refs: 0x00002314 0x00003978 0x00003B38 0x00003C54 0x00003D00 0x00003E1C 0x00003ED4 0x00004040 0x000040F8 0x0000423C 0x000042F0 0x00004724 0x0000480C 0x000048D4 0x00004978 0x00008004 0x00008234 0x000083D4 0x0000848C 0x00008640 0x000086D8 0x000087AC 0x000088A4 0x000088F4 0x000089D4 0x0000A4C4 0x0000AB04 0x0000AF30 0x0000B640 0x0000BE50 0x0000C110 0x0000C714 0x0000C7E8 0x0000CA14 0x0000CB9C 0x0000CDA0 0x0000CDE8 0x0000CED4 
 	0x0000972C: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x00009730: 0xAFBF0004 '....' - sw         $ra, 4($sp)
 	0x00009734: 0xAFB00000 '....' - sw         $s0, 0($sp)
@@ -12567,9 +12567,9 @@ sub_00009768:		; Refs: 0x00000460 0x00000490 0x0000164C 0x00002C34 0x00002C44 0x
 	0x00009784: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_6519F8D1 - Address 0x00009788 
+; Subroutine sceUmdManSetAlarm - Address 0x00009788 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_6519F8D1:		; Refs: 0x0000225C 0x00003908 0x00003A3C 0x00003BDC 0x00003C80 0x00003DA4 0x00003E5C 0x00003FB4 0x00004088 0x000041AC 0x00004274 0x000046A8 0x000047A4 0x0000486C 0x00004910 0x00007F98 0x000080E8 0x000081BC 0x0000825C 0x00008364 0x00008414 0x00008534 0x00008560 0x000085C0 0x0000866C 0x00008744 0x00008788 0x00008848 0x0000895C 0x000089EC 0x00008A08 0x0000A404 0x0000AAC8 0x0000AEE4 0x0000B5D4 0x0000BD3C 0x0000BEBC 0x0000C01C 0x0000C6AC 0x0000C780 0x0000C9B8 0x0000CAF0 0x0000CE70 
+sceUmdManSetAlarm:		; Refs: 0x0000225C 0x00003908 0x00003A3C 0x00003BDC 0x00003C80 0x00003DA4 0x00003E5C 0x00003FB4 0x00004088 0x000041AC 0x00004274 0x000046A8 0x000047A4 0x0000486C 0x00004910 0x00007F98 0x000080E8 0x000081BC 0x0000825C 0x00008364 0x00008414 0x00008534 0x00008560 0x000085C0 0x0000866C 0x00008744 0x00008788 0x00008848 0x0000895C 0x000089EC 0x00008A08 0x0000A404 0x0000AAC8 0x0000AEE4 0x0000B5D4 0x0000BD3C 0x0000BEBC 0x0000C01C 0x0000C6AC 0x0000C780 0x0000C9B8 0x0000CAF0 0x0000CE70 
 	0x00009788: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x0000978C: 0xAFBF0004 '....' - sw         $ra, 4($sp)
 	0x00009790: 0xAFB00000 '....' - sw         $s0, 0($sp)
@@ -12622,9 +12622,9 @@ sub_000097FC:		; Refs: 0x00002BCC
 	0x00009804: 0x8C839720 ' ...' - lw         $v1, -26848($a0)
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_2CE918B1 - Address 0x00009808 
+; Subroutine sceUmdManGetCommandTimerFlag - Address 0x00009808 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_2CE918B1:		; Refs: 0x00000430 0x000015B4 0x00002298 0x00003914 0x00003AD0 0x00003BE8 0x00003C98 0x00003DB0 0x00003E6C 0x00003FC0 0x00004094 0x000041B8 0x00004288 0x000046C4 0x000047C0 0x00004888 0x0000492C 0x00007FA4 0x000081D0 0x00008378 0x00008420 0x000085E4 0x00008688 0x00008864 0x00008974 0x0000A42C 0x0000AAD8 0x0000AF18 0x0000BD7C 0x0000C050 0x0000C6C8 0x0000C79C 0x0000C9D8 0x0000CB28 0x0000CE8C 
+sceUmdManGetCommandTimerFlag:		; Refs: 0x00000430 0x000015B4 0x00002298 0x00003914 0x00003AD0 0x00003BE8 0x00003C98 0x00003DB0 0x00003E6C 0x00003FC0 0x00004094 0x000041B8 0x00004288 0x000046C4 0x000047C0 0x00004888 0x0000492C 0x00007FA4 0x000081D0 0x00008378 0x00008420 0x000085E4 0x00008688 0x00008864 0x00008974 0x0000A42C 0x0000AAD8 0x0000AF18 0x0000BD7C 0x0000C050 0x0000C6C8 0x0000C79C 0x0000C9D8 0x0000CB28 0x0000CE8C 
 ; Data ref 0x00019724 ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x00009808: 0x3C040002 '...<' - lui        $a0, 0x2
 	0x0000980C: 0x03E00008 '....' - jr         $ra
@@ -13319,7 +13319,7 @@ loc_0000A080:		; Refs: 0x0000A010
 	0x0000A094: 0x1640001A '..@.' - bnez       $s2, loc_0000A100
 ; Data ref 0x00019930 ... 0x00000000 0x00000000 0x00019491 0x00000000 
 	0x0000A098: 0x3C030002 '...<' - lui        $v1, 0x2
-	0x0000A09C: 0x0C0029C6 '.)..' - jal        sceUmdMan_driver_921E7B7D
+	0x0000A09C: 0x0C0029C6 '.)..' - jal        sceUmdManGetReadyFlag
 ; Data ref 0x00019930 ... 0x00000000 0x00000000 0x00019491 0x00000000 
 	0x0000A0A0: 0xAC719930 '0.q.' - sw         $s1, -26320($v1)
 	0x0000A0A4: 0x10500012 '..P.' - beq        $v0, $s0, loc_0000A0F0
@@ -13330,7 +13330,7 @@ loc_0000A080:		; Refs: 0x0000A010
 	0x0000A0B8: 0x00000000 '....' - nop        
 
 loc_0000A0BC:		; Refs: 0x0000A118 
-	0x0000A0BC: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000A0BC: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000A0C0: 0x00000000 '....' - nop        
 	0x0000A0C4: 0x304700D2 '..G0' - andi       $a3, $v0, 0xD2
 	0x0000A0C8: 0x14E0FFDD '....' - bnez       $a3, loc_0000A040
@@ -13360,7 +13360,7 @@ loc_0000A100:		; Refs: 0x0000A094
 	0x0000A104: 0x00000000 '....' - nop        
 	0x0000A108: 0x1040FFF5 '..@.' - beqz       $v0, loc_0000A0E0
 	0x0000A10C: 0x00000000 '....' - nop        
-	0x0000A110: 0x0C0029C6 '.)..' - jal        sceUmdMan_driver_921E7B7D
+	0x0000A110: 0x0C0029C6 '.)..' - jal        sceUmdManGetReadyFlag
 	0x0000A114: 0x00000000 '....' - nop        
 	0x0000A118: 0x1450FFE8 '..P.' - bne        $v0, $s0, loc_0000A0BC
 	0x0000A11C: 0x00000000 '....' - nop        
@@ -13380,7 +13380,7 @@ loc_0000A100:		; Refs: 0x0000A094
 
 loc_0000A154:		; Refs: 0x0000A134 
 ; Data ref 0x280E25B6
-	0x0000A154: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000A154: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000A158: 0x00000000 '....' - nop        
 	0x0000A15C: 0x30460020 ' .F0' - andi       $a2, $v0, 0x20
 	0x0000A160: 0x14C0FFB7 '....' - bnez       $a2, loc_0000A040
@@ -13450,7 +13450,7 @@ loc_0000A220:		; Refs: 0x0000A200
 ; Data ref 0x287C3A0E
 	0x0000A220: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000A224: 0x24040020 ' ..$' - li         $a0, 32
-	0x0000A228: 0x0C0029C6 '.)..' - jal        sceUmdMan_driver_921E7B7D
+	0x0000A228: 0x0C0029C6 '.)..' - jal        sceUmdManGetReadyFlag
 	0x0000A22C: 0x00000000 '....' - nop        
 	0x0000A230: 0x1451FFE1 '..Q.' - bne        $v0, $s1, loc_0000A1B8
 	0x0000A234: 0x24040012 '...$' - li         $a0, 18
@@ -13458,13 +13458,13 @@ loc_0000A220:		; Refs: 0x0000A200
 	0x0000A23C: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_1F9AFFF4 - Address 0x0000A240 
+; Subroutine sceUmdManMediaPresent - Address 0x0000A240 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_1F9AFFF4:		; Refs: 0x000015C4 0x00002284 0x00003404 0x00003534 0x000046B4 0x000047B0 0x00004878 0x0000491C 0x00004A30 0x000085D4 0x00008678 0x0000A3F4 0x0000A44C 0x0000ACA4 0x0000B0A8 0x0000B128 0x0000B774 0x0000B7E0 0x0000B8DC 0x0000BE18 0x0000C328 0x0000C394 0x0000C3EC 0x0000C43C 0x0000C6B8 0x0000C78C 0x0000C9C4 0x0000CB14 0x0000CD88 0x0000CE7C 0x0000D888 0x0000D928 
+sceUmdManMediaPresent:		; Refs: 0x000015C4 0x00002284 0x00003404 0x00003534 0x000046B4 0x000047B0 0x00004878 0x0000491C 0x00004A30 0x000085D4 0x00008678 0x0000A3F4 0x0000A44C 0x0000ACA4 0x0000B0A8 0x0000B128 0x0000B774 0x0000B7E0 0x0000B8DC 0x0000BE18 0x0000C328 0x0000C394 0x0000C3EC 0x0000C43C 0x0000C6B8 0x0000C78C 0x0000C9C4 0x0000CB14 0x0000CD88 0x0000CE7C 0x0000D888 0x0000D928 
 	0x0000A240: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x0000A244: 0xAFBF0000 '....' - sw         $ra, 0($sp)
 ; Data ref 0x286F25B6
-	0x0000A248: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000A248: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000A24C: 0x00000000 '....' - nop        
 	0x0000A250: 0x3044000D '..D0' - andi       $a0, $v0, 0xD
 	0x0000A254: 0x10800005 '....' - beqz       $a0, loc_0000A26C
@@ -13518,9 +13518,9 @@ loc_0000A2C8:		; Refs: 0x0000A2AC
 	0x0000A2D4: 0x8FBF0000 '....' - lw         $ra, 0($sp)
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_78287331 - Address 0x0000A2D8 
+; Subroutine sceUmdManGetDiscInfo - Address 0x0000A2D8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_78287331:
+sceUmdManGetDiscInfo:
 	0x0000A2D8: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x0000A2DC: 0x3C038001 '...<' - lui        $v1, 0x8001
 	0x0000A2E0: 0xAFB10004 '....' - sw         $s1, 4($sp)
@@ -13553,9 +13553,9 @@ loc_0000A324:		; Refs: 0x0000A304
 	0x0000A330: 0x00408821 '!.@.' - move       $s1, $v0
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_B8DC7B48 - Address 0x0000A334 
+; Subroutine sceUmdManGetDiscInfo4VSH - Address 0x0000A334 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_B8DC7B48:
+sceUmdManGetDiscInfo4VSH:
 	0x0000A334: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x0000A338: 0x3C038001 '...<' - lui        $v1, 0x8001
 	0x0000A33C: 0xAFB10004 '....' - sw         $s1, 4($sp)
@@ -13605,7 +13605,7 @@ sub_0000A390:		; Refs: 0x000033F4 0x0000AE5C 0x0000B19C 0x0000B8C4 0x0000BC0C
 	0x0000A3C0: 0x14800043 'C...' - bnez       $a0, loc_0000A4D0
 	0x0000A3C4: 0xAFB00030 '0...' - sw         $s0, 48($sp)
 ; Data ref 0x28DA0DEA
-	0x0000A3C8: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000A3C8: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000A3CC: 0x00000000 '....' - nop        
 	0x0000A3D0: 0x00408821 '!.@.' - move       $s1, $v0
 	0x0000A3D4: 0xAFA00000 '....' - sw         $zr, 0($sp)
@@ -13616,13 +13616,13 @@ sub_0000A390:		; Refs: 0x000033F4 0x0000AE5C 0x0000B19C 0x0000B8C4 0x0000BC0C
 	0x0000A3E8: 0xA7A00010 '....' - sh         $zr, 16($sp)
 	0x0000A3EC: 0x10400005 '..@.' - beqz       $v0, loc_0000A404
 	0x0000A3F0: 0x3C0A0393 '...<' - lui        $t2, 0x393
-	0x0000A3F4: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000A3F4: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000A3F8: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000A3FC: 0x1040005F '_.@.' - beqz       $v0, loc_0000A57C
 	0x0000A400: 0x3C0A0393 '...<' - lui        $t2, 0x393
 
 loc_0000A404:		; Refs: 0x0000A3EC 
-	0x0000A404: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000A404: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000A408: 0x35448700 '..D5' - ori        $a0, $t2, 0x8700
 	0x0000A40C: 0xAFA20020 ' ...' - sw         $v0, 32($sp)
 	0x0000A410: 0x24120001 '...$' - li         $s2, 1
@@ -13634,7 +13634,7 @@ loc_0000A404:		; Refs: 0x0000A3EC
 	0x0000A428: 0x24170005 '...$' - li         $s7, 5
 
 loc_0000A42C:		; Refs: 0x0000A4B0 
-	0x0000A42C: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000A42C: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000A430: 0x00000000 '....' - nop        
 	0x0000A434: 0x1052004C 'L.R.' - beq        $v0, $s2, loc_0000A568
 	0x0000A438: 0x3C058021 '!..<' - lui        $a1, 0x8021
@@ -13642,7 +13642,7 @@ loc_0000A42C:		; Refs: 0x0000A4B0
 	0x0000A440: 0x00000000 '....' - nop        
 	0x0000A444: 0x10400040 '@.@.' - beqz       $v0, loc_0000A548
 	0x0000A448: 0x00000000 '....' - nop        
-	0x0000A44C: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000A44C: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000A450: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000A454: 0x10400033 '3.@.' - beqz       $v0, loc_0000A524
 	0x0000A458: 0x00000000 '....' - nop        
@@ -13650,7 +13650,7 @@ loc_0000A42C:		; Refs: 0x0000A4B0
 	0x0000A460: 0xAE36000C '..6.' - sw         $s6, 12($s1)
 
 loc_0000A464:		; Refs: 0x0000A558 
-	0x0000A464: 0x0C000E04 '....' - jal        sceUmdMan_driver_D372D6F3
+	0x0000A464: 0x0C000E04 '....' - jal        sceUmdManCheckDeviceReady
 	0x0000A468: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000A46C: 0x10400015 '..@.' - beqz       $v0, loc_0000A4C4
 	0x0000A470: 0x00408021 '!.@.' - move       $s0, $v0
@@ -13658,7 +13658,7 @@ loc_0000A464:		; Refs: 0x0000A558
 	0x0000A478: 0x3404C350 'P..4' - li         $a0, 0xC350
 	0x0000A47C: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000A480: 0x03A02821 '!(..' - move       $a1, $sp
-	0x0000A484: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x0000A484: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x0000A488: 0x24060012 '...$' - li         $a2, 18
 	0x0000A48C: 0x14400006 '..@.' - bnez       $v0, loc_0000A4A8
 	0x0000A490: 0x93AF0002 '....' - lbu        $t7, 2($sp)
@@ -13683,7 +13683,7 @@ loc_0000A4B8:		; Refs: 0x0000A4A0
 
 loc_0000A4C4:		; Refs: 0x0000A46C 0x0000A51C 0x0000A540 0x0000A560 0x0000A574 
 ; Data ref 0x290B25CB
-	0x0000A4C4: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000A4C4: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000A4C8: 0x8FA40020 ' ...' - lw         $a0, 32($sp)
 	0x0000A4CC: 0x02002821 '!(..' - move       $a1, $s0
 
@@ -13726,7 +13726,7 @@ loc_0000A524:		; Refs: 0x0000A454
 
 loc_0000A548:		; Refs: 0x0000A444 
 ; Data ref 0x293125B6
-	0x0000A548: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000A548: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000A54C: 0x00000000 '....' - nop        
 	0x0000A550: 0x304C000C '..L0' - andi       $t4, $v0, 0xC
 	0x0000A554: 0x3C0D8021 '!..<' - lui        $t5, 0x8021
@@ -13905,9 +13905,9 @@ sub_0000A6E4:		; Refs: 0x00003260 0x00004398 0x00007C88 0x00008E08 0x00008F14 0x
 	0x0000A714: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_921E7B7D - Address 0x0000A718 
+; Subroutine sceUmdManGetReadyFlag - Address 0x0000A718 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_921E7B7D:		; Refs: 0x00003598 0x00005A50 0x0000A09C 0x0000A110 0x0000A228 
+sceUmdManGetReadyFlag:		; Refs: 0x00003598 0x00005A50 0x0000A09C 0x0000A110 0x0000A228 
 ; Data ref 0x000197DC ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x0000A718: 0x3C040002 '...<' - lui        $a0, 0x2
 	0x0000A71C: 0x03E00008 '....' - jr         $ra
@@ -13915,9 +13915,9 @@ sceUmdMan_driver_921E7B7D:		; Refs: 0x00003598 0x00005A50 0x0000A09C 0x0000A110 
 	0x0000A720: 0x8C8397DC '....' - lw         $v1, -26660($a0)
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_D1478023 - Address 0x0000A724 
+; Subroutine sceUmdManGetUmdDiscInfo - Address 0x0000A724 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_D1478023:		; Refs: 0x00000F74 0x00001014 0x000021D0 0x0000C934 
+sceUmdManGetUmdDiscInfo:		; Refs: 0x00000F74 0x00001014 0x000021D0 0x0000C934 
 ; Data ref 0x00019758 ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x0000A724: 0x3C030002 '...<' - lui        $v1, 0x2
 	0x0000A728: 0x03E00008 '....' - jr         $ra
@@ -14236,7 +14236,7 @@ sub_0000AA28:		; Refs: 0x0000ADDC 0x0000B1D8 0x0000B308
 	0x0000AA5C: 0x00000000 '....' - nop        
 	0x0000AA60: 0x14400012 '..@.' - bnez       $v0, loc_0000AAAC
 	0x0000AA64: 0x00000000 '....' - nop        
-	0x0000AA68: 0x0C000D78 'x...' - jal        sceUmdMan_driver_8CFED611
+	0x0000AA68: 0x0C000D78 'x...' - jal        sceUmdManStart
 	0x0000AA6C: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000AA70: 0x00408821 '!.@.' - move       $s1, $v0
 	0x0000AA74: 0x3C038001 '...<' - lui        $v1, 0x8001
@@ -14257,20 +14257,20 @@ sub_0000AA28:		; Refs: 0x0000ADDC 0x0000B1D8 0x0000B308
 	0x0000AAA8: 0x24040001 '...$' - li         $a0, 1
 
 loc_0000AAAC:		; Refs: 0x0000AA60 
-	0x0000AAAC: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000AAAC: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000AAB0: 0x02002021 '! ..' - move       $a0, $s0
 	0x0000AAB4: 0x00408821 '!.@.' - move       $s1, $v0
 	0x0000AAB8: 0x3C058001 '...<' - lui        $a1, 0x8001
 	0x0000AABC: 0x12200017 '.. .' - beqz       $s1, loc_0000AB1C
 	0x0000AAC0: 0x34A20016 '...4' - ori        $v0, $a1, 0x16
 	0x0000AAC4: 0x3C060393 '...<' - lui        $a2, 0x393
-	0x0000AAC8: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000AAC8: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000AACC: 0x34C48700 '...4' - ori        $a0, $a2, 0x8700
 	0x0000AAD0: 0x00409821 '!.@.' - move       $s3, $v0
 	0x0000AAD4: 0x24120001 '...$' - li         $s2, 1
 
 loc_0000AAD8:		; Refs: 0x0000AAFC 
-	0x0000AAD8: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000AAD8: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000AADC: 0x00000000 '....' - nop        
 	0x0000AAE0: 0x3C078001 '...<' - lui        $a3, 0x8001
 	0x0000AAE4: 0x02202021 '!  .' - move       $a0, $s1
@@ -14283,7 +14283,7 @@ loc_0000AAD8:		; Refs: 0x0000AAFC
 	0x0000AB00: 0x00408021 '!.@.' - move       $s0, $v0
 
 loc_0000AB04:		; Refs: 0x0000AAEC 
-	0x0000AB04: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000AB04: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000AB08: 0x02602021 '! `.' - move       $a0, $s3
 	0x0000AB0C: 0x24090001 '...$' - li         $t1, 1
 ; Data ref 0x000197E8 ... 0x00000000 0x00000000 0x00000000 0x00000000 
@@ -14440,7 +14440,7 @@ loc_0000AC9C:		; Refs: 0x0000AC28
 ; Data ref 0x2B193A0E
 	0x0000AC9C: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000ACA0: 0x24040030 '0..$' - li         $a0, 48
-	0x0000ACA4: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000ACA4: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000ACA8: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000ACAC: 0x1040000A '..@.' - beqz       $v0, loc_0000ACD8
 	0x0000ACB0: 0x00000000 '....' - nop        
@@ -14510,7 +14510,7 @@ loc_0000AD5C:		; Refs: 0x0000ADEC
 	0x0000AD74: 0x00000000 '....' - nop        
 
 loc_0000AD78:		; Refs: 0x0000ADF4 
-	0x0000AD78: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000AD78: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000AD7C: 0x00000000 '....' - nop        
 	0x0000AD80: 0x30450004 '..E0' - andi       $a1, $v0, 0x4
 	0x0000AD84: 0x10A00003 '....' - beqz       $a1, loc_0000AD94
@@ -14522,14 +14522,14 @@ loc_0000AD8C:		; Refs: 0x0000AD9C
 
 loc_0000AD94:		; Refs: 0x0000AD84 
 ; Data ref 0x2B5636AF
-	0x0000AD94: 0x0C0036AF '.6..' - jal        sceUmdMan_driver_0DC8D26D
+	0x0000AD94: 0x0C0036AF '.6..' - jal        sceUmdManWaitSema
 	0x0000AD98: 0x00000000 '....' - nop        
 	0x0000AD9C: 0x0440FFFB '..@.' - bltz       $v0, loc_0000AD8C
 ; Data ref 0x000197EC ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x0000ADA0: 0x8E8797EC '....' - lw         $a3, -26644($s4)
 	0x0000ADA4: 0x14C00005 '....' - bnez       $a2, loc_0000ADBC
 	0x0000ADA8: 0x00000000 '....' - nop        
-	0x0000ADAC: 0x0C0036C2 '.6..' - jal        sceUmdMan_driver_B0A43DA7
+	0x0000ADAC: 0x0C0036C2 '.6..' - jal        sceUmdManSignalSema
 	0x0000ADB0: 0x00000000 '....' - nop        
 	0x0000ADB4: 0x08002B56 'V+..' - j          loc_0000AD58
 	0x0000ADB8: 0xAFB30004 '....' - sw         $s3, 4($sp)
@@ -14542,7 +14542,7 @@ loc_0000ADBC:		; Refs: 0x0000ADA4
 	0x0000ADC8: 0x00002021 '! ..' - move       $a0, $zr
 
 loc_0000ADCC:		; Refs: 0x0000ADE4 
-	0x0000ADCC: 0x0C0036C2 '.6..' - jal        sceUmdMan_driver_B0A43DA7
+	0x0000ADCC: 0x0C0036C2 '.6..' - jal        sceUmdManSignalSema
 	0x0000ADD0: 0x00000000 '....' - nop        
 	0x0000ADD4: 0x08002B56 'V+..' - j          loc_0000AD58
 	0x0000ADD8: 0xAFB10004 '....' - sw         $s1, 4($sp)
@@ -14572,7 +14572,7 @@ sub_0000ADFC:		; Refs: 0x0000A684
 	0x0000AE10: 0xAFB00000 '....' - sw         $s0, 0($sp)
 	0x0000AE14: 0x1440000E '..@.' - bnez       $v0, loc_0000AE50
 	0x0000AE18: 0x02202021 '!  .' - move       $a0, $s1
-	0x0000AE1C: 0x0C000D78 'x...' - jal        sceUmdMan_driver_8CFED611
+	0x0000AE1C: 0x0C000D78 'x...' - jal        sceUmdManStart
 	0x0000AE20: 0x00000000 '....' - nop        
 	0x0000AE24: 0x00408021 '!.@.' - move       $s0, $v0
 	0x0000AE28: 0x3C038001 '...<' - lui        $v1, 0x8001
@@ -14616,7 +14616,7 @@ sub_0000AE90:		; Refs: 0x0000AE64
 	0x0000AE98: 0xAFBF0020 ' ...' - sw         $ra, 32($sp)
 	0x0000AE9C: 0xAFB3001C '....' - sw         $s3, 28($sp)
 	0x0000AEA0: 0xAFB20018 '....' - sw         $s2, 24($sp)
-	0x0000AEA4: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000AEA4: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000AEA8: 0xAFB00010 '....' - sw         $s0, 16($sp)
 	0x0000AEAC: 0x00408821 '!.@.' - move       $s1, $v0
 	0x0000AEB0: 0x3C038001 '...<' - lui        $v1, 0x8001
@@ -14632,22 +14632,22 @@ sub_0000AE90:		; Refs: 0x0000AE64
 	0x0000AED8: 0x24120001 '...$' - li         $s2, 1
 	0x0000AEDC: 0xA7A50004 '....' - sh         $a1, 4($sp)
 	0x0000AEE0: 0xA3A00000 '....' - sb         $zr, 0($sp)
-	0x0000AEE4: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000AEE4: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000AEE8: 0xA7A50002 '....' - sh         $a1, 2($sp)
 	0x0000AEEC: 0x00409821 '!.@.' - move       $s3, $v0
 	0x0000AEF0: 0x02202021 '!  .' - move       $a0, $s1
 
 loc_0000AEF4:		; Refs: 0x0000AF20 
-	0x0000AEF4: 0x0C001B33 '3...' - jal        sceUmdMan_driver_50A22288
+	0x0000AEF4: 0x0C001B33 '3...' - jal        sceUmdExecSetCDSpeedCmd
 	0x0000AEF8: 0x03A02821 '!(..' - move       $a1, $sp
 	0x0000AEFC: 0x00408021 '!.@.' - move       $s0, $v0
 	0x0000AF00: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000AF04: 0x26250028 '(.%&' - addiu      $a1, $s1, 40
 	0x0000AF08: 0x10400009 '..@.' - beqz       $v0, loc_0000AF30
 	0x0000AF0C: 0x24060012 '...$' - li         $a2, 18
-	0x0000AF10: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x0000AF10: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x0000AF14: 0x00000000 '....' - nop        
-	0x0000AF18: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000AF18: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000AF1C: 0x00000000 '....' - nop        
 	0x0000AF20: 0x5452FFF4 '..RT' - bnel       $v0, $s2, loc_0000AEF4
 	0x0000AF24: 0x02202021 '!  .' - move       $a0, $s1
@@ -14655,7 +14655,7 @@ loc_0000AEF4:		; Refs: 0x0000AF20
 	0x0000AF2C: 0x34900074 't..4' - ori        $s0, $a0, 0x74
 
 loc_0000AF30:		; Refs: 0x0000AF08 
-	0x0000AF30: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000AF30: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000AF34: 0x02602021 '! `.' - move       $a0, $s3
 	0x0000AF38: 0x02001021 '!...' - move       $v0, $s0
 
@@ -14784,7 +14784,7 @@ loc_0000B080:		; Refs: 0x0000B060 0x0000B074
 	0x0000B09C: 0x00408021 '!.@.' - move       $s0, $v0
 	0x0000B0A0: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000B0A4: 0x24040030 '0..$' - li         $a0, 48
-	0x0000B0A8: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000B0A8: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000B0AC: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000B0B0: 0x10400010 '..@.' - beqz       $v0, loc_0000B0F4
 	0x0000B0B4: 0x00000000 '....' - nop        
@@ -14828,7 +14828,7 @@ loc_0000B104:		; Refs: 0x0000B098
 	0x0000B11C: 0x00409021 '!.@.' - move       $s2, $v0
 	0x0000B120: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000B124: 0x24040030 '0..$' - li         $a0, 48
-	0x0000B128: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000B128: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000B12C: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000B130: 0x10400008 '..@.' - beqz       $v0, loc_0000B154
 	0x0000B134: 0x00000000 '....' - nop        
@@ -14908,7 +14908,7 @@ loc_0000B1FC:		; Refs: 0x0000B17C
 	0x0000B204: 0x160BFF6A 'j...' - bne        $s0, $t3, loc_0000AFB0
 	0x0000B208: 0x00000000 '....' - nop        
 ; Data ref 0x2C700BDA
-	0x0000B20C: 0x0C000BDA '....' - jal        sceUmdMan_driver_DA67B566
+	0x0000B20C: 0x0C000BDA '....' - jal        sceUmdManInit
 	0x0000B210: 0x240400C0 '...$' - li         $a0, 192
 	0x0000B214: 0x08002BEC '.+..' - j          loc_0000AFB0
 	0x0000B218: 0x00409021 '!.@.' - move       $s2, $v0
@@ -15166,9 +15166,9 @@ sceUmdMan_driver_57FDAC38:
 	0x0000B498: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_80D31D5D - Address 0x0000B49C 
+; Subroutine sceUmdManRegisterImposeCallBack - Address 0x0000B49C 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_80D31D5D:
+sceUmdManRegisterImposeCallBack:
 	0x0000B49C: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x0000B4A0: 0xAFB10004 '....' - sw         $s1, 4($sp)
 	0x0000B4A4: 0x00808821 '!...' - move       $s1, $a0
@@ -15199,9 +15199,9 @@ sceUmdMan_driver_80D31D5D:
 	0x0000B4F0: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_34375DB0 - Address 0x0000B4F4 
+; Subroutine sceUmdManUnRegisterImposeCallback - Address 0x0000B4F4 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_34375DB0:
+sceUmdManUnRegisterImposeCallback:
 	0x0000B4F4: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x0000B4F8: 0xAFBF0000 '....' - sw         $ra, 0($sp)
 	0x0000B4FC: 0x0C003910 '.9..' - jal        InterruptManagerForKernel_092968F4
@@ -15273,14 +15273,14 @@ sub_0000B550:		; Refs: 0x0000AAF4
 	0x0000B5C8: 0xAFA00024 '$...' - sw         $zr, 36($sp)
 	0x0000B5CC: 0xAFA00028 '(...' - sw         $zr, 40($sp)
 	0x0000B5D0: 0xAFA0002C ',...' - sw         $zr, 44($sp)
-	0x0000B5D4: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000B5D4: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000B5D8: 0xA0C00000 '....' - sb         $zr, 0($a2)
 	0x0000B5DC: 0x0040A821 '!.@.' - move       $s5, $v0
 	0x0000B5E0: 0x02202021 '!  .' - move       $a0, $s1
 
 loc_0000B5E4:		; Refs: 0x0000B628 
 	0x0000B5E4: 0x03A02821 '!(..' - move       $a1, $sp
-	0x0000B5E8: 0x0C001932 '2...' - jal        sceUmdMan_driver_BD974D70
+	0x0000B5E8: 0x0C001932 '2...' - jal        sceUmdExecGetEventStatusCmd
 	0x0000B5EC: 0x02803021 '!0..' - move       $a2, $s4
 	0x0000B5F0: 0x00525026 '&PR.' - xor        $t2, $v0, $s2
 	0x0000B5F4: 0x00535826 '&XS.' - xor        $t3, $v0, $s3
@@ -15303,14 +15303,14 @@ loc_0000B620:		; Refs: 0x0000B638
 
 loc_0000B630:		; Refs: 0x0000B618 
 ; Data ref 0x2D79157C
-	0x0000B630: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x0000B630: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x0000B634: 0x00000000 '....' - nop        
 	0x0000B638: 0x08002D88 '.-..' - j          loc_0000B620
 	0x0000B63C: 0x00000000 '....' - nop        
 
 loc_0000B640:		; Refs: 0x0000B610 
 ; Data ref 0x2D8825CB
-	0x0000B640: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000B640: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000B644: 0x02A02021 '! ..' - move       $a0, $s5
 	0x0000B648: 0x1200000B '....' - beqz       $s0, loc_0000B678
 	0x0000B64C: 0x02001021 '!...' - move       $v0, $s0
@@ -15360,7 +15360,7 @@ loc_0000B6B8:		; Refs: 0x0000B6D4 0x0000B6F0 0x0000B6FC 0x0000B710
 
 loc_0000B6C8:		; Refs: 0x0000B6B0 
 ; Data ref 0x2D9425B6
-	0x0000B6C8: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000B6C8: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000B6CC: 0x00000000 '....' - nop        
 	0x0000B6D0: 0x304F000D '..O0' - andi       $t7, $v0, 0xD
 	0x0000B6D4: 0x15E0FFF8 '....' - bnez       $t7, loc_0000B6B8
@@ -15382,7 +15382,7 @@ loc_0000B6F8:		; Refs: 0x0000B6A0
 ; Data ref 0x0000F400 ... 0x00000001 0xFFFFFFFF 0x00000001 0x00000001 
 	0x0000B700: 0xAE20F400 '.. .' - sw         $zr, -3072($s1)
 ; Data ref 0x2DAE25B6
-	0x0000B704: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000B704: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000B708: 0x00000000 '....' - nop        
 	0x0000B70C: 0x3053000C '..S0' - andi       $s3, $v0, 0xC
 	0x0000B710: 0x1660FFE9 '..`.' - bnez       $s3, loc_0000B6B8
@@ -15418,7 +15418,7 @@ sub_0000B754:		; Refs: 0x0000A324
 	0x0000B76C: 0x12000012 '....' - beqz       $s0, loc_0000B7B8
 	0x0000B770: 0x34620016 '..b4' - ori        $v0, $v1, 0x16
 ; Data ref 0x2D942890
-	0x0000B774: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000B774: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000B778: 0x00000000 '....' - nop        
 	0x0000B77C: 0x14400007 '..@.' - bnez       $v0, loc_0000B79C
 	0x0000B780: 0x00000000 '....' - nop        
@@ -15458,7 +15458,7 @@ sub_0000B7C0:		; Refs: 0x0000A380
 	0x0000B7D8: 0x12000008 '....' - beqz       $s0, loc_0000B7FC
 	0x0000B7DC: 0x34620016 '..b4' - ori        $v0, $v1, 0x16
 ; Data ref 0x2DE32890
-	0x0000B7E0: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000B7E0: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000B7E4: 0x00000000 '....' - nop        
 	0x0000B7E8: 0x14400008 '..@.' - bnez       $v0, loc_0000B80C
 	0x0000B7EC: 0x2403FFFF '...$' - li         $v1, -1
@@ -15500,7 +15500,7 @@ sub_0000B830:		; Refs: 0x0000A694
 	0x0000B850: 0xAFB00010 '....' - sw         $s0, 16($sp)
 	0x0000B854: 0x144000E7 '..@.' - bnez       $v0, loc_0000BBF4
 	0x0000B858: 0x00000000 '....' - nop        
-	0x0000B85C: 0x0C000D78 'x...' - jal        sceUmdMan_driver_8CFED611
+	0x0000B85C: 0x0C000D78 'x...' - jal        sceUmdManStart
 	0x0000B860: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000B864: 0x00409021 '!.@.' - move       $s2, $v0
 	0x0000B868: 0x3C028021 '!..<' - lui        $v0, 0x8021
@@ -15536,7 +15536,7 @@ sub_0000B830:		; Refs: 0x0000A694
 	0x0000B8D8: 0x02402021 '! @.' - move       $a0, $s2
 
 loc_0000B8DC:		; Refs: 0x0000BC14 
-	0x0000B8DC: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000B8DC: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000B8E0: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000B8E4: 0x104000B4 '..@.' - beqz       $v0, loc_0000BBB8
 	0x0000B8E8: 0x240B0010 '...$' - li         $t3, 16
@@ -15567,7 +15567,7 @@ loc_0000B8DC:		; Refs: 0x0000BC14
 	0x0000B94C: 0x00408021 '!.@.' - move       $s0, $v0
 	0x0000B950: 0x0C00396E 'n9..' - jal        ThreadManForKernel_CEADEB47
 	0x0000B954: 0x24040064 'd..$' - li         $a0, 100
-	0x0000B958: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000B958: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000B95C: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000B960: 0x00402021 '! @.' - move       $a0, $v0
 	0x0000B964: 0x00002821 '!(..' - move       $a1, $zr
@@ -15636,7 +15636,7 @@ loc_0000BA2C:		; Refs: 0x0000BBB0
 loc_0000BA34:		; Refs: 0x0000BB74 
 	0x0000BA34: 0x0C00396E 'n9..' - jal        ThreadManForKernel_CEADEB47
 	0x0000BA38: 0x24040064 'd..$' - li         $a0, 100
-	0x0000BA3C: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000BA3C: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000BA40: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000BA44: 0x00402021 '! @.' - move       $a0, $v0
 	0x0000BA48: 0x00002821 '!(..' - move       $a1, $zr
@@ -15788,7 +15788,7 @@ loc_0000BBB8:		; Refs: 0x0000B8E4
 
 loc_0000BBF4:		; Refs: 0x0000B854 
 ; Data ref 0x2EBA0DEA
-	0x0000BBF4: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000BBF4: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000BBF8: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000BBFC: 0x3C068001 '...<' - lui        $a2, 0x8001
 	0x0000BC00: 0x00409021 '!.@.' - move       $s2, $v0
@@ -15819,7 +15819,7 @@ sub_0000BC24:		; Refs: 0x0000A5E0
 	0x0000BC4C: 0xAFB00020 ' ...' - sw         $s0, 32($sp)
 	0x0000BC50: 0x144000AC '..@.' - bnez       $v0, loc_0000BF04
 	0x0000BC54: 0x00000000 '....' - nop        
-	0x0000BC58: 0x0C000D78 'x...' - jal        sceUmdMan_driver_8CFED611
+	0x0000BC58: 0x0C000D78 'x...' - jal        sceUmdManStart
 	0x0000BC5C: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000BC60: 0x10400004 '..@.' - beqz       $v0, loc_0000BC74
 	0x0000BC64: 0x00408021 '!.@.' - move       $s0, $v0
@@ -15858,12 +15858,12 @@ loc_0000BCA8:		; Refs: 0x0000BC6C
 	0x0000BCC8: 0xA0510000 '..Q.' - sb         $s1, 0($v0)
 
 loc_0000BCCC:		; Refs: 0x0000BF18 
-	0x0000BCCC: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000BCCC: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000BCD0: 0x00000000 '....' - nop        
 	0x0000BCD4: 0x30460001 '..F0' - andi       $a2, $v0, 0x1
 	0x0000BCD8: 0x14C00084 '....' - bnez       $a2, loc_0000BEEC
 	0x0000BCDC: 0x3C098021 '!..<' - lui        $t1, 0x8021
-	0x0000BCE0: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000BCE0: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000BCE4: 0x00000000 '....' - nop        
 	0x0000BCE8: 0x304A000C '..J0' - andi       $t2, $v0, 0xC
 	0x0000BCEC: 0x3C0B8001 '...<' - lui        $t3, 0x8001
@@ -15886,7 +15886,7 @@ loc_0000BCCC:		; Refs: 0x0000BF18
 	0x0000BD30: 0x0C0012EF '....' - jal        sub_00004BBC
 	0x0000BD34: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000BD38: 0x3C0E004C 'L..<' - lui        $t6, 0x4C
-	0x0000BD3C: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000BD3C: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000BD40: 0x35C44B40 '@K.5' - ori        $a0, $t6, 0x4B40
 	0x0000BD44: 0x0040B021 '!.@.' - move       $s6, $v0
 	0x0000BD48: 0x24150010 '...$' - li         $s5, 16
@@ -15899,12 +15899,12 @@ loc_0000BD54:		; Refs: 0x0000BE34
 	0x0000BD5C: 0xAFA00004 '....' - sw         $zr, 4($sp)
 	0x0000BD60: 0xAFA00008 '....' - sw         $zr, 8($sp)
 	0x0000BD64: 0xAFA0000C '....' - sw         $zr, 12($sp)
-	0x0000BD68: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000BD68: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000BD6C: 0xA7A00010 '....' - sh         $zr, 16($sp)
 	0x0000BD70: 0x304F000D '..O0' - andi       $t7, $v0, 0xD
 	0x0000BD74: 0x15E00055 'U...' - bnez       $t7, loc_0000BECC
 	0x0000BD78: 0x00000000 '....' - nop        
-	0x0000BD7C: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000BD7C: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000BD80: 0x00000000 '....' - nop        
 	0x0000BD84: 0x10520048 'H.R.' - beq        $v0, $s2, loc_0000BEA8
 	0x0000BD88: 0x00000000 '....' - nop        
@@ -15945,7 +15945,7 @@ loc_0000BD8C:		; Refs: 0x0000BEC4
 	0x0000BE0C: 0x00008821 '!...' - move       $s1, $zr
 	0x0000BE10: 0x1040000F '..@.' - beqz       $v0, loc_0000BE50
 	0x0000BE14: 0x00000000 '....' - nop        
-	0x0000BE18: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000BE18: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000BE1C: 0x00000000 '....' - nop        
 	0x0000BE20: 0x10400006 '..@.' - beqz       $v0, loc_0000BE3C
 	0x0000BE24: 0x3404C350 'P..4' - li         $a0, 0xC350
@@ -15964,7 +15964,7 @@ loc_0000BE3C:		; Refs: 0x0000BE20
 	0x0000BE4C: 0xAE15000C '....' - sw         $s5, 12($s0)
 
 loc_0000BE50:		; Refs: 0x0000BDF4 0x0000BE00 0x0000BE08 0x0000BE10 0x0000BEE4 
-	0x0000BE50: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000BE50: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000BE54: 0x02C02021 '! ..' - move       $a0, $s6
 	0x0000BE58: 0x0C00398C '.9..' - jal        sceAta_driver_2F7BE141
 	0x0000BE5C: 0x00000000 '....' - nop        
@@ -15994,7 +15994,7 @@ loc_0000BEA8:		; Refs: 0x0000BD84
 	0x0000BEB0: 0x3C03BD70 'p..<' - lui        $v1, 0xBD70
 	0x0000BEB4: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
 	0x0000BEB8: 0x9063000E '..c.' - lbu        $v1, 14($v1)
-	0x0000BEBC: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000BEBC: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000BEC0: 0x36C44B40 '@K.6' - ori        $a0, $s6, 0x4B40
 	0x0000BEC4: 0x08002F63 'c/..' - j          loc_0000BD8C
 	0x0000BEC8: 0x0040B021 '!.@.' - move       $s6, $v0
@@ -16020,7 +16020,7 @@ loc_0000BEEC:		; Refs: 0x0000BCD8
 
 loc_0000BF04:		; Refs: 0x0000BC50 
 ; Data ref 0x2F1F0DEA
-	0x0000BF04: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000BF04: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000BF08: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000BF0C: 0x10400004 '..@.' - beqz       $v0, loc_0000BF20
 	0x0000BF10: 0x00408021 '!.@.' - move       $s0, $v0
@@ -16052,7 +16052,7 @@ sub_0000BF2C:		; Refs: 0x0000A630
 	0x0000BF5C: 0xAFB10004 '....' - sw         $s1, 4($sp)
 	0x0000BF60: 0x1440008B '..@.' - bnez       $v0, loc_0000C190
 	0x0000BF64: 0x00000000 '....' - nop        
-	0x0000BF68: 0x0C000D78 'x...' - jal        sceUmdMan_driver_8CFED611
+	0x0000BF68: 0x0C000D78 'x...' - jal        sceUmdManStart
 	0x0000BF6C: 0x02002021 '! ..' - move       $a0, $s0
 	0x0000BF70: 0x10400004 '..@.' - beqz       $v0, loc_0000BF84
 	0x0000BF74: 0x00408821 '!.@.' - move       $s1, $v0
@@ -16107,7 +16107,7 @@ loc_0000BFF4:		; Refs: 0x0000C1A4
 	0x0000C010: 0x35049680 '...5' - ori        $a0, $t0, 0x9680
 	0x0000C014: 0x3C138021 '!..<' - lui        $s3, 0x8021
 	0x0000C018: 0x3C128021 '!..<' - lui        $s2, 0x8021
-	0x0000C01C: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000C01C: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000C020: 0x3C108001 '...<' - lui        $s0, 0x8001
 	0x0000C024: 0x36950003 '...6' - ori        $s5, $s4, 0x3
 	0x0000C028: 0x0040F021 '!.@.' - move       $fp, $v0
@@ -16122,7 +16122,7 @@ loc_0000C044:		; Refs: 0x0000C0DC
 	0x0000C044: 0xAE20002C ',. .' - sw         $zr, 44($s1)
 	0x0000C048: 0xAE200030 '0. .' - sw         $zr, 48($s1)
 	0x0000C04C: 0xAE200034 '4. .' - sw         $zr, 52($s1)
-	0x0000C050: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000C050: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000C054: 0xA6200038 '8. .' - sh         $zr, 56($s1)
 	0x0000C058: 0x10570045 'E.W.' - beq        $v0, $s7, loc_0000C170
 	0x0000C05C: 0x02202021 '!  .' - move       $a0, $s1
@@ -16181,7 +16181,7 @@ loc_0000C100:		; Refs: 0x0000C088
 
 loc_0000C110:		; Refs: 0x0000C090 
 ; Data ref 0x301125CB
-	0x0000C110: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000C110: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000C114: 0x03C02021 '! ..' - move       $a0, $fp
 	0x0000C118: 0x0C00398C '.9..' - jal        sceAta_driver_2F7BE141
 	0x0000C11C: 0x00000000 '....' - nop        
@@ -16221,7 +16221,7 @@ loc_0000C170:		; Refs: 0x0000C058
 
 loc_0000C190:		; Refs: 0x0000BF60 
 ; Data ref 0x2FE30DEA
-	0x0000C190: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000C190: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000C194: 0x02002021 '! ..' - move       $a0, $s0
 	0x0000C198: 0x10400004 '..@.' - beqz       $v0, loc_0000C1AC
 	0x0000C19C: 0x00408821 '!.@.' - move       $s1, $v0
@@ -16354,7 +16354,7 @@ loc_0000C308:		; Refs: 0x0000C2D4
 	0x0000C31C: 0x00408021 '!.@.' - move       $s0, $v0
 	0x0000C320: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000C324: 0x24040030 '0..$' - li         $a0, 48
-	0x0000C328: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000C328: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000C32C: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000C330: 0x1040000C '..@.' - beqz       $v0, loc_0000C364
 	0x0000C334: 0x00000000 '....' - nop        
@@ -16391,7 +16391,7 @@ loc_0000C374:		; Refs: 0x0000C318
 	0x0000C388: 0x00409021 '!.@.' - move       $s2, $v0
 	0x0000C38C: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000C390: 0x24040030 '0..$' - li         $a0, 48
-	0x0000C394: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000C394: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000C398: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000C39C: 0x10400008 '..@.' - beqz       $v0, loc_0000C3C0
 	0x0000C3A0: 0x00000000 '....' - nop        
@@ -16421,7 +16421,7 @@ loc_0000C3D0:		; Refs: 0x0000C384
 	0x0000C3E0: 0x00409021 '!.@.' - move       $s2, $v0
 	0x0000C3E4: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000C3E8: 0x24040030 '0..$' - li         $a0, 48
-	0x0000C3EC: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000C3EC: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000C3F0: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000C3F4: 0x1040FFF2 '..@.' - beqz       $v0, loc_0000C3C0
 	0x0000C3F8: 0x3C118021 '!..<' - lui        $s1, 0x8021
@@ -16435,7 +16435,7 @@ loc_0000C3D0:		; Refs: 0x0000C384
 
 loc_0000C418:		; Refs: 0x0000C3DC 
 ; Data ref 0x30D50DEA
-	0x0000C418: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000C418: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000C41C: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000C420: 0x00402821 '!(@.' - move       $a1, $v0
 	0x0000C424: 0x0C00117B '{...' - jal        sub_000045EC
@@ -16444,7 +16444,7 @@ loc_0000C418:		; Refs: 0x0000C3DC
 	0x0000C430: 0x00409021 '!.@.' - move       $s2, $v0
 	0x0000C434: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000C438: 0x24040030 '0..$' - li         $a0, 48
-	0x0000C43C: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000C43C: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000C440: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000C444: 0x10400009 '..@.' - beqz       $v0, loc_0000C46C
 	0x0000C448: 0x00000000 '....' - nop        
@@ -16506,7 +16506,7 @@ loc_0000C4D8:		; Refs: 0x0000C4A0
 	0x0000C4E0: 0x160BFF4B 'K...' - bne        $s0, $t3, loc_0000C210
 	0x0000C4E4: 0x00000000 '....' - nop        
 ; Data ref 0x309B0BDA
-	0x0000C4E8: 0x0C000BDA '....' - jal        sceUmdMan_driver_DA67B566
+	0x0000C4E8: 0x0C000BDA '....' - jal        sceUmdManInit
 	0x0000C4EC: 0x240400B0 '...$' - li         $a0, 176
 	0x0000C4F0: 0x08003084 '.0..' - j          loc_0000C210
 	0x0000C4F4: 0x00409021 '!.@.' - move       $s2, $v0
@@ -16660,29 +16660,29 @@ loc_0000C678:		; Refs: 0x0000C64C
 	0x0000C6A0: 0xA7AA0004 '....' - sh         $t2, 4($sp)
 	0x0000C6A4: 0x24130001 '...$' - li         $s3, 1
 	0x0000C6A8: 0xA3A90001 '....' - sb         $t1, 1($sp)
-	0x0000C6AC: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000C6AC: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000C6B0: 0xA3A90000 '....' - sb         $t1, 0($sp)
 	0x0000C6B4: 0x0040A021 '!.@.' - move       $s4, $v0
 
 loc_0000C6B8:		; Refs: 0x0000C70C 
-	0x0000C6B8: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000C6B8: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000C6BC: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000C6C0: 0x10400056 'V.@.' - beqz       $v0, loc_0000C81C
 	0x0000C6C4: 0x3C108001 '...<' - lui        $s0, 0x8001
-	0x0000C6C8: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000C6C8: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000C6CC: 0x36100074 't..6' - ori        $s0, $s0, 0x74
 	0x0000C6D0: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000C6D4: 0x03A02821 '!(..' - move       $a1, $sp
 	0x0000C6D8: 0x1053000E '..S.' - beq        $v0, $s3, loc_0000C714
 	0x0000C6DC: 0x27A60010 '...'' - addiu      $a2, $sp, 16
-	0x0000C6E0: 0x0C0018AA '....' - jal        sceUmdMan_driver_EB0841CE
+	0x0000C6E0: 0x0C0018AA '....' - jal        sceUmdExecModSenseCmd
 	0x0000C6E4: 0x00000000 '....' - nop        
 	0x0000C6E8: 0x00408021 '!.@.' - move       $s0, $v0
 	0x0000C6EC: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000C6F0: 0x26250028 '(.%&' - addiu      $a1, $s1, 40
 	0x0000C6F4: 0x10400007 '..@.' - beqz       $v0, loc_0000C714
 	0x0000C6F8: 0x24060012 '...$' - li         $a2, 18
-	0x0000C6FC: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x0000C6FC: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x0000C700: 0x00000000 '....' - nop        
 	0x0000C704: 0x0C00396E 'n9..' - jal        ThreadManForKernel_CEADEB47
 	0x0000C708: 0x240403E8 '...$' - li         $a0, 1000
@@ -16691,7 +16691,7 @@ loc_0000C6B8:		; Refs: 0x0000C70C
 
 loc_0000C714:		; Refs: 0x0000C6D8 0x0000C6F4 0x0000C838 
 ; Data ref 0x31AE25CB
-	0x0000C714: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000C714: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000C718: 0x02802021 '! ..' - move       $a0, $s4
 	0x0000C71C: 0x1600FFCE '....' - bnez       $s0, loc_0000C658
 	0x0000C720: 0x02001021 '!...' - move       $v0, $s0
@@ -16718,29 +16718,29 @@ loc_0000C714:		; Refs: 0x0000C6D8 0x0000C6F4 0x0000C838
 	0x0000C774: 0x24120001 '...$' - li         $s2, 1
 	0x0000C778: 0xA3A30000 '....' - sb         $v1, 0($sp)
 	0x0000C77C: 0xA7A50004 '....' - sh         $a1, 4($sp)
-	0x0000C780: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000C780: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000C784: 0xA3A00001 '....' - sb         $zr, 1($sp)
 	0x0000C788: 0x0040A021 '!.@.' - move       $s4, $v0
 
 loc_0000C78C:		; Refs: 0x0000C7E0 
-	0x0000C78C: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000C78C: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000C790: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000C794: 0x10400018 '..@.' - beqz       $v0, loc_0000C7F8
 	0x0000C798: 0x3C108001 '...<' - lui        $s0, 0x8001
-	0x0000C79C: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000C79C: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000C7A0: 0x36100074 't..6' - ori        $s0, $s0, 0x74
 	0x0000C7A4: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000C7A8: 0x03A02821 '!(..' - move       $a1, $sp
 	0x0000C7AC: 0x1052000E '..R.' - beq        $v0, $s2, loc_0000C7E8
 	0x0000C7B0: 0x27A60010 '...'' - addiu      $a2, $sp, 16
-	0x0000C7B4: 0x0C0018EE '....' - jal        sceUmdMan_driver_2C5F9A65
+	0x0000C7B4: 0x0C0018EE '....' - jal        sceUmdExecModSelectCmd
 	0x0000C7B8: 0x00000000 '....' - nop        
 	0x0000C7BC: 0x00408021 '!.@.' - move       $s0, $v0
 	0x0000C7C0: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000C7C4: 0x26250028 '(.%&' - addiu      $a1, $s1, 40
 	0x0000C7C8: 0x10400007 '..@.' - beqz       $v0, loc_0000C7E8
 	0x0000C7CC: 0x24060012 '...$' - li         $a2, 18
-	0x0000C7D0: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x0000C7D0: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x0000C7D4: 0x00000000 '....' - nop        
 	0x0000C7D8: 0x0C00396E 'n9..' - jal        ThreadManForKernel_CEADEB47
 	0x0000C7DC: 0x240403E8 '...$' - li         $a0, 1000
@@ -16749,7 +16749,7 @@ loc_0000C78C:		; Refs: 0x0000C7E0
 
 loc_0000C7E8:		; Refs: 0x0000C7AC 0x0000C7C8 0x0000C814 
 ; Data ref 0x31E325CB
-	0x0000C7E8: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000C7E8: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000C7EC: 0x02802021 '! ..' - move       $a0, $s4
 	0x0000C7F0: 0x08003196 '.1..' - j          loc_0000C658
 	0x0000C7F4: 0x02001021 '!...' - move       $v0, $s0
@@ -16837,9 +16837,9 @@ sceUmdMan_driver_17F40D76:
 	0x0000C8C4: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_1FE34641 - Address 0x0000C8C8 
+; Subroutine sceUmdManSoftReset - Address 0x0000C8C8 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_1FE34641:
+sceUmdManSoftReset:
 	0x0000C8C8: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x0000C8CC: 0xAFBF0000 '....' - sw         $ra, 0($sp)
 	0x0000C8D0: 0x0C0039D6 '.9..' - jal        sceAta_driver_EE230A74
@@ -16849,9 +16849,9 @@ sceUmdMan_driver_1FE34641:
 	0x0000C8E0: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_3A05AC3C - Address 0x0000C8E4 
+; Subroutine sceUmdManIsUmdDrive - Address 0x0000C8E4 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_3A05AC3C:
+sceUmdManIsUmdDrive:
 	0x0000C8E4: 0x27BDFFF0 '...'' - addiu      $sp, $sp, -16
 	0x0000C8E8: 0xAFBF0000 '....' - sw         $ra, 0($sp)
 	0x0000C8EC: 0x0C0039D4 '.9..' - jal        sceAta_driver_E0851D1A
@@ -16876,10 +16876,10 @@ sub_0000C900:		; Refs: 0x0000B910
 	0x0000C928: 0x24130001 '...$' - li         $s3, 1
 	0x0000C92C: 0xAFB20058 'X...' - sw         $s2, 88($sp)
 	0x0000C930: 0xAFB10054 'T...' - sw         $s1, 84($sp)
-	0x0000C934: 0x0C0029C9 '.)..' - jal        sceUmdMan_driver_D1478023
+	0x0000C934: 0x0C0029C9 '.)..' - jal        sceUmdManGetUmdDiscInfo
 	0x0000C938: 0xAFB00050 'P...' - sw         $s0, 80($sp)
 	0x0000C93C: 0x00002021 '! ..' - move       $a0, $zr
-	0x0000C940: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000C940: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000C944: 0x0040B821 '!.@.' - move       $s7, $v0
 	0x0000C948: 0x00408821 '!.@.' - move       $s1, $v0
 	0x0000C94C: 0x3C020131 '1..<' - lui        $v0, 0x131
@@ -16909,22 +16909,22 @@ sub_0000C900:		; Refs: 0x0000B910
 	0x0000C9AC: 0xAFA00038 '8...' - sw         $zr, 56($sp)
 	0x0000C9B0: 0xAFA0003C '<...' - sw         $zr, 60($sp)
 	0x0000C9B4: 0xAFA00040 '@...' - sw         $zr, 64($sp)
-	0x0000C9B8: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000C9B8: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000C9BC: 0xAFA00044 'D...' - sw         $zr, 68($sp)
 	0x0000C9C0: 0x0040F021 '!.@.' - move       $fp, $v0
 
 loc_0000C9C4:		; Refs: 0x0000CA0C 0x0000CD40 
-	0x0000C9C4: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000C9C4: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000C9C8: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000C9CC: 0x10400118 '..@.' - beqz       $v0, loc_0000CE30
 	0x0000C9D0: 0x24030010 '...$' - li         $v1, 16
 	0x0000C9D4: 0xAE340010 '..4.' - sw         $s4, 16($s1)
-	0x0000C9D8: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000C9D8: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000C9DC: 0xAE35000C '..5.' - sw         $s5, 12($s1)
 	0x0000C9E0: 0x1053010B '..S.' - beq        $v0, $s3, loc_0000CE10
 	0x0000C9E4: 0x03A02821 '!(..' - move       $a1, $sp
 	0x0000C9E8: 0x02202021 '!  .' - move       $a0, $s1
-	0x0000C9EC: 0x0C0019E2 '....' - jal        sceUmdMan_driver_406E8F99
+	0x0000C9EC: 0x0C0019E2 '....' - jal        sceUmdExecReadUMDStructureCmd
 	0x0000C9F0: 0x27A60020 ' ..'' - addiu      $a2, $sp, 32
 	0x0000C9F4: 0x144000D2 '..@.' - bnez       $v0, loc_0000CD40
 	0x0000C9F8: 0x83A40024 '$...' - lb         $a0, 36($sp)
@@ -16939,7 +16939,7 @@ loc_0000CA04:		; Refs: 0x0000CD48 0x0000CD90
 
 loc_0000CA14:		; Refs: 0x0000C9FC 
 ; Data ref 0x327125CB
-	0x0000CA14: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000CA14: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000CA18: 0x03C02021 '! ..' - move       $a0, $fp
 	0x0000CA1C: 0x93A60024 '$...' - lbu        $a2, 36($sp)
 	0x0000CA20: 0x30DE000F '...0' - andi       $fp, $a2, 0xF
@@ -16998,7 +16998,7 @@ loc_0000CAB0:		; Refs: 0x0000CCF0
 loc_0000CAE8:		; Refs: 0x0000CD38 
 	0x0000CAE8: 0x3C0201AB '...<' - lui        $v0, 0x1AB
 	0x0000CAEC: 0x34443F00 '.?D4' - ori        $a0, $v0, 0x3F00
-	0x0000CAF0: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000CAF0: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000CAF4: 0x3C178021 '!..<' - lui        $s7, 0x8021
 	0x0000CAF8: 0x36F2100F '...6' - ori        $s2, $s7, 0x100F
 	0x0000CAFC: 0x0040F021 '!.@.' - move       $fp, $v0
@@ -17009,18 +17009,18 @@ loc_0000CAE8:		; Refs: 0x0000CD38
 	0x0000CB10: 0x24170005 '...$' - li         $s7, 5
 
 loc_0000CB14:		; Refs: 0x0000CB6C 
-	0x0000CB14: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000CB14: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000CB18: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000CB1C: 0x10400036 '6.@.' - beqz       $v0, loc_0000CBF8
 	0x0000CB20: 0x00000000 '....' - nop        
 	0x0000CB24: 0xAE340010 '..4.' - sw         $s4, 16($s1)
-	0x0000CB28: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000CB28: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000CB2C: 0xAE35000C '..5.' - sw         $s5, 12($s1)
 	0x0000CB30: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000CB34: 0x27A50010 '...'' - addiu      $a1, $sp, 16
 	0x0000CB38: 0x10530027 ''.S.' - beq        $v0, $s3, loc_0000CBD8
 	0x0000CB3C: 0x24060002 '...$' - li         $a2, 2
-	0x0000CB40: 0x0C001816 '....' - jal        sceUmdMan_driver_8DA33BBD
+	0x0000CB40: 0x0C001816 '....' - jal        sceUmdExecAllocateFromReadCmd
 	0x0000CB44: 0x00000000 '....' - nop        
 	0x0000CB48: 0x00408021 '!.@.' - move       $s0, $v0
 	0x0000CB4C: 0x02202021 '!  .' - move       $a0, $s1
@@ -17038,7 +17038,7 @@ loc_0000CB64:		; Refs: 0x0000CB88 0x0000CB94
 
 loc_0000CB74:		; Refs: 0x0000CB5C 
 ; Data ref 0x32C5157C
-	0x0000CB74: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x0000CB74: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x0000CB78: 0x00000000 '....' - nop        
 	0x0000CB7C: 0x922A002A '*.*.' - lbu        $t2, 42($s1)
 	0x0000CB80: 0x3C038021 '!..<' - lui        $v1, 0x8021
@@ -17050,7 +17050,7 @@ loc_0000CB74:		; Refs: 0x0000CB5C
 	0x0000CB98: 0x00000000 '....' - nop        
 
 loc_0000CB9C:		; Refs: 0x0000CB54 0x0000CBF0 0x0000CC34 
-	0x0000CB9C: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000CB9C: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000CBA0: 0x03C02021 '! ..' - move       $a0, $fp
 	0x0000CBA4: 0x02001021 '!...' - move       $v0, $s0
 
@@ -17080,7 +17080,7 @@ loc_0000CBD8:		; Refs: 0x0000CB38
 
 loc_0000CBF8:		; Refs: 0x0000CB1C 
 ; Data ref 0x32E725B6
-	0x0000CBF8: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000CBF8: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000CBFC: 0x00000000 '....' - nop        
 	0x0000CC00: 0x30580004 '..X0' - andi       $t8, $v0, 0x4
 	0x0000CC04: 0x1300000D '....' - beqz       $t8, loc_0000CC3C
@@ -17202,7 +17202,7 @@ loc_0000CD80:		; Refs: 0x0000CDE0
 	0x0000CD84: 0x922D0034 '4.-.' - lbu        $t5, 52($s1)
 
 loc_0000CD88:		; Refs: 0x0000CDCC 
-	0x0000CD88: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000CD88: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000CD8C: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000CD90: 0x1440FF1C '..@.' - bnez       $v0, loc_0000CA04
 	0x0000CD94: 0x03C02021 '! ..' - move       $a0, $fp
@@ -17212,7 +17212,7 @@ loc_0000CD9C:		; Refs: 0x0000CDD4
 	0x0000CD9C: 0xAE350010 '..5.' - sw         $s5, 16($s1)
 
 loc_0000CDA0:		; Refs: 0x0000CE3C 
-	0x0000CDA0: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000CDA0: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000CDA4: 0x00000000 '....' - nop        
 	0x0000CDA8: 0x0C00398C '.9..' - jal        sceAta_driver_2F7BE141
 	0x0000CDAC: 0x00000000 '....' - nop        
@@ -17235,7 +17235,7 @@ loc_0000CDDC:		; Refs: 0x0000CD74
 	0x0000CDE0: 0x1549FFE7 '..I.' - bne        $t2, $t1, loc_0000CD80
 	0x0000CDE4: 0x240B0002 '...$' - li         $t3, 2
 ; Data ref 0x336725CB
-	0x0000CDE8: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000CDE8: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000CDEC: 0x03C02021 '! ..' - move       $a0, $fp
 	0x0000CDF0: 0x0C00398C '.9..' - jal        sceAta_driver_2F7BE141
 	0x0000CDF4: 0x00000000 '....' - nop        
@@ -17275,32 +17275,32 @@ sub_0000CE44:		; Refs: 0x0000BAA4
 	0x0000CE58: 0x24120001 '...$' - li         $s2, 1
 	0x0000CE5C: 0xAFB10004 '....' - sw         $s1, 4($sp)
 ; Data ref 0x33680DEA
-	0x0000CE60: 0x0C000DEA '....' - jal        sceUmdMan_driver_47E2B6D8
+	0x0000CE60: 0x0C000DEA '....' - jal        sceUmdManGetUmdDrive
 	0x0000CE64: 0xAFB00000 '....' - sw         $s0, 0($sp)
 	0x0000CE68: 0x00408821 '!.@.' - move       $s1, $v0
 	0x0000CE6C: 0x3C020262 'b..<' - lui        $v0, 0x262
-	0x0000CE70: 0x0C0025E2 '.%..' - jal        sceUmdMan_driver_6519F8D1
+	0x0000CE70: 0x0C0025E2 '.%..' - jal        sceUmdManSetAlarm
 	0x0000CE74: 0x34445A00 '.ZD4' - ori        $a0, $v0, 0x5A00
 	0x0000CE78: 0x00409821 '!.@.' - move       $s3, $v0
 
 loc_0000CE7C:		; Refs: 0x0000CECC 
-	0x0000CE7C: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000CE7C: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000CE80: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000CE84: 0x1040001D '..@.' - beqz       $v0, loc_0000CEFC
 	0x0000CE88: 0x3C108001 '...<' - lui        $s0, 0x8001
-	0x0000CE8C: 0x0C002602 '.&..' - jal        sceUmdMan_driver_2CE918B1
+	0x0000CE8C: 0x0C002602 '.&..' - jal        sceUmdManGetCommandTimerFlag
 	0x0000CE90: 0x36100074 't..6' - ori        $s0, $s0, 0x74
 	0x0000CE94: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000CE98: 0x1052000E '..R.' - beq        $v0, $s2, loc_0000CED4
 	0x0000CE9C: 0x24050040 '@..$' - li         $a1, 64
-	0x0000CEA0: 0x0C001A87 '....' - jal        sceUmdMan_driver_EEBF3121
+	0x0000CEA0: 0x0C001A87 '....' - jal        sceUmdExecSetLockLengthCmd
 	0x0000CEA4: 0x00000000 '....' - nop        
 	0x0000CEA8: 0x00408021 '!.@.' - move       $s0, $v0
 	0x0000CEAC: 0x02202021 '!  .' - move       $a0, $s1
 	0x0000CEB0: 0x26250028 '(.%&' - addiu      $a1, $s1, 40
 	0x0000CEB4: 0x10400007 '..@.' - beqz       $v0, loc_0000CED4
 	0x0000CEB8: 0x24060012 '...$' - li         $a2, 18
-	0x0000CEBC: 0x0C00157C '|...' - jal        sceUmdMan_driver_2CBE959B
+	0x0000CEBC: 0x0C00157C '|...' - jal        sceUmdExecReqSenseCmd
 	0x0000CEC0: 0x00000000 '....' - nop        
 	0x0000CEC4: 0x0C00396E 'n9..' - jal        ThreadManForKernel_CEADEB47
 	0x0000CEC8: 0x240403E8 '...$' - li         $a0, 1000
@@ -17309,7 +17309,7 @@ loc_0000CE7C:		; Refs: 0x0000CECC
 
 loc_0000CED4:		; Refs: 0x0000CE98 0x0000CEB4 0x0000CF24 
 ; Data ref 0x339F25CB
-	0x0000CED4: 0x0C0025CB '.%..' - jal        sceUmdMan_driver_709E7035
+	0x0000CED4: 0x0C0025CB '.%..' - jal        sceUmdManCancelAlarm
 	0x0000CED8: 0x02602021 '! `.' - move       $a0, $s3
 	0x0000CEDC: 0x02001021 '!...' - move       $v0, $s0
 	0x0000CEE0: 0x8FBF0010 '....' - lw         $ra, 16($sp)
@@ -18163,21 +18163,21 @@ loc_0000D7B8:		; Refs: 0x0000D738
 
 loc_0000D7E0:		; Refs: 0x0000D694 
 ; Data ref 0x35D425B6
-	0x0000D7E0: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000D7E0: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000D7E4: 0x00000000 '....' - nop        
 	0x0000D7E8: 0x304A0040 '@.J0' - andi       $t2, $v0, 0x40
 	0x0000D7EC: 0x15400062 'b.@.' - bnez       $t2, loc_0000D978
 	0x0000D7F0: 0x00000000 '....' - nop        
 
 loc_0000D7F4:		; Refs: 0x0000D980 0x0000D990 
-	0x0000D7F4: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000D7F4: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000D7F8: 0x00000000 '....' - nop        
 	0x0000D7FC: 0x304B0080 '..K0' - andi       $t3, $v0, 0x80
 	0x0000D800: 0x1560002E '..`.' - bnez       $t3, loc_0000D8BC
 	0x0000D804: 0x00000000 '....' - nop        
 
 loc_0000D808:		; Refs: 0x0000D908 
-	0x0000D808: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000D808: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000D80C: 0x00000000 '....' - nop        
 	0x0000D810: 0x30520020 ' .R0' - andi       $s2, $v0, 0x20
 	0x0000D814: 0x1240FFA1 '..@.' - beqz       $s2, loc_0000D69C
@@ -18222,7 +18222,7 @@ loc_0000D880:		; Refs: 0x0000D828
 ; Data ref 0x35A73A0E
 	0x0000D880: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000D884: 0x24040030 '0..$' - li         $a0, 48
-	0x0000D888: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000D888: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000D88C: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000D890: 0x10400006 '..@.' - beqz       $v0, loc_0000D8AC
 	0x0000D894: 0x00000000 '....' - nop        
@@ -18282,7 +18282,7 @@ loc_0000D920:		; Refs: 0x0000D8D4
 ; Data ref 0x363C3A0E
 	0x0000D920: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000D924: 0x24040030 '0..$' - li         $a0, 48
-	0x0000D928: 0x0C002890 '.(..' - jal        sceUmdMan_driver_1F9AFFF4
+	0x0000D928: 0x0C002890 '.(..' - jal        sceUmdManMediaPresent
 	0x0000D92C: 0x00002021 '! ..' - move       $a0, $zr
 	0x0000D930: 0x1040000D '..@.' - beqz       $v0, loc_0000D968
 	0x0000D934: 0x00000000 '....' - nop        
@@ -18415,7 +18415,7 @@ loc_0000DA74:		; Refs: 0x0000DAA0
 
 loc_0000DA8C:		; Refs: 0x0000DA6C 
 ; Data ref 0x35E125B6
-	0x0000DA8C: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000DA8C: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000DA90: 0x00000000 '....' - nop        
 	0x0000DA94: 0x30480008 '..H0' - andi       $t0, $v0, 0x8
 	0x0000DA98: 0x1500FFEB '....' - bnez       $t0, loc_0000DA48
@@ -18433,9 +18433,9 @@ loc_0000DAA8:		; Refs: 0x0000DA24
 	0x0000DAB8: 0x3C020002 '...<' - lui        $v0, 0x2
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_0DC8D26D - Address 0x0000DABC 
+; Subroutine sceUmdManWaitSema - Address 0x0000DABC 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_0DC8D26D:		; Refs: 0x0000AD94 0x0000E000 
+sceUmdManWaitSema:		; Refs: 0x0000AD94 0x0000E000 
 ; Data ref 0x00019914 ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x0000DABC: 0x3C030002 '...<' - lui        $v1, 0x2
 ; Data ref 0x00019914 ... 0x00000000 0x00000000 0x00000000 0x00000000 
@@ -18451,9 +18451,9 @@ sceUmdMan_driver_0DC8D26D:		; Refs: 0x0000AD94 0x0000E000
 	0x0000DAE0: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_9F106F73 - Address 0x0000DAE4 
+; Subroutine sceUmdManPollSema - Address 0x0000DAE4 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_9F106F73:
+sceUmdManPollSema:
 ; Data ref 0x00019914 ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x0000DAE4: 0x3C030002 '...<' - lui        $v1, 0x2
 ; Data ref 0x00019914 ... 0x00000000 0x00000000 0x00000000 0x00000000 
@@ -18467,9 +18467,9 @@ sceUmdMan_driver_9F106F73:
 	0x0000DB04: 0x27BD0010 '...'' - addiu      $sp, $sp, 16
 
 ; ======================================================
-; Subroutine sceUmdMan_driver_B0A43DA7 - Address 0x0000DB08 
+; Subroutine sceUmdManSignalSema - Address 0x0000DB08 
 ; Exported in sceUmdMan_driver
-sceUmdMan_driver_B0A43DA7:		; Refs: 0x0000ADAC 0x0000ADCC 0x0000E098 
+sceUmdManSignalSema:		; Refs: 0x0000ADAC 0x0000ADCC 0x0000E098 
 ; Data ref 0x00019914 ... 0x00000000 0x00000000 0x00000000 0x00000000 
 	0x0000DB08: 0x3C030002 '...<' - lui        $v1, 0x2
 ; Data ref 0x00019914 ... 0x00000000 0x00000000 0x00000000 0x00000000 
@@ -18948,12 +18948,12 @@ loc_0000DFAC:		; Refs: 0x0000E0A8
 	0x0000DFE0: 0x00000000 '....' - nop        
 	0x0000DFE4: 0x1040002E '..@.' - beqz       $v0, loc_0000E0A0
 	0x0000DFE8: 0x00000000 '....' - nop        
-	0x0000DFEC: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000DFEC: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000DFF0: 0x00000000 '....' - nop        
 	0x0000DFF4: 0x3044000D '..D0' - andi       $a0, $v0, 0xD
 	0x0000DFF8: 0x14800029 ')...' - bnez       $a0, loc_0000E0A0
 	0x0000DFFC: 0x00000000 '....' - nop        
-	0x0000E000: 0x0C0036AF '.6..' - jal        sceUmdMan_driver_0DC8D26D
+	0x0000E000: 0x0C0036AF '.6..' - jal        sceUmdManWaitSema
 	0x0000E004: 0x00000000 '....' - nop        
 	0x0000E008: 0x04400025 '%.@.' - bltz       $v0, loc_0000E0A0
 	0x0000E00C: 0x00000000 '....' - nop        
@@ -18966,7 +18966,7 @@ loc_0000DFAC:		; Refs: 0x0000E0A8
 	0x0000E028: 0x00000000 '....' - nop        
 	0x0000E02C: 0x1040001A '..@.' - beqz       $v0, loc_0000E098
 	0x0000E030: 0x00000000 '....' - nop        
-	0x0000E034: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000E034: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000E038: 0x00000000 '....' - nop        
 	0x0000E03C: 0x3047000F '..G0' - andi       $a3, $v0, 0xF
 	0x0000E040: 0x14E00015 '....' - bnez       $a3, loc_0000E098
@@ -19002,7 +19002,7 @@ loc_0000E090:		; Refs: 0x0000E0F8
 	0x0000E094: 0x02002021 '! ..' - move       $a0, $s0
 
 loc_0000E098:		; Refs: 0x0000E01C 0x0000E02C 0x0000E040 
-	0x0000E098: 0x0C0036C2 '.6..' - jal        sceUmdMan_driver_B0A43DA7
+	0x0000E098: 0x0C0036C2 '.6..' - jal        sceUmdManSignalSema
 	0x0000E09C: 0x00000000 '....' - nop        
 
 loc_0000E0A0:		; Refs: 0x0000DFC0 0x0000DFD4 0x0000DFE4 0x0000DFF8 0x0000E008 
@@ -19016,7 +19016,7 @@ loc_0000E0B0:		; Refs: 0x0000E050
 ; Data ref 0x37EB3A0E
 	0x0000E0B0: 0x0C003A0E '.:..' - jal        sceUmd_6EDF57F1
 	0x0000E0B4: 0x24040030 '0..$' - li         $a0, 48
-	0x0000E0B8: 0x0C0025B6 '.%..' - jal        sceUmdMan_driver_4FB913A3
+	0x0000E0B8: 0x0C0025B6 '.%..' - jal        sceUmdManGetIntrStateFlag
 	0x0000E0BC: 0x00000000 '....' - nop        
 	0x0000E0C0: 0x3048000F '..H0' - andi       $t0, $v0, 0xF
 	0x0000E0C4: 0x1500000A '....' - bnez       $t0, loc_0000E0F0
@@ -19496,9 +19496,9 @@ SysMemForKernel_FC639A2B:		; Refs: 0x0000BA10 0x0000BB90
 	0x0000E4D4: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine SysclibForKernel_10F3BB61 - Address 0x0000E4D8 
+; Subroutine memset - Address 0x0000E4D8 
 ; Imported from SysclibForKernel
-SysclibForKernel_10F3BB61:		; Refs: 0x0000158C 0x00002FE4 
+memset:		; Refs: 0x0000158C 0x00002FE4 
 	0x0000E4D8: 0x03E00008 '....' - jr         $ra
 	0x0000E4DC: 0x00000000 '....' - nop        
 
@@ -19734,9 +19734,9 @@ ThreadManForKernel_F8170FBE:		; Refs: 0x0000D0F0
 	0x0000E5E4: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine UtilsForKernel_34B9FA9E - Address 0x0000E5E8 
+; Subroutine sceKernelDcacheWritebackInvalidateRange - Address 0x0000E5E8 
 ; Imported from UtilsForKernel
-UtilsForKernel_34B9FA9E:		; Refs: 0x000073A4 
+sceKernelDcacheWritebackInvalidateRange:		; Refs: 0x000073A4 
 	0x0000E5E8: 0x03E00008 '....' - jr         $ra
 	0x0000E5EC: 0x00000000 '....' - nop        
 
@@ -19748,9 +19748,9 @@ UtilsForKernel_3EE30821:		; Refs: 0x000002A8
 	0x0000E5F4: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine UtilsForKernel_BFA98062 - Address 0x0000E5F8 
+; Subroutine sceKernelDcacheInvalidateRange - Address 0x0000E5F8 
 ; Imported from UtilsForKernel
-UtilsForKernel_BFA98062:		; Refs: 0x000014A8 0x00001598 
+sceKernelDcacheInvalidateRange:		; Refs: 0x000014A8 0x00001598 
 	0x0000E5F8: 0x03E00008 '....' - jr         $ra
 	0x0000E5FC: 0x00000000 '....' - nop        
 
@@ -20161,9 +20161,9 @@ sceSyscon_driver_8CBC7987:		; Refs: 0x00004590 0x00007CC0 0x00007DC0 0x00007E40 
 	0x0000E7CC: 0x00000000 '....' - nop        
 
 ; ======================================================
-; Subroutine sceSysreg_driver_16909002 - Address 0x0000E7D0 
+; Subroutine sceSysregAtaBusClockEnable - Address 0x0000E7D0 
 ; Imported from sceSysreg_driver
-sceSysreg_driver_16909002:		; Refs: 0x000004D4 0x000012F0 0x00001374 0x00001424 0x00001540 0x000016CC 0x00001F9C 0x00006F08 
+sceSysregAtaBusClockEnable:		; Refs: 0x000004D4 0x000012F0 0x00001374 0x00001424 0x00001540 0x000016CC 0x00001F9C 0x00006F08 
 	0x0000E7D0: 0x03E00008 '....' - jr         $ra
 	0x0000E7D4: 0x00000000 '....' - nop        
 
