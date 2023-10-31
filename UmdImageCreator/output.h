@@ -1,5 +1,5 @@
 /**
- * Copyright 2018-2022 sarami
+ * Copyright 2018-2023 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,7 +125,7 @@ VOID OutputLastErrorNumAndString(
 	LONG lLineNum
 );
 
-void OutputPspError(const char* string, int value, int errorCode);
+void OutputPspError(const char* string, const char* fname, int value, int errorCode);
 
 int OutputParamSfo(const char* paramsfo);
 

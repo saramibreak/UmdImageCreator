@@ -1,5 +1,5 @@
 /**
- * Copyright 2018-2022 sarami
+ * Copyright 2018-2023 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,6 +77,32 @@
 #define DEVICE_DISC "disc0:"
 #define DEVICE_MS "ms0:"
 
+#pragma pack(push, umd, 1)
+typedef struct _UMD_LAYER_DESCRIPTOR {
+    UCHAR VersionNumber : 4;
+    UCHAR DiskCategory : 4;
+    UCHAR MaximumRate : 4;    // set to All ZERO
+    UCHAR DiskSize : 4;       // set to All ZERO
+    UCHAR LayerType : 4;
+    UCHAR TrackPath : 1;      // ZERO specifies PTP on DL disks or SL disks, ONE specifies OTP on DL disks
+    UCHAR DiskType : 2;       // 00 specifies Type A, 01 specifies Type B
+    UCHAR Reserved1 : 1;
+    UCHAR TrackPitch : 4;
+    UCHAR ChannelBitLength : 4;
+    ULONG StartingDataSector;
+    ULONG EndDataSector;
+    ULONG EndLayerZeroSector;
+    UCHAR Reserved5;
+    USHORT MediaAttribute;
+    // The large Media Specific field is not declared here to enable stack allocation
+} UMD_LAYER_DESCRIPTOR, * PUMD_LAYER_DESCRIPTOR;
+C_ASSERT(sizeof(UMD_LAYER_DESCRIPTOR) == 19);
+typedef struct _UMD_FULL_LAYER_DESCRIPTOR {
+    UMD_LAYER_DESCRIPTOR commonHeader;
+    UCHAR MediaSpecific[2029];
+} UMD_FULL_LAYER_DESCRIPTOR, * PUMD_FULL_LAYER_DESCRIPTOR;
+#pragma pack(pop, umd)
+
 /* from scsi.h */
 //
 // Inquiry defines. Used to interpret data returned from target as result
@@ -108,3 +134,33 @@
 #define DEVICE_QUALIFIER_ACTIVE         0x00
 #define DEVICE_QUALIFIER_NOT_ACTIVE     0x01
 #define DEVICE_QUALIFIER_NOT_SUPPORTED  0x03
+
+#pragma pack(push, byte_stuff, 1)
+typedef union _FOUR_BYTE {
+
+    struct {
+        UCHAR Byte0;
+        UCHAR Byte1;
+        UCHAR Byte2;
+        UCHAR Byte3;
+    };
+
+    ULONG AsULong;
+} FOUR_BYTE, * PFOUR_BYTE;
+
+//
+// Byte reversing macro for convering
+// ULONGS between big & little endian in place
+//
+
+#define REVERSE_LONG(Long) {            \
+    UCHAR tmp;                          \
+    PFOUR_BYTE l = (PFOUR_BYTE)(Long);  \
+    tmp = l->Byte3;                     \
+    l->Byte3 = l->Byte0;                \
+    l->Byte0 = tmp;                     \
+    tmp = l->Byte2;                     \
+    l->Byte2 = l->Byte1;                \
+    l->Byte1 = tmp;                     \
+    }
+#pragma pack(pop, byte_stuff)

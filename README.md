@@ -10,7 +10,7 @@
     If you use UmdImageCreator.prx, press note
 
 ## Development Tool
-- Visual Studio 2019 (Visual C++ 2019)
+- Visual Studio 2022 (Visual C++ 2022)
 - Minimalist PSPSDK for Windows: https://ja.osdn.net/projects/sfnet_minpspw/
 
 ## License & Copyright

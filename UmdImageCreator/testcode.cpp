@@ -1,5 +1,5 @@
 /**
- * Copyright 2018-2022 sarami
+ * Copyright 2018-2023 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,9 +34,10 @@ void searchCommand()
 	pspPrintf(
 		"\nsearchCommand mode\n"
 		"The result is outputted to ms0:/cmdtest.txt\n");
-	SceUID uidcmd = sceIoOpen("ms0:/cmdtest.txt", PSP_O_WRONLY | PSP_O_CREAT | PSP_O_TRUNC, 0777);
+	const char cmdtest[] = "ms0:/cmdtest.txt";
+	SceUID uidcmd = sceIoOpen(cmdtest, PSP_O_WRONLY | PSP_O_CREAT | PSP_O_TRUNC, 0777);
 	if (uidcmd < 0) {
-		OutputPspError("sceIoOpen cmdtest.txt\n", 0, uidcmd);
+		OutputPspError("sceIoOpen", cmdtest, 0, uidcmd);
 		return;
 	}
 	PrepareOpeningDisc();
@@ -44,12 +45,12 @@ void searchCommand()
 	const char* file1 = DEVICE_DISC"/PSP_GAME/SYSDIR/BOOT.BIN";
 	SceUID uidDisc = sceIoOpen(file1, PSP_O_RDONLY, 0);
 	if (uidDisc < 0) {
-		OutputPspError("sceIoOpen /PSP_GAME/SYSDIR/BOOT.BIN", 0, uidDisc);
+		OutputPspError("sceIoOpen", file1, 0, uidDisc);
 		return;
 	}
 	SceUID uidUmd = sceIoOpen(DEVICE_UMD, PSP_O_RDONLY, 0);
 	if (uidUmd < 0) {
-		OutputPspError("sceIoOpen umd0:", 0, uidUmd);
+		OutputPspError("sceIoOpen", DEVICE_UMD, 0, uidUmd);
 		return;
 	}
 #if 0
@@ -220,9 +221,10 @@ void testCommand()
 		"The result is outputted to ms0:/disc_0x[8 digit].bin\n");
 
 	PrepareOpeningDisc();
-	SceUID uid = sceIoOpen(DEVICE_DISC"/UMD_DATA.BIN", PSP_O_RDONLY, 0);
+	const char umddata[] = DEVICE_DISC"/UMD_DATA.BIN";
+	SceUID uid = sceIoOpen(umddata, PSP_O_RDONLY, 0);
 	if (uid < 0) {
-		OutputPspError("sceIoOpen UMD_DATA.BIN", 0, uid);
+		OutputPspError("sceIoOpen", umddata, 0, uid);
 		return;
 	}
 
@@ -232,7 +234,7 @@ void testCommand()
 	for (int n = 0; cmd[n] != 0; n++) {
 		unsigned int ret = sceIoIoctl(uid, cmd[n], NULL, 0, dst, sizeof(dst));
 		if (0x80000000 <= ret) {
-			OutputPspError("sceIoIoctl", cmd[n], ret);
+			OutputPspError("sceIoIoctl", umddata, cmd[n], ret);
 		}
 		else {
 			char str[32] = {};
@@ -257,7 +259,7 @@ void testCommand()
 	for (int n = 0; devcmd[n] != 0; n++) {
 		unsigned int ret = sceIoDevctl(DEVICE_UMD, devcmd[n], NULL, 0, buf, sizeof(buf));
 		if (0x80000000 <= ret) {
-			OutputPspError("sceIoDevctl", devcmd[n], ret);
+			OutputPspError("sceIoDevctl", DEVICE_UMD, devcmd[n], ret);
 		}
 		else {
 			char devstr[23] = {};
@@ -281,14 +283,19 @@ void testNewCommand()
 {
 	unsigned int ret = 0;
 	int nReady = 0;
+	int res = 0;
+
 	void* pUmdDrive = _sceUmdManGetUmdDrive(0);
 	pspPrintf("_sceUmdManGetUmdDrive(0): %p\n", pUmdDrive);
-	void* pUmdInfo = _sceUmdManGetUmdDiscInfo(0);
-	pspPrintf("_sceUmdManGetUmdDiscInfo(0): %p\n", pUmdInfo);
+	void* pUmdInfo = _sceUmdManGetUmdDiscInfo();
+	pspPrintf("_sceUmdManGetUmdDiscInfo(): %p\n", pUmdInfo);
 
+	_sceUmdManWaitSema();
 	ret = _sceUmdManCheckDeviceReady(pUmdDrive, DEVICE_UMD);
+	_sceUmdManSignalSema();
 	if (0x80000000 <= ret) {
-		OutputPspError("_sceUmdManCheckDeviceReady", 0, ret);
+		OutputPspError("_sceUmdManCheckDeviceReady", " ", 0, ret);
+		sceKernelDelayThread(5 * 1000000);
 	}
 	else if (ret == 0) {
 		pspPrintf("Device is ready\n");
@@ -297,60 +304,150 @@ void testNewCommand()
 
 	if (!nReady) {
 		while (1) {
-			ret = _sceUmdManActivate(0, DEVICE_UMD);
+			ret = _sceUmdManActivate();
 			if (ret == 0x80210003) {
 				pspPrintf("\rNo media. Please insert UMD");
 				continue;
 			}
 			if (0x80000000 <= ret) {
-				OutputPspError("_sceUmdManActivate", 0, ret);
-//				return;
+				OutputPspError("_sceUmdManActivate", " ", 0, ret);
+				sceKernelDelayThread(5 * 1000000);
 			}
 			pspPrintf(" -> Media is inserted\n");
 			break;
 		}
 	}
-#define TEST_DISC_INFO 1
-#define TEST_GET_INQUIRY 1
-#define TEST_EXEC_INQUIRY 1
-	int res = 0;
 	SceUID uid = 0;
+#define TEST_DISC_INFO 1
 #if TEST_DISC_INFO
 	typedef struct SceUmdDiscInfo {
 		unsigned int uiSize;
 		unsigned int uiMediaType;
 	} SceUmdDiscInfo;
-	SceUmdDiscInfo discinfo = { 0,0 };
+	SceUmdDiscInfo discinfo = { 0, 0 };
 
 	res = _sceUmdManGetDiscInfo(&discinfo);
 	uid = sceIoOpen("ms0:_sceUmdManGetDiscInfo.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
 	sceIoWrite(uid, &discinfo, sizeof(discinfo));
 	sceIoClose(uid);
+	pspPrintf("_sceUmdManGetDiscInfo.bin is generated\n");
+
+	memset(&discinfo, 0, sizeof(discinfo));
+
+	res = _sceUmdManGetDiscInfo4VSH(&discinfo);
+	if (res < 0) {
+		OutputPspError("_sceUmdManGetDiscInfo4VSH", " ", 0, res);
+		sceKernelDelayThread(5 * 1000000);
+	}
+	else {
+		uid = sceIoOpen("ms0:_sceUmdManGetDiscInfo4VSH.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
+		sceIoWrite(uid, &discinfo, sizeof(discinfo));
+		sceIoClose(uid);
+		pspPrintf("_sceUmdManGetDiscInfo4VSH.bin is generated\n");
+	}
 #endif
-	unsigned char buf[0x60] = { 0 };
-	unsigned char param[4] = { 0, 0, 0, 0 };
+#define TEST_GET_INQUIRY 1
 #if TEST_GET_INQUIRY
+	unsigned char buf[56] = {};
 	// Same as sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_INQUIRY_DATA
-	res = _sceUmdManGetInquiry(_sceUmdManGetUmdDrive(0), param, buf);
+	// sceUmdExecInquiryCmd is wrapped by sceUmdManGetInquiry
+	res = _sceUmdManGetInquiry(pUmdDrive, 56, buf);
 	if (res < 0) {
-		// if param does not exist, 0x80010074
-		OutputPspError("_sceUmdManGetInquiry", 0, res);
-		return;
+		OutputPspError("_sceUmdManGetInquiry", " ", 0, res);
 	}
-	uid = sceIoOpen("ms0:/_sceUmdManGetInquiry.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
-	sceIoWrite(uid, &buf, sizeof(buf));
-	sceIoClose(uid);
+	else {
+		uid = sceIoOpen("ms0:/_sceUmdManGetInquiry.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
+		sceIoWrite(uid, buf, sizeof(buf));
+		sceIoClose(uid);
+		pspPrintf("_sceUmdManGetInquiry.bin is generated\n");
+	}
+	memset(buf, 0, sizeof(buf));
 #endif
-#if TEST_EXEC_INQUIRY
-	param[2] = 0x60;
-	// Same as sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_INQUIRY_DATA
-	res = _sceUmdExecInquiryCmd(_sceUmdManGetUmdDrive(0), param, buf);
+#define TEST_READ_CAPA 1
+#if TEST_READ_CAPA
+	unsigned char bufCapa[8] = {};
+	res = _sceUmdExecReadCapacityCmd(0x25, pUmdDrive, 8, bufCapa);
 	if (res < 0) {
-		OutputPspError("_sceUmdExecInquiryCmd", 0, res);
-		return;
+		OutputPspError("_sceUmdExecReadCapacityCmd", " ", 0, res);
+		sceKernelDelayThread(5 * 1000000);
 	}
-	uid = sceIoOpen("ms0:/_sceUmdExecInquiryCmd.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
-	sceIoWrite(uid, &buf, sizeof(buf));
-	sceIoClose(uid);
+	else {
+		uid = sceIoOpen("ms0:/_sceUmdExecReadCapacityCmd.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
+		sceIoWrite(uid, bufCapa, sizeof(bufCapa));
+		sceIoClose(uid);
+		pspPrintf("_sceUmdExecReadCapacityCmd.bin is generated\n");
+	}
+#endif
+#define TEST_UMD_STRUCTURE 1
+#if TEST_UMD_STRUCTURE
+	unsigned char bufStruct[2064] = {};
+	bufStruct[9] = 8;
+	res = _sceUmdExecReadUMDStructureCmd(pUmdDrive, bufStruct, &bufStruct[12]);
+	if (res < 0) {
+		OutputPspError("_sceUmdExecReadUMDStructureCmd", " ", 0, res);
+		sceKernelDelayThread(5 * 1000000);
+	}
+	else {
+		uid = sceIoOpen("ms0:/_sceUmdExecReadUMDStructureCmd.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
+		sceIoWrite(uid, bufStruct, sizeof(bufStruct));
+		sceIoClose(uid);
+		pspPrintf("_sceUmdExecReadUMDStructureCmd.bin is generated\n");
+	}
+#endif
+#define TEST_MKI 1
+#if TEST_MKI
+	unsigned char bufMKI[96] = {};
+	unsigned char bufSPK[0x8000] = {};
+	bufMKI[2] = 8;
+	
+	sceKernelDcacheInvalidateRange(bufSPK, 0x4000);
+	
+	res = _sceUmdExecReadMKICmd(pUmdDrive, bufMKI, 8, bufSPK);
+	if (res < 0) {
+		OutputPspError("_sceUmdExecReadMKICmd", " ", 0, res);
+		sceKernelDelayThread(5 * 1000000);
+	}
+	else {
+		uid = sceIoOpen("ms0:/_sceUmdExecReadMKICmd.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
+		sceIoWrite(uid, bufMKI, sizeof(bufMKI));
+		sceIoClose(uid);
+		uid = sceIoOpen("ms0:/_sceUmdExecReadMKICmd2.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
+		sceIoWrite(uid, bufSPK, sizeof(bufSPK));
+		sceIoClose(uid);
+		pspPrintf("_sceUmdExecReadMKICmd.bin is generated\n");
+	}
+#endif
+#define TEST_READ_MECHA_STAT 0
+#if TEST_READ_MECHA_STAT
+	unsigned char bufMecha[16] = {};
+
+	res = _sceUmdExecMechaStatCmd(pUmdDrive, 16, bufMecha);
+	if (res < 0) {
+		OutputPspError("_sceUmdExecMechaStatCmd", " ", 0, res);
+		sceKernelDelayThread(5 * 1000000);
+	}
+	else {
+		uid = sceIoOpen("ms0:/_sceUmdExecMechaStatCmd.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
+		sceIoWrite(uid, bufMecha, sizeof(bufMecha));
+		sceIoClose(uid);
+		pspPrintf("_sceUmdExecMechaStatCmd.bin is generated\n");
+	}
+#endif
+#define TEST_MEDIA_INFO 0
+#if TEST_MEDIA_INFO
+	// Same as sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_MEDIA_INFO
+	unsigned char bufMedia[2] = {};
+	res = _sceUmdExecGetMediaInfoCmd(pUmdDrive, 2, bufMedia);
+	if (res < 0) {
+		OutputPspError("_sceUmdExecGetMediaInfoCmd", " ", 0, res);
+		sceKernelDelayThread(5 * 1000000);
+	}
+	else {
+		// GAME is "00 01", AUDIO is "00 02" GAME+VIDEO is "00 03"
+		uid = sceIoOpen("ms0:/_sceUmdExecGetMediaInfoCmd.bin", PSP_O_CREAT | PSP_O_TRUNC | PSP_O_WRONLY, 0777);
+		sceIoWrite(uid, bufMedia, sizeof(bufMedia));
+		sceIoClose(uid);
+		pspPrintf("_sceUmdExecGetMediaInfoCmd.bin is generated\n");
+	}
 #endif
 }

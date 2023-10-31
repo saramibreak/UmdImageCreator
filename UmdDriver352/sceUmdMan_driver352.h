@@ -76,6 +76,14 @@ int sceUmdManUnRegisterInsertEjectUMDCallBack(void* arg1);
 int sceUmdManValidateUMD(void* arg1, void* arg2);
 int sceUmdManWaitSema();
 
+int sceUmdExecClearCacheInfoCmd(void* arg1, void* arg2);
+int sceUmdExecGetConfigurationCmd(void* arg1, void* arg2, void* arg3);
+int sceUmdExecGetErrorLogCmd(void* arg1, void* arg2, void* arg3);
+int sceUmdExecGetMediaInfoCmd(void* arg1, unsigned int arg2, void* arg3);
+int sceUmdExecMechaStatCmd(void* arg1, unsigned int arg2, void* arg3);
+int sceUmdExecSetAccessLimitCmd(void* arg1, void* arg2);
+int sceUmdExecSetStreamingCmd(void* arg1, void* arg2, void* arg3);
+
 /* These are commands that have been successfully called as functions
 sceUmdExecInquiryCmd     		-> 12h	INQUIRY
 sceUmdExecReadCapacityCmd		-> 25h	READ CAPACITY
@@ -93,14 +101,25 @@ sceUmdExecPrefetch10Cmd			-> 34h	PRE-FETCH(10)
 sceUmdExecGetEventStatusCmd		-> 4Ah	GET EVENT STATUS NOTIFICATION
 sceUmdExecModSenseCmd			-> 5Ah	MODE SENSE(10)
 sceUmdExecModSelectCmd			-> 55h	MODE SELECT(10)
+sceUmdExecSetStreamingCmd       -> B6h	SET_STREAMING
 sceUmdExecSetCDSpeedCmd         -> BBh	SET CD SPEED
+sceUmdExecMechaStatCmd          -> BDh	MECHANISM_STATUS
 sceUmdExecAdjustDataCmd         -> UNKNOWN
 sceUmdExecAllocateFromReadCmd   -> UNKNOWN
+sceUmdExecClearCacheInfoCmd     -> UNKNOWN
 sceUmdExecGetErrorLogCmd        -> UNKNOWN
 sceUmdExecReportCacheCmd        -> UNKNOWN
+sceUmdExecSetAccessLimitCmd     -> UNKNOWN
 sceUmdExecSetAreaLimitCmd       -> UNKNOWN
 sceUmdExecSetLockLengthCmd      -> UNKNOWN
 sceUmdExecReadMKICmd            -> UNKNOWN
+*/
+
+/* Others
+sceUmdExecGetConfigurationCmd	-> 46h	GET CONFIGURATION --> It seems devkit only
+sceUmdExecReadDiscInfoCmd		-> 51h	READ DISC INFORMATION --> It seems devkit only
+
+sceUmdExecGetMediaInfoCmd       -> It's UMD specific
 */
 
 #ifdef __cplusplus

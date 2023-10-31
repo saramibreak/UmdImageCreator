@@ -1,18 +1,3 @@
-/**
- * Copyright 2018-2023 sarami
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -28,7 +13,7 @@ int _sceUmdExecPreventAllowMediaCmd(void* arg);
 int _sceUmdExecRead10Cmd(void* arg1, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6, void* arg7);
 int _sceUmdExecReadCapacityCmd(unsigned int cmd, void* drive, unsigned int size, unsigned char* buf);
 int _sceUmdExecReadDiscInfoCmd(void* arg1, unsigned int arg2, void* arg3);
-int _sceUmdExecReadMKICmd(void* arg1, void* arg2, unsigned int arg3, void* arg4);
+int _sceUmdExecReadMKICmd(void* arg1, void* arg2, void* arg3, void* arg4);
 int _sceUmdExecReadUMDStructureCmd(void* arg1, unsigned char* arg2, unsigned char* arg3);
 int _sceUmdExecReportCacheCmd(void* arg1, void* arg2, void* arg3);
 int _sceUmdExecReqSenseCmd(void* arg1, void* arg2);
@@ -67,7 +52,7 @@ int _sceUmdManSetEnableReadAhead(void* arg1);
 int _sceUmdManSetReadAheadSize(void* arg1, void* arg2, void* arg3, void* arg4);
 int _sceUmdManSignalSema();
 int _sceUmdManSoftReset();
-void* _sceUmdManSPKGetMKI();
+int _sceUmdManSPKGetMKI();
 void* _sceUmdManStart(void* arg1);
 int _sceUmdManStop(unsigned int val);
 int _sceUmdManTerm();
@@ -75,6 +60,14 @@ int _sceUmdManUnRegisterImposeCallback();
 int _sceUmdManUnRegisterInsertEjectUMDCallBack(void* arg1);
 int _sceUmdManValidateUMD(void* arg1, void* arg2);
 int _sceUmdManWaitSema();
+
+int _sceUmdExecClearCacheInfoCmd(void* arg1, void* arg2);
+int _sceUmdExecGetConfigurationCmd(void* arg1, void* arg2, void* arg3);
+int _sceUmdExecGetErrorLogCmd(void* arg1, void* arg2, void* arg3);
+int _sceUmdExecGetMediaInfoCmd(void* arg1, unsigned int arg2, void* arg3);
+int _sceUmdExecMechaStatCmd(void* arg1, unsigned int arg2, void* arg3);
+int _sceUmdExecSetAccessLimitCmd(void* arg1, void* arg2);
+int _sceUmdExecSetStreamingCmd(void* arg1, void* arg2, void* arg3);
 
 #ifdef __cplusplus
 }

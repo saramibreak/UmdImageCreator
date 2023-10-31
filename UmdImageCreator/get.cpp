@@ -1,5 +1,5 @@
 /**
- * Copyright 2018-2022 sarami
+ * Copyright 2018-2023 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ int GetDriveInfo(char* id, unsigned int discType)
 	// 0x01F20014
 	int ret = sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_INQUIRY_DATA, NULL, 0, &inquiry, sizeof(inquiry));
 	if (ret < 0) {
-		OutputPspError("sceIoDevctl", IOCTL_UMD_GET_INQUIRY_DATA, ret);
+		OutputPspError("sceIoDevctl", DEVICE_UMD, IOCTL_UMD_GET_INQUIRY_DATA, ret);
 		return FALSE;
 	}
 
@@ -77,14 +77,14 @@ int PrepareOpeningDisc()
 	}
 	ret = sceUmdActivate(1, DEVICE_DISC);
 	if (ret < 0) {
-		OutputPspError("sceUmdActivate", NULL, ret);
+		OutputPspError("sceUmdActivate", " ", NULL, ret);
 		return FALSE;
 	}
 
 	pspPrintf("Wait until UMD is ready => ");
 	ret = sceUmdWaitDriveStatWithTimer(PSP_UMD_READY, 20000000);
 	if (ret < 0) {
-		OutputPspError("sceUmdWaitDriveStatWithTimer", NULL, ret);
+		OutputPspError("sceUmdWaitDriveStatWithTimer", " ", NULL, ret);
 		return FALSE;
 	}
 	pspPrintf("OK\n");
@@ -95,7 +95,7 @@ int CloseOpeningDisc()
 {
 	int ret = sceUmdDeactivate(1, DEVICE_DISC);
 	if (ret < 0) {
-		OutputPspError("sceUmdDeactivate", NULL, ret);
+		OutputPspError("sceUmdDeactivate", " ", NULL, ret);
 		return FALSE;
 	}
 	return TRUE;
@@ -103,16 +103,17 @@ int CloseOpeningDisc()
 
 int GetDiscID(char* id)
 {
-	SceUID uidData = sceIoOpen("disc0:/UMD_DATA.BIN", PSP_O_RDONLY, 0777);
+	const char umddata[] = "disc0:/UMD_DATA.BIN";
+	SceUID uidData = sceIoOpen(umddata, PSP_O_RDONLY, 0777);
 	if (uidData < 0) {
-		OutputPspError("sceIoOpen(disc0:/UMD_DATA.BIN)", NULL, uidData);
+		OutputPspError("sceIoOpen", umddata, NULL, uidData);
 		return FALSE;
 	}
 	sceIoRead(uidData, id, 10);
 
 	int ret = sceIoClose(uidData);
 	if (ret < 0) {
-		OutputPspError("sceIoClose", NULL, ret);
+		OutputPspError("sceIoClose", umddata, NULL, ret);
 		return FALSE;
 	}
 
@@ -138,11 +139,96 @@ int GetParamSfo(unsigned int discType)
 	return ret;
 }
 
+int GetPfi(char* id, pspUmdInfo* pUmdInfo)
+{
+	unsigned char bufStruct[2064] = {};
+	bufStruct[9] = 8;
+	void* pUmdDrive = _sceUmdManGetUmdDrive(0);
+	int res = _sceUmdExecReadUMDStructureCmd(pUmdDrive, bufStruct, &bufStruct[12]);
+	if (res < 0) {
+		OutputPspError("_sceUmdExecReadUMDStructureCmd", " ", 0, res);
+		sceKernelDelayThread(5 * 1000000);
+	}
+	else {
+		FILE* fp = NULL;
+		if (!CreateFile(id, pUmdInfo->type, "_PFI.bin", &fp, "w")) {
+			return FALSE;
+		}
+		fwrite(&bufStruct[16], sizeof(BYTE), 2048, fp);
+		fclose(fp);
+
+		LPCTSTR lpDiskCategory[] = {
+			_T("Reserved1"), _T("Reserved2"), _T("Reserved3"), _T("Reserved4"), 
+			_T("Reserved5"), _T("Reserved6"), _T("Reserved7"), _T("Reserved8"),
+			_T("Read-Only disc"), _T("Reserved10"), _T("Reserved11"), _T("Reserved12"),
+			_T("Reserved13"), _T("Reserved14"), _T("Reserved15"), _T("Reserved16")
+		};
+
+		LPCTSTR lpTrackDensity[] = {
+			_T("0.70 um/track"), _T("Reserved2"), _T("Reserved3"), _T("Reserved4"),
+			_T("Reserved5"), _T("Reserved6"), _T("Reserved7"), _T("Reserved8"),
+			_T("Reserved9"), _T("Reserved10"), _T("Reserved11"), _T("Reserved12"),
+			_T("Reserved13"), _T("Reserved14"), _T("Reserved15"), _T("Reserved16")
+		};
+
+		LPCTSTR lpLinearDensity[] = {
+			_T("Reserved1"), _T("Reserved2"), _T("Reserved3"), _T("Reserved4"),
+			_T("Reserved5"), _T("Reserved6"), _T("Reserved7"), _T("Reserved8"),
+			_T("Reserved9"), _T("Reserved10"), _T("Reserved11"), _T("Reserved12"),
+			_T("Reserved13"), _T("Reserved14"), _T("0.139 um/bit"), _T("Reserved16")
+		};
+
+		UMD_FULL_LAYER_DESCRIPTOR umdLayer;
+		memcpy(&umdLayer, &bufStruct[16], 2048);
+
+		DWORD dwStartingDataSector = umdLayer.commonHeader.StartingDataSector;
+		DWORD dwEndDataSector = umdLayer.commonHeader.EndDataSector;
+		DWORD dwEndLayerZeroSector = umdLayer.commonHeader.EndLayerZeroSector;
+		REVERSE_LONG(&dwStartingDataSector);
+		REVERSE_LONG(&dwEndDataSector);
+		REVERSE_LONG(&dwEndLayerZeroSector);
+
+		OutputLog(fileDisc,
+			OUTPUT_DHYPHEN_PLUS_STR("PhysicalFormatInformation")
+			"\t     VersionNumber: %d\n"
+			"\t      DiskCategory: %s\n"
+			"\t       MaximumRate: %d\n"
+			"\t          DiskSize: %d\n"
+			"\t         LayerType: %d\n"
+			"\t         TrackPath: %s\n"
+			"\t          DiskType: %s\n"
+			"\t        TrackPitch: %s\n"
+			"\t  ChannelBitLength: %s\n"
+			"\tStartingDataSector: %8lu (%#lx)\n"
+			"\t     EndDataSector: %8lu (%#lx)\n"
+			"\tEndLayerZeroSector: %8lu (%#lx)\n"
+			"\t    MediaAttribute: %04u\n"
+//			"\t     MediaSpecific: \n"
+			, umdLayer.commonHeader.VersionNumber
+			, lpDiskCategory[umdLayer.commonHeader.DiskCategory]
+			, umdLayer.commonHeader.MaximumRate
+			, umdLayer.commonHeader.DiskSize
+			, umdLayer.commonHeader.LayerType
+			, umdLayer.commonHeader.TrackPath == 0 ? _T("Parallel Track Path") : _T("Opposite Track Path")
+			, umdLayer.commonHeader.DiskType == 0 ? _T("Single Layer") : _T("Double Layer")
+			, lpTrackDensity[umdLayer.commonHeader.TrackPitch]
+			, lpLinearDensity[umdLayer.commonHeader.ChannelBitLength]
+			, dwStartingDataSector, dwStartingDataSector
+			, dwEndDataSector, dwEndDataSector
+			, dwEndLayerZeroSector, dwEndLayerZeroSector
+			, umdLayer.commonHeader.MediaAttribute
+		);
+//		OutputMainChannel(fileDisc, umdLayer.MediaSpecific, 0, sizeof(umdLayer.MediaSpecific));
+		OutputLog(standardOut, "PFI.bin was dumped\n");
+	}
+	return TRUE;
+}
+
 int GetDiscInfo(char* id, pspUmdInfo* pUmdInfo, unsigned int* pDiscSize)
 {
 	int ret = sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_MEDIA_INFO, NULL, 0, pUmdInfo, sizeof(pspUmdInfo));
 	if (ret < 0) {
-		OutputPspError("sceIoDevctl", IOCTL_UMD_GET_MEDIA_INFO, ret);
+		OutputPspError("sceIoDevctl", DEVICE_UMD, IOCTL_UMD_GET_MEDIA_INFO, ret);
 		return FALSE;
 	}
 	if (pUmdInfo->type == 0) {
@@ -194,7 +280,7 @@ int GetDiscInfo(char* id, pspUmdInfo* pUmdInfo, unsigned int* pDiscSize)
 	int nLastLBA = 0;
 	ret = sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_LAST_LBA, NULL, 0, &nLastLBA, sizeof(int));
 	if (ret != 0) {
-		OutputPspError("sceIoDevctl", IOCTL_UMD_GET_LAST_LBA, ret);
+		OutputPspError("sceIoDevctl", DEVICE_UMD, IOCTL_UMD_GET_LAST_LBA, ret);
 		return FALSE;
 	}
 	int nAllLength = nLastLBA + 1;
@@ -202,7 +288,7 @@ int GetDiscInfo(char* id, pspUmdInfo* pUmdInfo, unsigned int* pDiscSize)
 	int nL0LBA = 0;
 	ret = sceIoDevctl(DEVICE_UMD, IOCTL_UMD_GET_LAST_LBA_OF_L0, NULL, 0, &nL0LBA, sizeof(int));
 	if (ret != 0) {
-		OutputPspError("sceIoDevctl", IOCTL_UMD_GET_LAST_LBA_OF_L0, ret);
+		OutputPspError("sceIoDevctl", DEVICE_UMD, IOCTL_UMD_GET_LAST_LBA_OF_L0, ret);
 		return FALSE;
 	}
 	int nL0Length = nL0LBA + 1;
@@ -221,6 +307,10 @@ int GetDiscInfo(char* id, pspUmdInfo* pUmdInfo, unsigned int* pDiscSize)
 
 	*pDiscSize = nAllLength * DISC_MAIN_DATA_SIZE;
 	OutputLog(standardOut | fileDisc, "   FileSize: %d (0x%08x)\n", *pDiscSize, *pDiscSize);
+
+#ifdef PBP
+	GetPfi(id, pUmdInfo);
+#endif
 	FcloseAndNull(g_LogFile.fpDisc);
 	return TRUE;
 }
@@ -234,6 +324,6 @@ int GetMSInfo(MS_INFO* info)
 		info->sused = info->smax - info->sfree;
 		return TRUE;
 	}
-	OutputPspError("sceIoDevctl", IOCTL_MS_GET_MS_INFO, ret);
+	OutputPspError("sceIoDevctl", DEVICE_MS, IOCTL_MS_GET_MS_INFO, ret);
 	return FALSE;
 }

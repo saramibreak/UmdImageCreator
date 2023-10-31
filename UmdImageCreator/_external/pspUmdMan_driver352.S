@@ -2,11 +2,16 @@
 
 #include "pspstub.s"
 
-	STUB_START	"pspUmdMan_driver",0x40090000,0x004F0005
+	STUB_START	"pspUmdMan_driver",0x40090000,0x00560005
 	STUB_FUNC	0x9F031327,_sceUmdExecAdjustDataCmd
 	STUB_FUNC	0x7DF6560F,_sceUmdExecAllocateFromReadCmd
+	STUB_FUNC	0x1528AD85,_sceUmdExecClearCacheInfoCmd
+	STUB_FUNC	0x5F19EE47,_sceUmdExecGetConfigurationCmd
+	STUB_FUNC	0x578A27B6,_sceUmdExecGetErrorLogCmd
 	STUB_FUNC	0x2C5B0BEE,_sceUmdExecGetEventStatusCmd
+	STUB_FUNC	0x655463A8,_sceUmdExecGetMediaInfoCmd
 	STUB_FUNC	0x17CD2732,_sceUmdExecInquiryCmd
+	STUB_FUNC	0xCAB41374,_sceUmdExecMechaStatCmd
 	STUB_FUNC	0x16CA200E,_sceUmdExecModSelectCmd
 	STUB_FUNC	0xEB2DE626,_sceUmdExecModSenseCmd
 	STUB_FUNC	0xe450647b,_sceUmdExecPrefetch10Cmd
@@ -19,9 +24,11 @@
 	STUB_FUNC	0xE8C965D0,_sceUmdExecReportCacheCmd
 	STUB_FUNC	0x4A288987,_sceUmdExecReqSenseCmd
 	STUB_FUNC	0x5B8AFA6A,_sceUmdExecSeekCmd
+	STUB_FUNC	0x5B82B1F7,_sceUmdExecSetAccessLimitCmd
 	STUB_FUNC	0x6E7C2707,_sceUmdExecSetAreaLimitCmd
 	STUB_FUNC	0x91B874C1,_sceUmdExecSetCDSpeedCmd
 	STUB_FUNC	0x8277BC48,_sceUmdExecSetLockLengthCmd
+	STUB_FUNC	0xA63CD72F,_sceUmdExecSetStreamingCmd
 	STUB_FUNC	0x0FA6E7FE,_sceUmdExecStartStopUnitCmd
 	STUB_FUNC	0x096BFCAF,_sceUmdExecTestCmd
 	STUB_FUNC	0x4EBE4D03,_sceUmdManActivate

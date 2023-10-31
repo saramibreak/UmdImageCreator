@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{478be157-5d1d-4a73-a74d-9592822893c2}</ProjectGuid>
-    <RootNamespace>UmdDriver</RootNamespace>
+    <ProjectGuid>{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}</ProjectGuid>
+    <RootNamespace>UmdDriver352</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -143,12 +143,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="exports.exp" />
+    <None Include="exports352.exp" />
     <None Include="makefile" />
-    <None Include="sceUmdMan_driver.S" />
+    <None Include="sceUmdMan_driver352.S" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sceUmdMan_driver.h" />
+    <ClInclude Include="sceUmdMan_driver352.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />

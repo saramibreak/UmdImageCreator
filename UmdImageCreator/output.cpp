@@ -1,5 +1,5 @@
 /**
- * Copyright 2018-2022 sarami
+ * Copyright 2018-2023 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,15 +34,15 @@ VOID OutputLastErrorNumAndString(
 		, pszFuncName, lLineNum, errnum, strerror(errnum));
 }
 
-void OutputPspError(const char* string, int value, int errorCode)
+void OutputPspError(const char* string, const char* fname, int value, int errorCode)
 {
 	int code = errorCode & 0xffff;
 	if ((errorCode >> 31) & 0x1) {
 		if (value == 0) {
-			pspPrintf("%s returns 0x%08x error\n -> ", string, errorCode);
+			pspPrintf("%s %s returns 0x%08x error\n -> ", string, fname, errorCode);
 		}
 		else {
-			pspPrintf("%s (0x%08x) returns 0x%08x error\n -> ", string, value, errorCode);
+			pspPrintf("%s %s (0x%08x) returns 0x%08x error\n -> ", string, fname, value, errorCode);
 		}
 		if ((errorCode >> 30) & 0x1) {
 			pspPrintf("Critical, ");
@@ -116,7 +116,7 @@ int OutputParamSfo(const char* paramsfo)
 {
 	SceUID uidData = sceIoOpen(paramsfo, PSP_O_RDONLY, 0777);
 	if (uidData < 0) {
-		OutputPspError("sceIoOpen paramsfo", 0, uidData);
+		OutputPspError("sceIoOpen", paramsfo, 0, uidData);
 		return FALSE;
 	}
 	SceIoStat stat;
@@ -136,7 +136,7 @@ int OutputParamSfo(const char* paramsfo)
 
 	ret = sceIoClose(uidData);
 	if (ret < 0) {
-		OutputPspError("sceIoClose", 0, ret);
+		OutputPspError("sceIoClose", paramsfo, 0, ret);
 		return FALSE;
 	}
 
@@ -236,7 +236,7 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 {
 	SceUID uid = sceIoOpen(DEVICE_UMD, PSP_O_RDONLY, 0);
 	if (uid < 0) {
-		OutputPspError("sceIoOpen umd0:", 0, uid);
+		OutputPspError("sceIoOpen", DEVICE_UMD, 0, uid);
 		return;
 	}
 	if (!CreateFile(id, discType, "_mainInfo.txt", &g_LogFile.fpMainInfo, "w")) {
@@ -254,41 +254,40 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 		return;
 	}
 
-	MS_INFO info = { 0, 0, 0, 0, 0, 0, 0, 0 };
-	if (!GetMSInfo(&info)) {
-		return;
-	}
+	if (nDump) {
+		MS_INFO info = { 0, 0, 0, 0, 0, 0, 0, 0 };
+		if (!GetMSInfo(&info)) {
+			return;
+		}
 
 #ifndef PRX
-	pspPrintf(
-		"\nMemoryStick size\n"
-		"    Max: %11llu (0x%09llx)\n"
-		" - Free: %11llu (0x%09llx)\n"
-		" ---------------------------------\n"
-		"   Used: %11llu (0x%09llx)\n\n"
-		, info.smax, info.smax, info.sfree, info.sfree
-		, info.smax - info.sfree, info.smax - info.sfree
-	);
-#ifdef PRX
-	pspDebugScreenSetXY(0, pspDebugScreenGetY() + 5);
-#endif
-	if (info.sfree < discSize) {
 		pspPrintf(
-			"   Disc size: %11u (0x%09x)\n"
-			" - Free size: %11llu (0x%09llx)\n"
+			"\nMemoryStick size\n"
+			"    Max: %11llu (0x%09llx)\n"
+			" - Free: %11llu (0x%09llx)\n"
 			" ---------------------------------\n"
-			"    Shortage: %11llu (0x%09llx)\n\n"
-			, discSize, discSize, info.sfree, info.sfree
-			, discSize - info.sfree, discSize - info.sfree
+			"   Used: %11llu (0x%09llx)\n\n"
+			, info.smax, info.smax, info.sfree, info.sfree
+			, info.smax - info.sfree, info.smax - info.sfree
 		);
-		nDump = 0;
 #ifdef PRX
-		pspDebugScreenSetXY(0, pspDebugScreenGetY() + 4);
+		pspDebugScreenSetXY(0, pspDebugScreenGetY() + 5);
 #endif
-	}
+		if (info.sfree < discSize) {
+			pspPrintf(
+				"   Disc size: %11u (0x%09x)\n"
+				" - Free size: %11llu (0x%09llx)\n"
+				" ---------------------------------\n"
+				"    Shortage: %11llu (0x%09llx)\n\n"
+				, discSize, discSize, info.sfree, info.sfree
+				, discSize - info.sfree, discSize - info.sfree
+			);
+#ifdef PRX
+			pspDebugScreenSetXY(0, pspDebugScreenGetY() + 4);
+#endif
+		}
 #endif
 
-	if (nDump) {
 		FILE* fpIso = NULL;
 		if (!CreateFile(id, discType, ".iso", &fpIso, "wb")) {
 			return;

@@ -1,5 +1,5 @@
 /**
- * Copyright 2018-2022 sarami
+ * Copyright 2018-2023 sarami
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,12 +92,23 @@ void run()
 	pspDebugScreenClear();
 
 	scePowerSetClockFrequency(333, 333, 167);
-	pspPrintf("sceKernelDevkitVersion: 0x%08x\n", sceKernelDevkitVersion());
+	int nKernelVer = sceKernelDevkitVersion();
+	pspPrintf("sceKernelDevkitVersion: 0x%08x\n", nKernelVer);
 #ifdef PBP
-	char pspumdman[] = "ms0:/seplugins/pspumdman.prx";
+	char pspumdman[32] = {};
+	if (nKernelVer < 0x03070110) {
+		memcpy(pspumdman, "ms0:/seplugins/pspumdman352.prx", sizeof(pspumdman));
+	}
+	else if (nKernelVer < 0x06060010) {
+		pspPrintf("This kernel version does not support to load pspumdman.prx\n");
+	}
+	else if (nKernelVer <= 0x06060110) {
+		memcpy(pspumdman, "ms0:/seplugins/pspumdman.prx", sizeof(pspumdman));
+	}
+
 	SceUID uid = pspSdkLoadStartModule(pspumdman, PSP_MEMORY_PARTITION_KERNEL);
 	if (uid < 0) {
-		OutputPspError("pspSdkLoadStartModule ms0:/seplugins/pspumdman.prx", 0, uid);
+		OutputPspError("pspSdkLoadStartModule", pspumdman, 0, uid);
 	}
 	else {
 		pspPrintf("Loading module of %s: 0x%08x\n", pspumdman, uid);

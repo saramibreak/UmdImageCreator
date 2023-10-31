@@ -15,7 +15,7 @@
  */
 #include <pspsdk.h>
 #include <pspkernel.h>
-#include "sceUmdMan_driver.h"
+#include "sceUmdMan_driver352.h"
 
 PSP_MODULE_INFO("pspUmdMan_driver", PSP_MODULE_KERNEL, 1, 0);
 PSP_MAIN_THREAD_ATTR(0);
@@ -599,6 +599,76 @@ int _sceUmdManWaitSema()
 
 	pspSdkSetK1(k1);
 	return ret;
+}
+
+int _sceUmdExecClearCacheInfoCmd(void* arg1, void* arg2)
+{
+	int k1 = pspSdkSetK1(0);
+
+	int ret = sceUmdExecClearCacheInfoCmd(arg1, arg2);
+
+	pspSdkSetK1(k1);
+	return(ret);
+}
+
+int _sceUmdExecGetErrorLogCmd(void* arg1, void* arg2, void* arg3)
+{
+	int k1 = pspSdkSetK1(0);
+
+	int ret = sceUmdExecGetErrorLogCmd(arg1, arg2, arg3);
+
+	pspSdkSetK1(k1);
+	return(ret);
+}
+
+int _sceUmdExecGetConfigurationCmd(void* arg1, void* arg2, void* arg3)
+{
+	int k1 = pspSdkSetK1(0);
+
+	int ret = sceUmdExecGetConfigurationCmd(arg1, arg2, arg3);
+
+	pspSdkSetK1(k1);
+	return(ret);
+}
+
+int _sceUmdExecGetMediaInfoCmd(void* arg1, unsigned int arg2, void* arg3)
+{
+	int k1 = pspSdkSetK1(0);
+
+	int ret = sceUmdExecGetMediaInfoCmd(arg1, arg2, arg3);
+
+	pspSdkSetK1(k1);
+	return(ret);
+}
+
+int _sceUmdExecMechaStatCmd(void* arg1, unsigned int arg2, void* arg3)
+{
+	int k1 = pspSdkSetK1(0);
+
+	int ret = sceUmdExecMechaStatCmd(arg1, arg2, arg3);
+
+	pspSdkSetK1(k1);
+	return(ret);
+}
+
+int _sceUmdExecSetAccessLimitCmd(void* arg1, void* arg2)
+{
+	int k1 = pspSdkSetK1(0);
+
+	int ret = sceUmdExecSetAccessLimitCmd(arg1, arg2);
+
+	pspSdkSetK1(k1);
+	return(ret);
+}
+
+int _sceUmdExecSetStreamingCmd(void* arg1, void* arg2, void* arg3)
+{
+	int k1 = pspSdkSetK1(0);
+
+	int ret = sceUmdExecSetStreamingCmd(arg1, arg2, arg3);
+
+	pspSdkSetK1(k1);
+	return(ret);
 }
 
 int module_start(SceSize args, void *argp)

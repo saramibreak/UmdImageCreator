@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32126.315
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UmdImageCreator", "UmdImageCreator\UmdImageCreator.vcxproj", "{13281662-9B01-4E66-BA92-6E9BC830EA4B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UmdDriver", "UmdDriver\UmdDriver.vcxproj", "{478BE157-5D1D-4A73-A74D-9592822893C2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UmdDriver352", "UmdDriver352\UmdDriver352.vcxproj", "{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,38 @@ Global
 		{478BE157-5D1D-4A73-A74D-9592822893C2}.Release150|x64.Build.0 = Release|x64
 		{478BE157-5D1D-4A73-A74D-9592822893C2}.Release150|x86.ActiveCfg = Release|Win32
 		{478BE157-5D1D-4A73-A74D-9592822893C2}.Release150|x86.Build.0 = Release|Win32
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Debug|ARM.ActiveCfg = Debug|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Debug|ARM.Build.0 = Debug|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Debug|ARM64.ActiveCfg = Debug|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Debug|ARM64.Build.0 = Debug|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Debug|x64.ActiveCfg = Debug|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Debug|x64.Build.0 = Debug|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Debug|x86.ActiveCfg = Debug|Win32
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Debug|x86.Build.0 = Debug|Win32
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release_lib|ARM.ActiveCfg = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release_lib|ARM.Build.0 = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release_lib|ARM64.ActiveCfg = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release_lib|ARM64.Build.0 = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release_lib|x64.ActiveCfg = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release_lib|x64.Build.0 = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release_lib|x86.ActiveCfg = Release|Win32
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release_lib|x86.Build.0 = Release|Win32
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release|ARM.ActiveCfg = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release|ARM.Build.0 = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release|ARM64.ActiveCfg = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release|ARM64.Build.0 = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release|x64.ActiveCfg = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release|x64.Build.0 = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release|x86.ActiveCfg = Release|Win32
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release|x86.Build.0 = Release|Win32
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release150|ARM.ActiveCfg = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release150|ARM.Build.0 = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release150|ARM64.ActiveCfg = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release150|ARM64.Build.0 = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release150|x64.ActiveCfg = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release150|x64.Build.0 = Release|x64
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release150|x86.ActiveCfg = Release|Win32
+		{34A67802-EDEE-4CB1-A07C-B12A9D38C23A}.Release150|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

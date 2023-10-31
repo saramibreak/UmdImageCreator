@@ -18,15 +18,15 @@
     <None Include="makefile">
       <Filter>リソース ファイル</Filter>
     </None>
-    <None Include="exports.exp">
+    <None Include="exports352.exp">
       <Filter>ソース ファイル</Filter>
     </None>
-    <None Include="sceUmdMan_driver.S">
+    <None Include="sceUmdMan_driver352.S">
       <Filter>ソース ファイル</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sceUmdMan_driver.h">
+    <ClInclude Include="sceUmdMan_driver352.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
