@@ -23,3 +23,7 @@
 - added: output inquiry data to _drive.txt
 - added: pspumdman.prx (this module is used only for the purpose of some tests)
 - added: document (IoctlCommandList.txt, PrxAnalysis.txt)
+
+## v1.6 (2023-12-01)
+- added: support to dump PFI.bin
+- changed: Visual Studio 2019 to 2022
