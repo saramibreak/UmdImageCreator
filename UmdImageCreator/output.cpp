@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <sys/stat.h>
 
 #include "output.h"
 #include "get.h"
@@ -214,6 +215,19 @@ int CreateFile(char* id, unsigned int discType, const char* filename, FILE** fp,
 	if ((discType & PSP_UMD_TYPE_VIDEO) == PSP_UMD_TYPE_VIDEO &&
 		(discType & PSP_UMD_TYPE_GAME) != PSP_UMD_TYPE_GAME) {
 		strncat(dir, "video/", 6);
+	}
+
+	struct stat st;
+	if (stat(dir, &st) != 0) {
+		pspPrintf("%s doesn't exist, so creates\n", dir);
+		int ret = mkdir(dir,
+			S_IRUSR | S_IWUSR | S_IXUSR |
+			S_IRGRP | S_IWGRP | S_IXGRP |
+			S_IROTH | S_IXOTH | S_IXOTH);
+		if (ret != 0) {
+			pspPrintf("failed to create %s\n", dir);
+			return 0;
+		}
 	}
 	if (sizeof(dir) + strlen(id) + strlen(filename) > 80) {
 		pspPrintf("path is too long\n");
