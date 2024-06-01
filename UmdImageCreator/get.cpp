@@ -319,8 +319,8 @@ int GetMSInfo(MS_INFO* info)
 {
 	int ret = sceIoDevctl(DEVICE_MS, IOCTL_MS_GET_MS_INFO, &info, 4, NULL, 0);
 	if (ret == 0) {
-		info->smax = (info->cluster_max  * info->sector_count) * info->sector_size;
-		info->sfree = (info->cluster_free * info->sector_count) * info->sector_size;
+		info->smax = (unsigned long long)(info->cluster_max) * (unsigned long long)(info->sector_count) * (unsigned long long)(info->sector_size);
+		info->sfree = (unsigned long long)(info->cluster_free) * (unsigned long long)(info->sector_count) * (unsigned long long)(info->sector_size);
 		info->sused = info->smax - info->sfree;
 		return TRUE;
 	}

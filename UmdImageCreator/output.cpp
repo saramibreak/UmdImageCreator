@@ -299,6 +299,7 @@ void DumpIso(char* id, unsigned int discType, unsigned int discSize, int nDump)
 #ifdef PRX
 			pspDebugScreenSetXY(0, pspDebugScreenGetY() + 4);
 #endif
+			return;
 		}
 #endif
 

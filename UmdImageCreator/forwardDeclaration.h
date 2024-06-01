@@ -18,7 +18,7 @@
 
 #define DISC_MAIN_DATA_SIZE		(2048)
 
-#define PATH_TABLE_RECORD_SIZE	(400)
+#define PATH_TABLE_RECORD_SIZE	(4000)
 
 // î•ñŒðŠ·‚Ì…€
 // …€	1	2	3
